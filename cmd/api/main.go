@@ -1,20 +1,19 @@
 package main
 
 import (
-	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
+	user_controller "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user"
 	"github.com/gorilla/mux"
 )
 
-func getItems(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode("MINHAUUU")
-}
-
 func main() {
 	router := mux.NewRouter()
-	router.HandleFunc("/items", getItems).Methods("GET")
 
+	router.HandleFunc("/", user_controller.CreateUser)
+
+	fmt.Println("Server running...")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
