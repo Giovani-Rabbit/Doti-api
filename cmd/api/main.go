@@ -14,6 +14,6 @@ func main() {
 
 	router.HandleFunc("/", user_controller.CreateUser)
 
-	fmt.Println("Server running...")
+	fmt.Println("Server is running...")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
