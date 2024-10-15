@@ -1,10 +1,10 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
+	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -12,13 +12,13 @@ import (
 )
 
 func main() {
-	db, err := sql.Open("postgres", "postgres://postgres:1234@localhost:5432/doti_db?sslmode=disable")
+	postgresDB, err := database.NewPostgresDB()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
+	driver, err := postgres.WithInstance(postgresDB.Db, &postgres.Config{})
 
 	if err != nil {
 		log.Fatal(err)
