@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
@@ -31,9 +32,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-		log.Fatal(err)
-	} else {
-		log.Println("Migrations applied successfully")
+	switch cmd := os.Args[len(os.Args)-1]; cmd {
+	case "up":
+		m.Up()
+	case "down":
+		m.Down()
+	default:
+		log.Fatalf("Invalid option: %s", cmd)
 	}
 }
