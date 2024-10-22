@@ -12,13 +12,13 @@ import (
 )
 
 func main() {
-	postgresDB, err := database.NewPostgresDB()
+	conn, err := database.NewPostgresDB()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	driver, err := postgres.WithInstance(postgresDB.Db, &postgres.Config{})
+	driver, err := postgres.WithInstance(conn, &postgres.Config{})
 
 	if err != nil {
 		log.Fatal(err)

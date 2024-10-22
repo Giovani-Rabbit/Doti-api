@@ -3,24 +3,40 @@
 //   sqlc v1.27.0
 // source: query.sql
 
-package db
+package sqlc
 
 import (
 	"context"
 )
 
-const getRoom = `-- name: GetRoom :one
+const getUsers = `-- name: GetUsers :many
 SELECT id, email, name, password FROM users
 `
 
-func (q *Queries) GetRoom(ctx context.Context) (User, error) {
-	row := q.db.QueryRowContext(ctx, getRoom)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Email,
-		&i.Name,
-		&i.Password,
-	)
-	return i, err
+func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, getUsers)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []User
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.ID,
+			&i.Email,
+			&i.Name,
+			&i.Password,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }

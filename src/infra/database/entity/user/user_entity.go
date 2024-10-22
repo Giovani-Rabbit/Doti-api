@@ -1,12 +1,10 @@
-package user_entity
+package entity
+
+import "github.com/gofrs/uuid"
 
 type User struct {
-	Id   string
-	Name string
-}
-
-var Users []User
-
-type IUserRepository interface {
-	createUserRepository()
+	ID       uuid.UUID `json:"id"`
+	Email    string    `json:"email"`
+	Name     string    `json:"name"`
+	Password string    `json:"password"`
 }

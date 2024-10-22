@@ -3,15 +3,13 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/Giovani-Coelho/Doti-API/config"
+	_ "github.com/lib/pq"
 )
 
-type postgresDB struct {
-	Db *sql.DB
-}
-
-func NewPostgresDB() (*postgresDB, error) {
+func NewPostgresDB() (*sql.DB, error) {
 	connection := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		config.Env.DbUser,
 		config.Env.DbPassword,
@@ -20,11 +18,17 @@ func NewPostgresDB() (*postgresDB, error) {
 		config.Env.DbDatabase,
 	)
 
-	db, err := sql.Open("postgres", connection)
+	conn, err := sql.Open("postgres", connection)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &postgresDB{Db: db}, nil
+	err = conn.Ping()
+
+	if err != nil {
+		log.Fatal("Database connection failed:", err)
+	}
+
+	return conn, err
 }

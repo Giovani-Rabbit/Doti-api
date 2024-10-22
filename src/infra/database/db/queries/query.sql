@@ -1,2 +1,2 @@
--- name: GetRoom :one
+-- name: GetUsers :many
 SELECT * FROM users;

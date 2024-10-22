@@ -20,6 +20,7 @@ var Env = newEnvirounment()
 
 func newEnvirounment() *Envirounment {
 	err := godotenv.Load()
+
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
@@ -35,6 +36,7 @@ func newEnvirounment() *Envirounment {
 
 func getEnvirounmentVariableAsInt(key string) int {
 	value, err := strconv.Atoi(os.Getenv(key))
+
 	if err != nil {
 		return 0
 	}
