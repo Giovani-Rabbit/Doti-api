@@ -1,14 +1,14 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
-	db "github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
-	user_repository "github.com/Giovani-Coelho/Doti-API/src/infra/database/repository/user"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
+	useCase "github.com/Giovani-Coelho/Doti-API/src/useCase/user"
 	"github.com/gorilla/mux"
 )
 
@@ -20,21 +20,16 @@ func main() {
 	}
 
 	defer conn.Close()
-	queries := db.New(conn)
+
+	context := context.Background()
+
+	useRepository := repository.NewUserRepository(conn)
+	addUserUseCase := useCase.NewCreateUserUseCase(useRepository)
 
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		userRepository := user_repository.NewUserRepository(queries)
-
-		users, err := userRepository.GetUsers(r.Context())
-
-		if err != nil {
-			json.NewEncoder(w).Encode("Error na busca de users")
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(users)
+		addUserUseCase.Execute(context)
 	})
 
 	fmt.Println("Server is running...")
