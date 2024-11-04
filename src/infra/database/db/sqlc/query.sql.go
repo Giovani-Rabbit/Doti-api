@@ -7,36 +7,28 @@ package sqlc
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
-const getUsers = `-- name: GetUsers :many
-SELECT id, email, name, password FROM users
+const createUser = `-- name: CreateUser :exec
+INSERT INTO users (ID, Email, Name, Password)
+VALUES ($1, $2, $3, $4)
 `
 
-func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, getUsers)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var items []User
-	for rows.Next() {
-		var i User
-		if err := rows.Scan(
-			&i.ID,
-			&i.Email,
-			&i.Name,
-			&i.Password,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
+type CreateUserParams struct {
+	ID       uuid.UUID
+	Email    string
+	Name     string
+	Password string
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
+	_, err := q.db.ExecContext(ctx, createUser,
+		arg.ID,
+		arg.Email,
+		arg.Name,
+		arg.Password,
+	)
+	return err
 }
