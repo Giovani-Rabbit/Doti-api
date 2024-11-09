@@ -23,6 +23,7 @@ type UserRepository struct {
 
 type IUserRepository interface {
 	Create(ctx context.Context, userDto dtos.CreateUserDto) error
+	CheckUserExists(ctx context.Context, email string) (bool, error)
 }
 
 func (ur *UserRepository) Create(ctx context.Context, userDTO dtos.CreateUserDto) error {
@@ -40,4 +41,14 @@ func (ur *UserRepository) Create(ctx context.Context, userDTO dtos.CreateUserDto
 	}
 
 	return nil
+}
+
+func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bool, error) {
+	exists, err := ur.Queries.CheckUserExists(ctx, email)
+
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
 }
