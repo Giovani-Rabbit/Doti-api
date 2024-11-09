@@ -2,13 +2,15 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
+	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
+	userServices "github.com/Giovani-Coelho/Doti-API/src/application/services/user/createUser"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
-	useCase "github.com/Giovani-Coelho/Doti-API/src/useCase/user"
 	"github.com/gorilla/mux"
 )
 
@@ -21,15 +23,24 @@ func main() {
 
 	defer conn.Close()
 
-	context := context.Background()
-
 	useRepository := repository.NewUserRepository(conn)
-	addUserUseCase := useCase.NewCreateUserUseCase(useRepository)
+	addUserUseCase := userServices.NewCreateUserService(useRepository)
 
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		addUserUseCase.Execute(context)
+		var user dtos.CreateUserDto
+
+		err := json.NewDecoder(r.Body).Decode(&user)
+
+		if err != nil {
+			http.Error(w, "Unable to parse request body", http.StatusBadRequest)
+			return
+		}
+
+		context := context.Background()
+
+		addUserUseCase.CreateUser(context, user)
 	})
 
 	fmt.Println("Server is running...")
