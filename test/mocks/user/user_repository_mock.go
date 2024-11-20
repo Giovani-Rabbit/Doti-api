@@ -3,17 +3,17 @@ package mocks
 import (
 	"context"
 
-	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
 )
 
 type MockUserRepository struct {
-	MockCreate          func(ctx context.Context, userDto dtos.CreateUserDto) error
+	MockCreate          func(ctx context.Context, userDto userDTO.CreateUserDTO) error
 	MockCheckUserExists func(ctx context.Context, email string) (bool, error)
 }
 
 func (m *MockUserRepository) Create(
 	ctx context.Context,
-	userDto dtos.CreateUserDto,
+	userDto userDTO.CreateUserDTO,
 ) error {
 	if m.MockCreate != nil {
 		return m.MockCreate(ctx, userDto)

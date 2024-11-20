@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
 	"github.com/google/uuid"
 )
@@ -22,11 +22,11 @@ type UserRepository struct {
 }
 
 type IUserRepository interface {
-	Create(ctx context.Context, userDto dtos.CreateUserDto) error
+	Create(ctx context.Context, userDto userDTO.CreateUserDTO) error
 	CheckUserExists(ctx context.Context, email string) (bool, error)
 }
 
-func (ur *UserRepository) Create(ctx context.Context, userDTO dtos.CreateUserDto) error {
+func (ur *UserRepository) Create(ctx context.Context, userDTO userDTO.CreateUserDTO) error {
 	userEntity := sqlc.CreateUserParams{
 		ID:       uuid.New(),
 		Name:     userDTO.Name,

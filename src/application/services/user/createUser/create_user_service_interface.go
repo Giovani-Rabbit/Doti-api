@@ -3,7 +3,7 @@ package userServices
 import (
 	"context"
 
-	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 )
 
@@ -12,7 +12,7 @@ type CreateUserService struct {
 }
 
 type ICreateUserService interface {
-	CreateUser(ctx context.Context, userDTO dtos.CreateUserDto) error
+	CreateUser(ctx context.Context, userDTO userDTO.CreateUserDTO) error
 }
 
 func NewCreateUserService(

@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
 	userServices "github.com/Giovani-Coelho/Doti-API/src/application/services/user/createUser"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 	"github.com/gorilla/mux"
@@ -29,7 +29,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		var user dtos.CreateUserDto
+		var user userDTO.CreateUserDTO
 
 		err := json.NewDecoder(r.Body).Decode(&user)
 

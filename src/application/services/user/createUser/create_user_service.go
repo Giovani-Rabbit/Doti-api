@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
 )
 
 func (us *CreateUserService) CreateUser(
 	ctx context.Context,
-	userDTO dtos.CreateUserDto,
+	userDTO userDTO.CreateUserDTO,
 ) error {
 	userAlreadyExists, err := us.UserRepository.CheckUserExists(ctx, userDTO.Email)
 

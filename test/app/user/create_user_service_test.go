@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	dtos "github.com/Giovani-Coelho/Doti-API/src/application/dtos/user"
 	userServices "github.com/Giovani-Coelho/Doti-API/src/application/services/user/createUser"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
 	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
 )
 
@@ -14,7 +14,7 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 	userService := userServices.NewCreateUserService(mockRepo)
 
 	t.Run("Create new user successfully", func(t *testing.T) {
-		userDTO := dtos.CreateUserDto{
+		user := userDTO.CreateUserDTO{
 			Name:     "New User",
 			Email:    "newuser@example.com",
 			Password: "password123",
@@ -27,12 +27,12 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 		}
 
 		mockRepo.MockCreate = func(
-			ctx context.Context, userDTO dtos.CreateUserDto,
+			ctx context.Context, user userDTO.CreateUserDTO,
 		) error {
 			return nil
 		}
 
-		err := userService.CreateUser(context.Background(), userDTO)
+		err := userService.CreateUser(context.Background(), user)
 
 		if err != nil {
 			t.Fatalf("expected no error, but got: %v", err)
@@ -40,7 +40,7 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 	})
 
 	t.Run("User already exists", func(t *testing.T) {
-		userDTO := dtos.CreateUserDto{
+		userDTO := userDTO.CreateUserDTO{
 			Name:     "Existing User",
 			Email:    "existinguser@example.com",
 			Password: "password123",
