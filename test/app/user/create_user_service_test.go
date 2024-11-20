@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	userServices "github.com/Giovani-Coelho/Doti-API/src/application/services/user/createUser"
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
+	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services/createUser"
 	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
 )
 

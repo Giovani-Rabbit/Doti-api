@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
 )
 
 func (us *CreateUserService) CreateUser(

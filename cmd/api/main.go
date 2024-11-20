@@ -7,8 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	userServices "github.com/Giovani-Coelho/Doti-API/src/application/services/user/createUser"
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
+	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services/createUser"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 	"github.com/gorilla/mux"

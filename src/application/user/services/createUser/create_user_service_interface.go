@@ -3,7 +3,7 @@ package userServices
 import (
 	"context"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/services/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 )
 
