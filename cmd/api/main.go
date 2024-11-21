@@ -9,6 +9,7 @@ import (
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
 	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services/createUser"
+	rest_err "github.com/Giovani-Coelho/Doti-API/src/handlers/http"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 	"github.com/gorilla/mux"
@@ -32,17 +33,42 @@ func main() {
 		var user userDTO.CreateUserDTO
 
 		err := json.NewDecoder(r.Body).Decode(&user)
-
 		if err != nil {
-			http.Error(w, "Unable to parse request body", http.StatusBadRequest)
+			httpErr := rest_err.NewBadRequestError("Unable to parse request body")
+
+			res, err := json.Marshal(httpErr)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			WriteJSON(w, res)
 			return
 		}
 
-		context := context.Background()
+		ctx := context.Background()
 
-		addUserUseCase.CreateUser(context, user)
+		err = addUserUseCase.CreateUser(ctx, user)
+		if err != nil {
+			if httpErr, ok := err.(*rest_err.RestErr); ok {
+				res, err := json.Marshal(httpErr)
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				WriteJSON(w, res)
+				return
+			}
+
+			return
+		}
 	})
 
 	fmt.Println("Server is running...")
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func WriteJSON(w http.ResponseWriter, response []byte) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(400)
+	w.Write(response)
 }

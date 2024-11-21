@@ -35,7 +35,7 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 		err := userService.CreateUser(context.Background(), user)
 
 		if err != nil {
-			t.Fatalf("expected no error, but got: %v", err)
+			t.Fatalf("expected no error, but we got: %v", err)
 		}
 	})
 
@@ -54,8 +54,8 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 
 		err := userService.CreateUser(context.Background(), userDTO)
 
-		if err != nil {
-			t.Fatalf("expected no error, but got: %v", err)
+		if err == nil {
+			t.Fatalf("expected: the user already exists. But we got: %v", err)
 		}
 	})
 }

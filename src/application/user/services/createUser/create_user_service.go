@@ -2,30 +2,29 @@ package userServices
 
 import (
 	"context"
-	"fmt"
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
+	rest_err "github.com/Giovani-Coelho/Doti-API/src/handlers/http"
 )
 
 func (us *CreateUserService) CreateUser(
 	ctx context.Context,
 	userDTO userDTO.CreateUserDTO,
 ) error {
-	userAlreadyExists, err := us.UserRepository.CheckUserExists(ctx, userDTO.Email)
-
-	if err != nil {
-		panic(err)
-	}
+	userAlreadyExists, _ := us.UserRepository.CheckUserExists(ctx, userDTO.Email)
 
 	if userAlreadyExists {
-		fmt.Println("Usuario ja existe")
-		return nil
+		return rest_err.NewBadRequestError(
+			"User already exists",
+		)
 	}
 
-	err = us.UserRepository.Create(ctx, userDTO)
+	err := us.UserRepository.Create(ctx, userDTO)
 
 	if err != nil {
-		panic(err)
+		return rest_err.NewInternalServerError(
+			"Internal error when saving user",
+		)
 	}
 
 	return nil
