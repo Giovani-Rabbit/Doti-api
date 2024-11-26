@@ -4,7 +4,7 @@ import (
 	"context"
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
-	rest_err "github.com/Giovani-Coelho/Doti-API/src/handlers/http"
+	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
 func (us *CreateUserService) CreateUser(
