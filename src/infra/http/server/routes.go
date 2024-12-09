@@ -13,15 +13,15 @@ func Routes(DB *sql.DB) *mux.Router {
 	router := mux.NewRouter()
 
 	// Repository
-	userR := repository.NewUserRepository(DB)
+	userRepository := repository.NewUserRepository(DB)
 
 	// UseCase
-	createUserService := userServices.NewCreateUserService(userR)
+	createUserService := userServices.NewCreateUserService(userRepository)
 
 	// Controller
 	createUserController := userController.NewCreateUserController(createUserService)
 
-	router.HandleFunc("/user", createUserController.Execute)
+	router.HandleFunc("/user", createUserController.Execute).Methods("POST")
 
 	return router
 }
