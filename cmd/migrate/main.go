@@ -25,7 +25,7 @@ func main() {
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://src/infra/database/store/pgstore/migrations/", // migrations path
+		"file://src/infra/database/db/migrations/", // migrations path
 		"postgres", driver)
 
 	if err != nil {
