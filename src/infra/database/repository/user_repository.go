@@ -24,6 +24,7 @@ type UserRepository struct {
 type IUserRepository interface {
 	Create(ctx context.Context, userDto userDTO.CreateUserDTO) error
 	CheckUserExists(ctx context.Context, email string) (bool, error)
+	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
 }
 
 func (ur *UserRepository) Create(ctx context.Context, userDTO userDTO.CreateUserDTO) error {
@@ -51,4 +52,14 @@ func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bo
 	}
 
 	return exists, nil
+}
+
+func (ur *UserRepository) FindUserByEmail(ctx context.Context, email string) (sqlc.User, error) {
+	user, err := ur.Queries.FindUserByEmail(ctx, email)
+
+	if err != nil {
+		return sqlc.User{}, err
+	}
+
+	return user, nil
 }

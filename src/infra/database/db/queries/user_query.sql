@@ -8,3 +8,6 @@ SELECT EXISTS (
     FROM users
     WHERE Email = $1
 ) AS EXISTS;
+
+-- name: FindUserByEmail :one
+SELECT * FROM users WHERE Email = $1 LIMIT 1;

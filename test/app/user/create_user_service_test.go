@@ -5,13 +5,13 @@ import (
 	"testing"
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
-	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services/createUser"
+	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services"
 	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
 )
 
 func TestUserRepository_CreateAndCheck(t *testing.T) {
 	mockRepo := &mocks.MockUserRepository{}
-	userService := userServices.NewCreateUserService(mockRepo)
+	userService := userServices.NewUserServices(mockRepo)
 
 	t.Run("Create new user successfully", func(t *testing.T) {
 		user := userDTO.CreateUserDTO{

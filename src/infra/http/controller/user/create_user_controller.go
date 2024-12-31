@@ -7,27 +7,10 @@ import (
 	"net/http"
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
-	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services/createUser"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
-type CreateUserController struct {
-	UserServices userServices.ICreateUserService
-}
-
-type ICreateUserController interface {
-	Execute(w http.ResponseWriter, r *http.Request)
-}
-
-func NewCreateUserController(
-	userServices userServices.ICreateUserService,
-) ICreateUserController {
-	return &CreateUserController{
-		UserServices: userServices,
-	}
-}
-
-func (s *CreateUserController) Execute(w http.ResponseWriter, r *http.Request) {
+func (uc *UserControllers) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user userDTO.CreateUserDTO
 
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -45,7 +28,7 @@ func (s *CreateUserController) Execute(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	err = s.UserServices.CreateUser(ctx, user)
+	err = uc.UserServices.CreateUser(ctx, user)
 	if err != nil {
 		if httpErr, ok := err.(*rest_err.RestErr); ok {
 			res, err := json.Marshal(httpErr)

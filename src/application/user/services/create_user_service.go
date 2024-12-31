@@ -7,7 +7,7 @@ import (
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
-func (us *CreateUserService) CreateUser(
+func (us *UserServices) CreateUser(
 	ctx context.Context,
 	userDTO userDTO.CreateUserDTO,
 ) error {
