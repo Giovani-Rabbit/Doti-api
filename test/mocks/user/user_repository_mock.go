@@ -8,9 +8,13 @@ import (
 )
 
 type MockUserRepository struct {
-	MockCreate          func(ctx context.Context, userDto userDTO.CreateUserDTO) error
-	MockCheckUserExists func(ctx context.Context, email string) (bool, error)
-	MockFindUserByEmail func(ctx context.Context, email string) (sqlc.User, error)
+	MockCreate                     func(ctx context.Context, userDto userDTO.CreateUserDTO) error
+	MockCheckUserExists            func(ctx context.Context, email string) (bool, error)
+	MockFindUserByEmail            func(ctx context.Context, email string) (sqlc.User, error)
+	MockFindUserByEmailAndPassword func(
+		ctx context.Context,
+		args sqlc.FindUserByEmailAndPasswordParams,
+	) (sqlc.User, error)
 }
 
 func (m *MockUserRepository) Create(
@@ -41,6 +45,17 @@ func (m *MockUserRepository) FindUserByEmail(
 ) (sqlc.User, error) {
 	if m.MockFindUserByEmail != nil {
 		return m.MockFindUserByEmail(ctx, email)
+	}
+
+	return sqlc.User{}, nil
+}
+
+func (m *MockUserRepository) FindUserByEmailAndPassword(
+	ctx context.Context,
+	args sqlc.FindUserByEmailAndPasswordParams,
+) (sqlc.User, error) {
+	if m.MockFindUserByEmailAndPassword != nil {
+		return m.MockFindUserByEmailAndPassword(ctx, args)
 	}
 
 	return sqlc.User{}, nil
