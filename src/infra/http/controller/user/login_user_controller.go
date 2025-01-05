@@ -10,7 +10,7 @@ import (
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
-func (uc *UserControllers) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
 	var user userDTO.CreateUserDTO
 
 	err := json.NewDecoder(r.Body).Decode(&user)

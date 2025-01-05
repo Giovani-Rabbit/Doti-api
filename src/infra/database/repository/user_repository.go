@@ -6,6 +6,7 @@ import (
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
+	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"
 	"github.com/google/uuid"
 )
 
@@ -32,7 +33,7 @@ func (ur *UserRepository) Create(ctx context.Context, userDTO userDTO.CreateUser
 		ID:       uuid.New(),
 		Name:     userDTO.Name,
 		Email:    userDTO.Email,
-		Password: userDTO.Password,
+		Password: encrypt.EncryptPassword(userDTO.Password),
 	}
 
 	err := ur.Queries.CreateUser(ctx, userEntity)

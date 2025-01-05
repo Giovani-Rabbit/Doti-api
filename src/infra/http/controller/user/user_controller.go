@@ -12,6 +12,7 @@ type UserControllers struct {
 
 type IUserControllers interface {
 	CreateUser(w http.ResponseWriter, r *http.Request)
+	LoginUser(w http.ResponseWriter, r *http.Request)
 }
 
 func NewUserControllers(

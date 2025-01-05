@@ -1,4 +1,4 @@
-package services
+package auth
 
 import (
 	"os"
@@ -13,17 +13,7 @@ var (
 	JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 )
 
-type TokenService struct{}
-
-type ITokenService interface {
-	generateToken(user sqlc.User) (string, *rest_err.RestErr)
-}
-
-func NewTokenService() ITokenService {
-	return &TokenService{}
-}
-
-func (ts *TokenService) generateToken(
+func GenerateToken(
 	user sqlc.User,
 ) (string, *rest_err.RestErr) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
