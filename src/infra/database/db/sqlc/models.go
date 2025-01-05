@@ -9,8 +9,8 @@ import (
 )
 
 type User struct {
-	ID       uuid.UUID
-	Email    string
-	Name     string
-	Password string
+	ID       uuid.UUID `json:"id"`
+	Email    string    `json:"email"`
+	Name     string    `json:"name"`
+	Password string    `json:"password"`
 }

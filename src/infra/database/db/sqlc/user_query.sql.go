@@ -32,10 +32,10 @@ VALUES ($1, $2, $3, $4)
 `
 
 type CreateUserParams struct {
-	ID       uuid.UUID
-	Email    string
-	Name     string
-	Password string
+	ID       uuid.UUID `json:"id"`
+	Email    string    `json:"email"`
+	Name     string    `json:"name"`
+	Password string    `json:"password"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
