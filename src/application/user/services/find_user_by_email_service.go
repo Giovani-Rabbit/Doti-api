@@ -13,7 +13,7 @@ func (us *UserServices) FindUserByEmail(
 	user, err := us.UserRepository.FindUserByEmail(ctx, email)
 
 	if err != nil {
-		return user, rest_err.NewNotFoundError(
+		return sqlc.User{}, rest_err.NewNotFoundError(
 			"No user with this email was found",
 		)
 	}

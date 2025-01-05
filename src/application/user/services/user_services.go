@@ -15,6 +15,7 @@ type UserServices struct {
 type IUserServices interface {
 	CreateUser(ctx context.Context, userDTO userDTO.CreateUserDTO) error
 	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
+	findUserByEmailAndPassword(ctx context.Context, email string, password string) (sqlc.User, error)
 }
 
 func NewUserServices(

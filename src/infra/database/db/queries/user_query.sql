@@ -11,3 +11,6 @@ SELECT EXISTS (
 
 -- name: FindUserByEmail :one
 SELECT * FROM users WHERE Email = $1 LIMIT 1;
+
+-- name: FindUserByEmailAndPassword :one
+SELECT * FROM users WHERE Email = $1 AND Password = $2 LIMIT 1;

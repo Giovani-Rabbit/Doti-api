@@ -63,3 +63,24 @@ func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, erro
 	)
 	return i, err
 }
+
+const findUserByEmailAndPassword = `-- name: FindUserByEmailAndPassword :one
+SELECT id, email, name, password FROM users WHERE Email = $1 AND Password = $2 LIMIT 1
+`
+
+type FindUserByEmailAndPasswordParams struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+func (q *Queries) FindUserByEmailAndPassword(ctx context.Context, arg FindUserByEmailAndPasswordParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, findUserByEmailAndPassword, arg.Email, arg.Password)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Name,
+		&i.Password,
+	)
+	return i, err
+}

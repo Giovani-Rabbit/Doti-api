@@ -26,6 +26,10 @@ type IUserRepository interface {
 	Create(ctx context.Context, userDto userDTO.CreateUserDTO) error
 	CheckUserExists(ctx context.Context, email string) (bool, error)
 	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
+	FindUserByEmailAndPassword(
+		ctx context.Context,
+		args sqlc.FindUserByEmailAndPasswordParams,
+	) (sqlc.User, error)
 }
 
 func (ur *UserRepository) Create(ctx context.Context, userDTO userDTO.CreateUserDTO) error {
@@ -57,6 +61,19 @@ func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bo
 
 func (ur *UserRepository) FindUserByEmail(ctx context.Context, email string) (sqlc.User, error) {
 	user, err := ur.Queries.FindUserByEmail(ctx, email)
+
+	if err != nil {
+		return sqlc.User{}, err
+	}
+
+	return user, nil
+}
+
+func (ur *UserRepository) FindUserByEmailAndPassword(
+	ctx context.Context,
+	args sqlc.FindUserByEmailAndPasswordParams,
+) (sqlc.User, error) {
+	user, err := ur.Queries.FindUserByEmailAndPassword(ctx, args)
 
 	if err != nil {
 		return sqlc.User{}, err

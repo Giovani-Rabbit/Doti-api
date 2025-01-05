@@ -1,6 +1,8 @@
 package authServices
 
-import "github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
+import (
+	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
+)
 
 type AuthServices struct {
 }
