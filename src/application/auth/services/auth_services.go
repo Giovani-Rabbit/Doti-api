@@ -13,7 +13,7 @@ type AuthServices struct {
 }
 
 type IAuthServices interface {
-	LoginUser(ctx context.Context, userDTO authDTO.SignInDTO) (sqlc.User, error)
+	LoginUser(ctx context.Context, userDTO authDTO.SignInDTO) (sqlc.User, string, error)
 }
 
 func NewAuthServices(

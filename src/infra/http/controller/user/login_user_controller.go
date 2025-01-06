@@ -31,7 +31,7 @@ func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	user, err := uc.AuthServices.LoginUser(ctx, userDTO)
+	user, token, err := uc.AuthServices.LoginUser(ctx, userDTO)
 	if err != nil {
 		if httpErr, ok := err.(*rest_err.RestErr); ok {
 			res, err := json.Marshal(httpErr)
@@ -60,6 +60,7 @@ func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Add("Authorization", token)
 	w.WriteHeader(201)
 	w.Write(res)
 

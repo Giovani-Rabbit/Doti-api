@@ -5,6 +5,7 @@ import (
 
 	authDTO "github.com/Giovani-Coelho/Doti-API/src/application/auth/dto"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
+	"github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
@@ -12,7 +13,7 @@ import (
 func (as *AuthServices) LoginUser(
 	ctx context.Context,
 	userDTO authDTO.SignInDTO,
-) (sqlc.User, error) {
+) (sqlc.User, string, error) {
 	encryptPassword := sqlc.FindUserByEmailAndPasswordParams{
 		Email:    userDTO.Email,
 		Password: encrypt.EncryptPassword(userDTO.Password),
@@ -21,10 +22,18 @@ func (as *AuthServices) LoginUser(
 	user, err := as.UserRepository.FindUserByEmailAndPassword(ctx, encryptPassword)
 
 	if err != nil {
-		return sqlc.User{}, rest_err.NewBadRequestError(
+		return sqlc.User{}, "", rest_err.NewBadRequestError(
 			"Invalid login credentials",
 		)
 	}
 
-	return user, nil
+	token, err := auth.GenerateToken(user)
+
+	if err != nil {
+		return sqlc.User{}, "", rest_err.NewBadRequestError(
+			"Error on generate Token",
+		)
+	}
+
+	return user, token, nil
 }

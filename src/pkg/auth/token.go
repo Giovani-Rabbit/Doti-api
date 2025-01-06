@@ -15,7 +15,7 @@ var (
 
 func GenerateToken(
 	user sqlc.User,
-) (string, *rest_err.RestErr) {
+) (string, error) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	claims := jwt.MapClaims{
