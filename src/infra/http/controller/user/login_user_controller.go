@@ -6,14 +6,15 @@ import (
 	"log"
 	"net/http"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
+	authDTO "github.com/Giovani-Coelho/Doti-API/src/application/auth/dto"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
+	"github.com/gofrs/uuid"
 )
 
 func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
-	var user userDTO.CreateUserDTO
+	var userDTO authDTO.SignInDTO
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	err := json.NewDecoder(r.Body).Decode(&userDTO)
 	if err != nil {
 		httpErr := rest_err.NewBadRequestError("Unable to parse request body")
 
@@ -30,7 +31,7 @@ func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	err = uc.UserServices.CreateUser(ctx, user)
+	user, err := uc.AuthServices.LoginUser(ctx, userDTO)
 	if err != nil {
 		if httpErr, ok := err.(*rest_err.RestErr); ok {
 			res, err := json.Marshal(httpErr)
@@ -46,4 +47,21 @@ func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
 
 		return
 	}
+
+	userResponse := authDTO.AuthResponseDTO{
+		ID:    uuid.UUID(user.ID),
+		Email: user.Email,
+		Name:  user.Name,
+	}
+
+	res, err := json.Marshal(userResponse)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(201)
+	w.Write(res)
+
+	return
 }
