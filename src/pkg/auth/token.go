@@ -2,25 +2,26 @@ package auth
 
 import (
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 )
 
 var (
 	JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 )
 
-func GenerateToken(
-	user sqlc.User,
-) (string, error) {
+func GenerateToken(user sqlc.User) (string, error) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	claims := jwt.MapClaims{
 		"id":    user.ID,
 		"email": user.Email,
+		"name":  user.Name,
 		"exp":   time.Now().Add(time.Hour * 24).Unix(),
 	}
 
@@ -35,4 +36,43 @@ func GenerateToken(
 	}
 
 	return tokenString, nil
+}
+
+func VerifyToken(tokenValue string) (*sqlc.User, error) {
+	secret := os.Getenv(JWT_TOKEN_KEY)
+
+	token, err := jwt.Parse(
+		RemoveBearerPrefix(tokenValue),
+		func(t *jwt.Token) (interface{}, error) {
+			if _, ok := t.Method.(*jwt.SigningMethodHMAC); ok {
+				return []byte(secret), nil
+			}
+
+			return nil, rest_err.NewBadRequestError("invalid token")
+		},
+	)
+
+	if err != nil {
+		return nil, rest_err.NewUnauthorizedRequestError("invalid token")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok || !token.Valid {
+		return nil, rest_err.NewUnauthorizedRequestError("invalid token")
+	}
+
+	return &sqlc.User{
+		ID:    claims["id"].(uuid.UUID),
+		Email: claims["email"].(string),
+		Name:  claims["name"].(string),
+	}, nil
+}
+
+func RemoveBearerPrefix(token string) string {
+	if strings.HasPrefix(token, "Bearer ") {
+		token = strings.TrimPrefix("Bearer ", token)
+	}
+
+	return token
 }
