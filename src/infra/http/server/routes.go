@@ -23,7 +23,7 @@ func Routes(DB *sql.DB) *mux.Router {
 	// Controller
 	userController := userController.NewUserControllers(userServices, authServices)
 
-	router.HandleFunc("/user", userController.CreateUser).Methods("POST")
+	router.HandleFunc("/account", userController.CreateUser).Methods("POST")
 	router.HandleFunc("/login", userController.LoginUser).Methods("POST")
 
 	return router
