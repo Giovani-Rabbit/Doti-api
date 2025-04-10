@@ -3,7 +3,6 @@ package userController
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
@@ -13,37 +12,35 @@ import (
 func (uc *UserControllers) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user userDTO.CreateUserDTO
 
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		httpErr := rest_err.NewBadRequestError("Unable to parse request body")
-
-		res, err := json.Marshal(httpErr)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(400)
-		w.Write(res)
+	if err := decodeJSONBody(w, r, &user); err != nil {
+		handleError(w, err)
 		return
 	}
 
 	ctx := context.Background()
-
-	err = uc.UserServices.CreateUser(ctx, user)
-	if err != nil {
-		if httpErr, ok := err.(*rest_err.RestErr); ok {
-			res, err := json.Marshal(httpErr)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(400)
-			w.Write(res)
-			return
-		}
-
+	if err := uc.UserServices.CreateUser(ctx, user); err != nil {
+		handleError(w, err)
 		return
 	}
+
+	w.WriteHeader(http.StatusCreated)
+}
+
+func decodeJSONBody(_ http.ResponseWriter, r *http.Request, dst interface{}) error {
+	if err := json.NewDecoder(r.Body).Decode(dst); err != nil {
+		return rest_err.NewBadRequestError("Invalid JSON body")
+	}
+	return nil
+}
+
+func handleError(w http.ResponseWriter, err error) {
+	httpErr, ok := err.(*rest_err.RestErr)
+	if !ok {
+		httpErr = rest_err.NewInternalServerError("Unexpected error" + err.Error())
+	}
+
+	response, _ := json.Marshal(httpErr)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(httpErr.Code)
+	w.Write(response)
 }
