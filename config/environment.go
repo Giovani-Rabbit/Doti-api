@@ -9,11 +9,13 @@ import (
 )
 
 type Envirounment struct {
-	DbServer   string
-	DbUser     string
+	DbDatabase string
 	DbPassword string
 	DbPort     int
-	DbDatabase string
+	DbServer   string
+	DbUser     string
+	ServerPort int
+	CorsOrigin string
 }
 
 var Env = newEnvirounment()
@@ -26,11 +28,13 @@ func newEnvirounment() *Envirounment {
 	}
 
 	return &Envirounment{
+		DbDatabase: os.Getenv("DB_DATABASE"),
+		DbPassword: os.Getenv("DB_PASSWORD"),
+		DbPort:     getEnvirounmentVariableAsInt("DB_PORT"),
 		DbServer:   os.Getenv("DB_SERVER"),
 		DbUser:     os.Getenv("DB_USER"),
-		DbPassword: os.Getenv("DB_PASSWORD"),
-		DbDatabase: os.Getenv("DB_DATABASE"),
-		DbPort:     getEnvirounmentVariableAsInt("DB_PORT"),
+		ServerPort: getEnvirounmentVariableAsInt("SERVER_PORT"),
+		CorsOrigin: os.Getenv("CORS_ORIGIN"),
 	}
 }
 
