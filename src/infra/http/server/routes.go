@@ -5,9 +5,9 @@ import (
 
 	authServices "github.com/Giovani-Coelho/Doti-API/src/core/auth/services"
 	userServices "github.com/Giovani-Coelho/Doti-API/src/core/user/services"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 	userController "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/http/middleware"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	"github.com/gorilla/mux"
 )
 

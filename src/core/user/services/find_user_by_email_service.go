@@ -3,7 +3,7 @@ package userServices
 import (
 	"context"
 
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 

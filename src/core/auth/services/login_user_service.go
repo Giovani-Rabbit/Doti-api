@@ -4,7 +4,7 @@ import (
 	"context"
 
 	authDTO "github.com/Giovani-Coelho/Doti-API/src/core/auth/dto"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"

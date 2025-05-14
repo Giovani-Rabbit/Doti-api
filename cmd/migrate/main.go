@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
+	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

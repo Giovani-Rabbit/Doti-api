@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/Giovani-Coelho/Doti-API/config"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/http/server"
+	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence"
 )
 
 func main() {

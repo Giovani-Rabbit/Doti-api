@@ -4,8 +4,8 @@ import (
 	"context"
 
 	authDTO "github.com/Giovani-Coelho/Doti-API/src/core/auth/dto"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 )
 
 type AuthServices struct {
