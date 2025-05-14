@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/core/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 

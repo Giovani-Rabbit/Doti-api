@@ -3,8 +3,8 @@ package userController
 import (
 	"net/http"
 
-	authServices "github.com/Giovani-Coelho/Doti-API/src/core/auth/services"
-	userServices "github.com/Giovani-Coelho/Doti-API/src/core/user/services"
+	authServices "github.com/Giovani-Coelho/Doti-API/src/core/app/auth"
+	userServices "github.com/Giovani-Coelho/Doti-API/src/core/app/user"
 )
 
 type UserControllers struct {

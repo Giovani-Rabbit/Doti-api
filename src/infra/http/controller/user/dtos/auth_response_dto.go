@@ -1,4 +1,4 @@
-package authDTO
+package userDTO
 
 import "github.com/gofrs/uuid"
 

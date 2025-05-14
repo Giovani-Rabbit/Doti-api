@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/core/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"
 	"github.com/google/uuid"

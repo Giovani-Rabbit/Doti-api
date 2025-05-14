@@ -3,7 +3,7 @@ package authServices
 import (
 	"context"
 
-	authDTO "github.com/Giovani-Coelho/Doti-API/src/core/auth/dto"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"
@@ -12,7 +12,7 @@ import (
 
 func (as *AuthServices) LoginUser(
 	ctx context.Context,
-	userDTO authDTO.SignInDTO,
+	userDTO userDTO.SignInDTO,
 ) (sqlc.User, string, error) {
 	encryptPassword := sqlc.FindUserByEmailAndPasswordParams{
 		Email:    userDTO.Email,
