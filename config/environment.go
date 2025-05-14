@@ -14,7 +14,7 @@ type Envirounment struct {
 	DbPort     int
 	DbServer   string
 	DbUser     string
-	ServerPort int
+	PORT       int
 	CorsOrigin string
 }
 
@@ -33,7 +33,7 @@ func newEnvirounment() *Envirounment {
 		DbPort:     getEnvirounmentVariableAsInt("DB_PORT"),
 		DbServer:   os.Getenv("DB_SERVER"),
 		DbUser:     os.Getenv("DB_USER"),
-		ServerPort: getEnvirounmentVariableAsInt("SERVER_PORT"),
+		PORT:       getEnvirounmentVariableAsInt("PORT"),
 		CorsOrigin: os.Getenv("CORS_ORIGIN"),
 	}
 }

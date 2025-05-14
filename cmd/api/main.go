@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/Giovani-Coelho/Doti-API/config"
@@ -10,10 +9,9 @@ import (
 	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence"
 )
 
-func main() {
-	// corsOrigin := config.Env.CorsOrigin
-	serverPort := config.Env.ServerPort
+var PORT = config.Env.PORT
 
+func main() {
 	conn, err := database.NewPostgresDB()
 
 	if err != nil {
@@ -24,12 +22,10 @@ func main() {
 
 	router := server.Routes(conn)
 
-	fmt.Printf("Server is running on port :%d", serverPort)
+	fmt.Printf("Server is running on port :%d", PORT)
 
-	log.Fatal(
-		http.ListenAndServe(
-			fmt.Sprintf(":%d", serverPort),
-			router,
-		),
+	http.ListenAndServe(
+		fmt.Sprintf(":%d", PORT),
+		router,
 	)
 }
