@@ -3,7 +3,7 @@ package authServices
 import (
 	"context"
 
-	authDTO "github.com/Giovani-Coelho/Doti-API/src/application/auth/dto"
+	authDTO "github.com/Giovani-Coelho/Doti-API/src/core/auth/dto"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"

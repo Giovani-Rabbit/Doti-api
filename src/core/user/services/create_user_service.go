@@ -3,7 +3,7 @@ package userServices
 import (
 	"context"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/core/user/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 

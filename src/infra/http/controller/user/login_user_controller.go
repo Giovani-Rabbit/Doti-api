@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	authDTO "github.com/Giovani-Coelho/Doti-API/src/application/auth/dto"
+	authDTO "github.com/Giovani-Coelho/Doti-API/src/core/auth/dto"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"github.com/gofrs/uuid"
 )
@@ -63,6 +63,4 @@ func (uc *UserControllers) LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Authorization", token)
 	w.WriteHeader(201)
 	w.Write(res)
-
-	return
 }

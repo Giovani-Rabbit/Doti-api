@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/application/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/core/user/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
@@ -23,7 +23,9 @@ func (uc *UserControllers) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("Account Created"))
 }
 
 func decodeJSONBody(_ http.ResponseWriter, r *http.Request, dst interface{}) error {

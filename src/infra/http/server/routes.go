@@ -3,10 +3,11 @@ package server
 import (
 	"database/sql"
 
-	authServices "github.com/Giovani-Coelho/Doti-API/src/application/auth/services"
-	userServices "github.com/Giovani-Coelho/Doti-API/src/application/user/services"
+	authServices "github.com/Giovani-Coelho/Doti-API/src/core/auth/services"
+	userServices "github.com/Giovani-Coelho/Doti-API/src/core/user/services"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/database/repository"
 	userController "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/http/middleware"
 	"github.com/gorilla/mux"
 )
 
@@ -23,8 +24,10 @@ func Routes(DB *sql.DB) *mux.Router {
 	// Controller
 	userController := userController.NewUserControllers(userServices, authServices)
 
-	router.HandleFunc("/account", userController.CreateUser).Methods("POST")
-	router.HandleFunc("/login", userController.LoginUser).Methods("POST")
+	router.Use(middleware.CORSMiddleware)
+
+	router.HandleFunc("/account", userController.CreateUser)
+	router.HandleFunc("/login", userController.LoginUser)
 
 	return router
 }
