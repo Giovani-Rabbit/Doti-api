@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Giovani-Coelho/Doti-API/config"
+	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/http/server"
 	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence"
 )
@@ -12,6 +13,7 @@ import (
 var PORT = config.Env.PORT
 
 func main() {
+	logger.Info("About to start application")
 	conn, err := database.NewPostgresDB()
 
 	if err != nil {
