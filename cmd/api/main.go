@@ -14,9 +14,12 @@ var PORT = config.Env.PORT
 
 func main() {
 	logger.Info("About to start application")
+
+	logger.Info("Init the database")
 	conn, err := database.NewPostgresDB()
 
 	if err != nil {
+		logger.Info("Error initializing database")
 		panic(err)
 	}
 
