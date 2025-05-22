@@ -1,7 +1,6 @@
 package userController
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 
@@ -17,11 +16,11 @@ func (uc *UserControllers) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx := context.Background()
-	if err := uc.UserServices.CreateUser(ctx, user); err != nil {
-		handleError(w, err)
-		return
-	}
+	// ctx := context.Background()
+	// if err := uc.UserServices.CreateUser(ctx, user); err != nil {
+	// 	handleError(w, err)
+	// 	return
+	// }
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

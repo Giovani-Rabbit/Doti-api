@@ -11,7 +11,7 @@ import (
 
 func TestUserRepository_CreateAndCheck(t *testing.T) {
 	mockRepo := &mocks.MockUserRepository{}
-	userService := userServices.NewUserServices(mockRepo)
+	createUser := userServices.NewCreateUserService(mockRepo)
 
 	t.Run("Create new user successfully", func(t *testing.T) {
 		user := userDTO.CreateUserDTO{
@@ -32,7 +32,7 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 			return nil
 		}
 
-		err := userService.CreateUser(context.Background(), user)
+		err := createUser.Execute(context.Background(), user)
 
 		if err != nil {
 			t.Fatalf("expected no error, but we got: %v", err)
@@ -52,7 +52,7 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 			return true, nil
 		}
 
-		err := userService.CreateUser(context.Background(), userDTO)
+		err := createUser.Execute(context.Background(), userDTO)
 
 		if err == nil {
 			t.Fatalf("expected: the user already exists. But we got: %v", err)
