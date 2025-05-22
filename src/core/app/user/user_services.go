@@ -13,7 +13,6 @@ type UserServices struct {
 }
 
 type IUserServices interface {
-	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
 	findUserByEmailAndPassword(ctx context.Context, email string, password string) (sqlc.User, error)
 }
 

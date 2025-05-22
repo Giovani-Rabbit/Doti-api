@@ -26,7 +26,7 @@ func NewCreateUserService(
 	}
 }
 
-func (cu *CreateUserService) Execute(
+func (us *CreateUserService) Execute(
 	ctx context.Context,
 	userDTO userDTO.CreateUserDTO,
 ) error {
@@ -34,7 +34,7 @@ func (cu *CreateUserService) Execute(
 		zap.String("journey", "createUser"),
 	)
 
-	userAlreadyExists, _ := cu.UserRepository.CheckUserExists(ctx, userDTO.Email)
+	userAlreadyExists, _ := us.UserRepository.CheckUserExists(ctx, userDTO.Email)
 
 	if userAlreadyExists {
 		return rest_err.NewBadRequestError(
@@ -42,7 +42,7 @@ func (cu *CreateUserService) Execute(
 		)
 	}
 
-	err := cu.UserRepository.Create(ctx, userDTO)
+	err := us.UserRepository.Create(ctx, userDTO)
 
 	if err != nil {
 		return rest_err.NewInternalServerError(
