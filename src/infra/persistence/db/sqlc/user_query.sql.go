@@ -7,6 +7,7 @@ package sqlc
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -27,15 +28,16 @@ func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, erro
 }
 
 const createUser = `-- name: CreateUser :exec
-INSERT INTO users (ID, Email, Name, Password)
-VALUES ($1, $2, $3, $4)
+INSERT INTO users (ID, Email, Name, Password, Created_at)
+VALUES ($1, $2, $3, $4, $5)
 `
 
 type CreateUserParams struct {
-	ID       uuid.UUID `json:"id"`
-	Email    string    `json:"email"`
-	Name     string    `json:"name"`
-	Password string    `json:"password"`
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	Name      string    `json:"name"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
@@ -44,6 +46,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
 		arg.Email,
 		arg.Name,
 		arg.Password,
+		arg.CreatedAt,
 	)
 	return err
 }
