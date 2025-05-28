@@ -3,14 +3,24 @@ package mocks
 import (
 	"context"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
+	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 )
 
 type MockUserRepository struct {
-	MockCreate                     func(ctx context.Context, userDto userDTO.CreateUserDTO) error
-	MockCheckUserExists            func(ctx context.Context, email string) (bool, error)
-	MockFindUserByEmail            func(ctx context.Context, email string) (sqlc.User, error)
+	MockCreate func(
+		ctx context.Context,
+		userDomain userDomain.IUserDomain,
+	) error
+
+	MockCheckUserExists func(
+		ctx context.Context, email string,
+	) (bool, error)
+
+	MockFindUserByEmail func(
+		ctx context.Context, email string,
+	) (sqlc.User, error)
+
 	MockFindUserByEmailAndPassword func(
 		ctx context.Context,
 		args sqlc.FindUserByEmailAndPasswordParams,
@@ -19,10 +29,10 @@ type MockUserRepository struct {
 
 func (m *MockUserRepository) Create(
 	ctx context.Context,
-	userDto userDTO.CreateUserDTO,
+	userDomain userDomain.IUserDomain,
 ) error {
 	if m.MockCreate != nil {
-		return m.MockCreate(ctx, userDto)
+		return m.MockCreate(ctx, userDomain)
 	}
 
 	return nil

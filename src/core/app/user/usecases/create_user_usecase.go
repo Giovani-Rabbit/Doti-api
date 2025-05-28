@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
+	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
@@ -34,7 +35,9 @@ func (us *CreateUserUseCase) Execute(
 		zap.String("journey", "createUser"),
 	)
 
-	userAlreadyExists, _ := us.UserRepository.CheckUserExists(ctx, userDTO.Email)
+	userAlreadyExists, _ := us.UserRepository.CheckUserExists(
+		ctx, userDTO.Email,
+	)
 
 	if userAlreadyExists {
 		return rest_err.NewBadRequestError(
@@ -42,7 +45,13 @@ func (us *CreateUserUseCase) Execute(
 		)
 	}
 
-	err := us.UserRepository.Create(ctx, userDTO)
+	userDomain := userDomain.NewUserDomain(
+		userDTO.Name,
+		userDTO.Email,
+		userDTO.Password,
+	)
+
+	err := us.UserRepository.Create(ctx, userDomain)
 
 	if err != nil {
 		return rest_err.NewInternalServerError(

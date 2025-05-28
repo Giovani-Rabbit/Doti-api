@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
+	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
-	"github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/encrypt"
 	"github.com/google/uuid"
 )
 
@@ -23,7 +23,7 @@ type UserRepository struct {
 }
 
 type IUserRepository interface {
-	Create(ctx context.Context, userDto userDTO.CreateUserDTO) error
+	Create(ctx context.Context, userDomain userDomain.IUserDomain) error
 	CheckUserExists(ctx context.Context, email string) (bool, error)
 	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
 	FindUserByEmailAndPassword(
@@ -32,15 +32,17 @@ type IUserRepository interface {
 	) (sqlc.User, error)
 }
 
-func (ur *UserRepository) Create(ctx context.Context, userDTO userDTO.CreateUserDTO) error {
-	userEntity := sqlc.CreateUserParams{
-		ID:       uuid.New(),
-		Name:     userDTO.Name,
-		Email:    userDTO.Email,
-		Password: encrypt.EncryptPassword(userDTO.Password),
-	}
-
-	err := ur.Queries.CreateUser(ctx, userEntity)
+func (ur *UserRepository) Create(
+	ctx context.Context,
+	userDomain userDomain.IUserDomain,
+) error {
+	err := ur.Queries.CreateUser(ctx, sqlc.CreateUserParams{
+		ID:        uuid.New(),
+		Name:      userDomain.GetName(),
+		Email:     userDomain.GetEmail(),
+		Password:  userDomain.GetPassword(),
+		CreatedAt: time.Now().UTC(),
+	})
 
 	if err != nil {
 		return err

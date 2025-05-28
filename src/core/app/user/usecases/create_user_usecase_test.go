@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
 )
@@ -27,7 +28,8 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 		}
 
 		mockRepo.MockCreate = func(
-			ctx context.Context, user userDTO.CreateUserDTO,
+			ctx context.Context,
+			user userDomain.IUserDomain,
 		) error {
 			return nil
 		}
