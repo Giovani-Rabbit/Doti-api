@@ -26,7 +26,9 @@ func main() {
 
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://src/infra/persistence/db/migrations/", // migrations path
-		"postgres", driver)
+		"postgres",
+		driver,
+	)
 
 	if err != nil {
 		log.Fatal(err)
