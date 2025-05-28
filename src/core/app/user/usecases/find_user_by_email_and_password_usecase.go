@@ -1,4 +1,4 @@
-package userServices
+package userUseCase
 
 import (
 	"context"
@@ -9,23 +9,23 @@ import (
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
-type FindUserByEmailAndPasswordService struct {
+type FindUserByEmailAndPasswordUseCase struct {
 	UserRepository repository.IUserRepository
 }
 
-type IFindUserByEmailAndPasswordService interface {
+type IFindUserByEmailAndPasswordUseCase interface {
 	Execute(ctx context.Context, email string, password string) (sqlc.User, error)
 }
 
-func NewFindUserByEmailAndPasswordService(
+func NewFindUserByEmailAndPasswordUseCase(
 	userRepository repository.IUserRepository,
-) IFindUserByEmailAndPasswordService {
-	return &FindUserByEmailAndPasswordService{
+) IFindUserByEmailAndPasswordUseCase {
+	return &FindUserByEmailAndPasswordUseCase{
 		UserRepository: userRepository,
 	}
 }
 
-func (us *FindUserByEmailAndPasswordService) Execute(
+func (us *FindUserByEmailAndPasswordUseCase) Execute(
 	ctx context.Context,
 	email string,
 	password string,

@@ -1,4 +1,4 @@
-package userServices
+package userUseCase
 
 import (
 	"context"
@@ -10,27 +10,27 @@ import (
 	"go.uber.org/zap"
 )
 
-type CreateUserService struct {
+type CreateUserUseCase struct {
 	UserRepository repository.IUserRepository
 }
 
-type ICreateUserService interface {
+type ICreateUserUseCase interface {
 	Execute(ctx context.Context, userDTO userDTO.CreateUserDTO) error
 }
 
-func NewCreateUserService(
+func NewCreateUserUseCase(
 	userRepository repository.IUserRepository,
-) ICreateUserService {
-	return &CreateUserService{
+) ICreateUserUseCase {
+	return &CreateUserUseCase{
 		UserRepository: userRepository,
 	}
 }
 
-func (us *CreateUserService) Execute(
+func (us *CreateUserUseCase) Execute(
 	ctx context.Context,
 	userDTO userDTO.CreateUserDTO,
 ) error {
-	logger.Info("Init CreateUser service",
+	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)
 

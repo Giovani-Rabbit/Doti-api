@@ -1,17 +1,17 @@
-package userServices_test
+package userUseCase_test
 
 import (
 	"context"
 	"testing"
 
-	userServices "github.com/Giovani-Coelho/Doti-API/src/core/app/user"
+	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
 )
 
 func TestUserRepository_CreateAndCheck(t *testing.T) {
 	mockRepo := &mocks.MockUserRepository{}
-	createUser := userServices.NewCreateUserService(mockRepo)
+	createUser := userUseCase.NewCreateUserUseCase(mockRepo)
 
 	t.Run("Create new user successfully", func(t *testing.T) {
 		user := userDTO.CreateUserDTO{
