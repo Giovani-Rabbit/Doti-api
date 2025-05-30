@@ -7,7 +7,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config"
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/http/server"
-	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence"
+	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db"
 )
 
 var PORT = config.Env.PORT
