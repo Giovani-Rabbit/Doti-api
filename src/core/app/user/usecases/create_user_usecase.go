@@ -2,6 +2,7 @@ package userUseCase
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
@@ -34,6 +35,8 @@ func (us *CreateUserUseCase) Execute(
 	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)
+
+	fmt.Print(userDTO.Email)
 
 	userAlreadyExists, _ := us.UserRepository.CheckUserExists(
 		ctx, userDTO.Email,

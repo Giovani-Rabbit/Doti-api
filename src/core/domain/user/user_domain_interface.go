@@ -8,7 +8,7 @@ type IUserDomain interface {
 }
 
 func NewUserDomain(
-	email string, name string, password string,
+	name string, email string, password string,
 ) IUserDomain {
 	return &userDomain{
 		name:     name,
