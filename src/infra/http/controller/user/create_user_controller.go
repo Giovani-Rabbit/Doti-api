@@ -5,28 +5,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
-type CreateUserController struct {
-	CreateUserUseCase userUseCase.ICreateUserUseCase
-}
-
-type ICreateUserController interface {
-	Execute(w http.ResponseWriter, r *http.Request)
-}
-
-func NewCreateUserController(
-	createUserUseCase userUseCase.ICreateUserUseCase,
-) ICreateUserController {
-	return &CreateUserController{
-		createUserUseCase,
-	}
-}
-
-func (uc *CreateUserController) Execute(w http.ResponseWriter, r *http.Request) {
+func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user userDTO.CreateUserDTO
 
 	if err := decodeJSONBody(w, r, &user); err != nil {

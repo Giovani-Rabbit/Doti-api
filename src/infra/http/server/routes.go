@@ -4,24 +4,17 @@ import (
 	"database/sql"
 	"net/http"
 
-	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
-	userController "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/container"
 )
 
 func Routes(DB *sql.DB) *http.ServeMux {
 	router := http.NewServeMux()
 
-	// Repository
-	userRepository := repository.NewUserRepository(DB)
+	appContainer := container.NewContainer(DB)
 
-	// UseCase
-	createUserUseCase := userUseCase.NewCreateUserUseCase(userRepository)
+	userController := appContainer.NewUserContainer()
 
-	// Controller
-	createUserController := userController.NewCreateUserController(createUserUseCase)
-
-	router.HandleFunc("POST /users/", createUserController.Execute)
+	router.HandleFunc("POST /users/", userController.CreateUser)
 
 	return router
 }
