@@ -50,13 +50,13 @@ func (us *CreateUserUseCase) Execute(
 		)
 	}
 
-	userDomain := userDomain.NewCreateUserDomain(
+	createUserDomain := userDomain.NewCreateUserDomain(
 		userDTO.Name,
 		userDTO.Email,
 		userDTO.Password,
 	)
 
-	userDomain, err := us.UserRepository.Create(ctx, userDomain)
+	user, err := us.UserRepository.Create(ctx, createUserDomain)
 
 	if err != nil {
 		logger.Error(
@@ -71,7 +71,7 @@ func (us *CreateUserUseCase) Execute(
 
 	logger.Info(
 		"CreateUser executed successfully",
-		zap.String("userId", userDomain.GetID()),
+		zap.String("userId", user.GetID()),
 		zap.String("journey", "createUser"),
 	)
 
