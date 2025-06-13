@@ -27,9 +27,10 @@ func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, erro
 	return exists, err
 }
 
-const createUser = `-- name: CreateUser :exec
+const createUser = `-- name: CreateUser :one
 INSERT INTO users (ID, Email, Name, Password, Created_at)
 VALUES ($1, $2, $3, $4, $5)
+RETURNING ID, Email, Name, Created_at
 `
 
 type CreateUserParams struct {
@@ -40,15 +41,29 @@ type CreateUserParams struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) error {
-	_, err := q.db.ExecContext(ctx, createUser,
+type CreateUserRow struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
+	row := q.db.QueryRowContext(ctx, createUser,
 		arg.ID,
 		arg.Email,
 		arg.Name,
 		arg.Password,
 		arg.CreatedAt,
 	)
-	return err
+	var i CreateUserRow
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Name,
+		&i.CreatedAt,
+	)
+	return i, err
 }
 
 const findUserByEmail = `-- name: FindUserByEmail :one

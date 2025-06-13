@@ -7,6 +7,7 @@ import (
 
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
+	userMapper "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/mapper/user"
 	"github.com/google/uuid"
 )
 
@@ -23,7 +24,7 @@ type UserRepository struct {
 }
 
 type IUserRepository interface {
-	Create(ctx context.Context, userDomain userDomain.IUserDomain) error
+	Create(ctx context.Context, user userDomain.IUserDomain) (userDomain.IUserDomain, error)
 	CheckUserExists(ctx context.Context, email string) (bool, error)
 	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
 	FindUserByEmailAndPassword(
@@ -34,24 +35,29 @@ type IUserRepository interface {
 
 func (ur *UserRepository) Create(
 	ctx context.Context,
-	userDomain userDomain.IUserDomain,
-) error {
-	err := ur.Queries.CreateUser(ctx, sqlc.CreateUserParams{
-		ID:        uuid.New(),
-		Name:      userDomain.GetName(),
-		Email:     userDomain.GetEmail(),
-		Password:  userDomain.GetPassword(),
-		CreatedAt: time.Now().UTC(),
-	})
+	domainUser userDomain.IUserDomain,
+) (userDomain.IUserDomain, error) {
+	userEntity, err := ur.Queries.CreateUser(ctx,
+		sqlc.CreateUserParams{
+			ID:        uuid.New(),
+			Name:      domainUser.GetName(),
+			Email:     domainUser.GetEmail(),
+			Password:  domainUser.GetPassword(),
+			CreatedAt: time.Now().UTC(),
+		},
+	)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return userMapper.FromCreateUserRow(&userEntity), nil
 }
 
-func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bool, error) {
+func (ur *UserRepository) CheckUserExists(
+	ctx context.Context,
+	email string,
+) (bool, error) {
 	exists, err := ur.Queries.CheckUserExists(ctx, email)
 
 	if err != nil {
@@ -61,7 +67,10 @@ func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bo
 	return exists, nil
 }
 
-func (ur *UserRepository) FindUserByEmail(ctx context.Context, email string) (sqlc.User, error) {
+func (ur *UserRepository) FindUserByEmail(
+	ctx context.Context,
+	email string,
+) (sqlc.User, error) {
 	user, err := ur.Queries.FindUserByEmail(ctx, email)
 
 	if err != nil {

@@ -29,13 +29,13 @@ type MockUserRepository struct {
 
 func (m *MockUserRepository) Create(
 	ctx context.Context,
-	userDomain userDomain.IUserDomain,
-) error {
+	domainUser userDomain.IUserDomain,
+) (userDomain.IUserDomain, error) {
 	if m.MockCreate != nil {
-		return m.MockCreate(ctx, userDomain)
+		return nil, m.MockCreate(ctx, domainUser)
 	}
 
-	return nil
+	return nil, nil
 }
 
 func (m *MockUserRepository) CheckUserExists(

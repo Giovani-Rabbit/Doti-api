@@ -40,24 +40,40 @@ func (us *CreateUserUseCase) Execute(
 	)
 
 	if userAlreadyExists {
+		logger.Error(
+			"Error: User already exists", nil,
+			zap.String("journey", "createUser"),
+		)
+
 		return rest_err.NewBadRequestError(
 			"User already exists",
 		)
 	}
 
-	userDomain := userDomain.NewUserDomain(
+	userDomain := userDomain.NewCreateUserDomain(
 		userDTO.Name,
 		userDTO.Email,
 		userDTO.Password,
 	)
 
-	err := us.UserRepository.Create(ctx, userDomain)
+	userDomain, err := us.UserRepository.Create(ctx, userDomain)
 
 	if err != nil {
+		logger.Error(
+			"Error in repository", nil,
+			zap.String("journey", "createUser"),
+		)
+
 		return rest_err.NewInternalServerError(
 			"Internal error when saving user",
 		)
 	}
+
+	logger.Info(
+		"CreateUser executed successfully",
+		zap.String("userId", userDomain.GetID()),
+		zap.String("journey", "createUser"),
+	)
 
 	return nil
 }
