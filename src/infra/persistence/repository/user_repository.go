@@ -44,6 +44,7 @@ func (ur *UserRepository) Create(
 			Email:     domainUser.GetEmail(),
 			Password:  domainUser.GetPassword(),
 			CreatedAt: time.Now().UTC(),
+			UpdatedAt: time.Now().UTC(),
 		},
 	)
 

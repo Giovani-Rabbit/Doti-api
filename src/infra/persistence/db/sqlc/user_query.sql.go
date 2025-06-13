@@ -28,9 +28,9 @@ func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, erro
 }
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (ID, Email, Name, Password, Created_at)
-VALUES ($1, $2, $3, $4, $5)
-RETURNING ID, Email, Name, Created_at
+INSERT INTO users (ID, Email, Name, Password, Created_at, Updated_at)
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING ID, Email, Name, Created_at, Updated_at
 `
 
 type CreateUserParams struct {
@@ -39,6 +39,7 @@ type CreateUserParams struct {
 	Name      string    `json:"name"`
 	Password  string    `json:"password"`
 	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type CreateUserRow struct {
@@ -46,6 +47,7 @@ type CreateUserRow struct {
 	Email     string    `json:"email"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
@@ -55,6 +57,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateU
 		arg.Name,
 		arg.Password,
 		arg.CreatedAt,
+		arg.UpdatedAt,
 	)
 	var i CreateUserRow
 	err := row.Scan(
@@ -62,6 +65,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateU
 		&i.Email,
 		&i.Name,
 		&i.CreatedAt,
+		&i.UpdatedAt,
 	)
 	return i, err
 }

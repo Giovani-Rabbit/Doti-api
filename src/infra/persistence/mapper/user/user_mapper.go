@@ -14,5 +14,6 @@ func FromCreateUserRow(
 		user.Email,
 		"",
 		user.CreatedAt,
+		user.UpdatedAt,
 	)
 }
