@@ -6,7 +6,7 @@ import (
 
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
 )
 

@@ -1,4 +1,4 @@
-package userController
+package userHandler
 
 import (
 	"net/http"
@@ -6,18 +6,18 @@ import (
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 )
 
-type UserController struct {
+type UserHandler struct {
 	CreateUserUseCase userUseCase.ICreateUserUseCase
 }
 
-type IUserController interface {
+type IUserHandler interface {
 	CreateUser(w http.ResponseWriter, r *http.Request)
 }
 
-func NewUserController(
+func NewUserHandler(
 	createUserUseCase userUseCase.ICreateUserUseCase,
-) *UserController {
-	return &UserController{
+) *UserHandler {
+	return &UserHandler{
 		CreateUserUseCase: createUserUseCase,
 	}
 }

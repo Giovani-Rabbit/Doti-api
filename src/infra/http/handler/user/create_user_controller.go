@@ -1,15 +1,15 @@
-package userController
+package userHandler
 
 import (
 	"context"
 	"encoding/json"
 	"net/http"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/controller/user/dtos"
+	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
-func (uc *UserController) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user userDTO.CreateUserDTO
 
 	if err := decodeJSONBody(w, r, &user); err != nil {
