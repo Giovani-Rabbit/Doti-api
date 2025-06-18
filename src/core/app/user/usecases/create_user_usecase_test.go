@@ -7,34 +7,31 @@ import (
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
-	mocks "github.com/Giovani-Coelho/Doti-API/test/mocks/user"
+	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
 )
 
-func TestUserRepository_CreateAndCheck(t *testing.T) {
-	mockRepo := &mocks.MockUserRepository{}
+func TestCreateUserUseCase(t *testing.T) {
+	mockRepo := &mock_repository.MockUserRepository{
+		CreateFn: func(ctx context.Context, user userDomain.IUserDomain) (userDomain.IUserDomain, error) {
+			return user, nil
+		},
+		CheckUserExistsFn: func(ctx context.Context, email string) (bool, error) {
+			return false, nil
+		},
+	}
+
 	createUser := userUseCase.NewCreateUserUseCase(mockRepo)
 
+	ctx := context.Background()
+
+	user := userDTO.CreateUserDTO{
+		Name:     "New User",
+		Email:    "newuser@example.com",
+		Password: "password123",
+	}
+
 	t.Run("Create new user successfully", func(t *testing.T) {
-		user := userDTO.CreateUserDTO{
-			Name:     "New User",
-			Email:    "newuser@example.com",
-			Password: "password123",
-		}
-
-		mockRepo.MockCheckUserExists = func(
-			ctx context.Context, email string,
-		) (bool, error) {
-			return false, nil
-		}
-
-		mockRepo.MockCreate = func(
-			ctx context.Context,
-			user userDomain.IUserDomain,
-		) error {
-			return nil
-		}
-
-		err := createUser.Execute(context.Background(), user)
+		err := createUser.Execute(ctx, user)
 
 		if err != nil {
 			t.Fatalf("expected no error, but we got: %v", err)
@@ -42,19 +39,13 @@ func TestUserRepository_CreateAndCheck(t *testing.T) {
 	})
 
 	t.Run("User already exists", func(t *testing.T) {
-		userDTO := userDTO.CreateUserDTO{
-			Name:     "Existing User",
-			Email:    "existinguser@example.com",
-			Password: "password123",
-		}
-
-		mockRepo.MockCheckUserExists = func(
+		mockRepo.CheckUserExistsFn = func(
 			ctx context.Context, email string,
 		) (bool, error) {
 			return true, nil
 		}
 
-		err := createUser.Execute(context.Background(), userDTO)
+		err := createUser.Execute(ctx, user)
 
 		if err == nil {
 			t.Fatalf("expected: the user already exists. But we got: %v", err)
