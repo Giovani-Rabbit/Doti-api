@@ -28,8 +28,8 @@ func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, erro
 }
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (ID, Email, Name, Password, Created_at, Updated_at)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO users (ID, Email, Name, Password, Is_admin, Created_at, Updated_at)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING ID, Email, Name, Created_at, Updated_at
 `
 
@@ -38,6 +38,7 @@ type CreateUserParams struct {
 	Email     string    `json:"email"`
 	Name      string    `json:"name"`
 	Password  string    `json:"password"`
+	IsAdmin   bool      `json:"is_admin"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
@@ -56,6 +57,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateU
 		arg.Email,
 		arg.Name,
 		arg.Password,
+		arg.IsAdmin,
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
@@ -71,7 +73,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateU
 }
 
 const findUserByEmail = `-- name: FindUserByEmail :one
-SELECT id, email, name, password, created_at, updated_at FROM users WHERE Email = $1 LIMIT 1
+SELECT id, email, name, password, is_admin, created_at, updated_at FROM users WHERE Email = $1 LIMIT 1
 `
 
 func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, error) {
@@ -82,6 +84,7 @@ func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, erro
 		&i.Email,
 		&i.Name,
 		&i.Password,
+		&i.IsAdmin,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -89,7 +92,7 @@ func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, erro
 }
 
 const findUserByEmailAndPassword = `-- name: FindUserByEmailAndPassword :one
-SELECT id, email, name, password, created_at, updated_at FROM users WHERE Email = $1 AND Password = $2 LIMIT 1
+SELECT id, email, name, password, is_admin, created_at, updated_at FROM users WHERE Email = $1 AND Password = $2 LIMIT 1
 `
 
 type FindUserByEmailAndPasswordParams struct {
@@ -105,6 +108,7 @@ func (q *Queries) FindUserByEmailAndPassword(ctx context.Context, arg FindUserBy
 		&i.Email,
 		&i.Name,
 		&i.Password,
+		&i.IsAdmin,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

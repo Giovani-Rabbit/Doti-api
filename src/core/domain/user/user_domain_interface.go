@@ -7,6 +7,7 @@ type IUserDomain interface {
 	GetName() string
 	GetEmail() string
 	GetPassword() string
+	GetIsAdmin() bool
 	GetCreateAt() time.Time
 	GetUpdatedAt() time.Time
 }

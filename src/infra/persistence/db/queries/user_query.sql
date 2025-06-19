@@ -1,6 +1,6 @@
 -- name: CreateUser :one
-INSERT INTO users (ID, Email, Name, Password, Created_at, Updated_at)
-VALUES ($1, $2, $3, $4, $5, $6)
+INSERT INTO users (ID, Email, Name, Password, Is_admin, Created_at, Updated_at)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
 RETURNING ID, Email, Name, Created_at, Updated_at;
 
 -- name: CheckUserExists :one
