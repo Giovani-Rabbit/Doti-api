@@ -37,7 +37,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func decodeJSONBody(_ http.ResponseWriter, r *http.Request, dst interface{}) error {
 	if err := json.NewDecoder(r.Body).Decode(dst); err != nil {
-		return rest_err.NewBadRequestError("Invalid JSON body")
+		return rest_err.NewBadRequestError("UNGW", "Invalid JSON body")
 	}
 
 	return nil

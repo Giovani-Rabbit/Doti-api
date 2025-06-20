@@ -4,6 +4,7 @@ import "net/http"
 
 type RestErr struct {
 	Message string   `json:"message" example:"error trying to process request"`
+	Status  string   `json:"status" example:"USER_ALREADY_EXISTS"`
 	Err     string   `json:"error" example:"internal_server_error"`
 	Code    int      `json:"code" example:"500"`
 	Causes  []Causes `json:"causes"`
@@ -18,9 +19,10 @@ func (r *RestErr) Error() string {
 	return r.Message
 }
 
-func NewBadRequestError(message string) *RestErr {
+func NewBadRequestError(status string, message string) *RestErr {
 	return &RestErr{
 		Message: message,
+		Status:  status,
 		Err:     "bad_request",
 		Code:    http.StatusBadRequest,
 	}

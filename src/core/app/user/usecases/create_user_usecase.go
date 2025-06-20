@@ -45,13 +45,7 @@ func (us *CreateUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return rest_err.NewBadRequestValidationError(
-			"User already exists",
-			[]rest_err.Causes{{
-				Field:   "Email",
-				Message: "An User with this e-mail already exists",
-			}},
-		)
+		return userDomain.ErrUserAlreadyExists()
 	}
 
 	createUserDomain := userDomain.NewCreateUserDomain(
@@ -69,7 +63,7 @@ func (us *CreateUserUseCase) Execute(
 		)
 
 		return rest_err.NewInternalServerError(
-			"Internal error when saving user",
+			"Internal error saving user",
 		)
 	}
 
