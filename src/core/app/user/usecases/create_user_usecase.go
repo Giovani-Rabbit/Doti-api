@@ -45,8 +45,12 @@ func (us *CreateUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return rest_err.NewBadRequestError(
+		return rest_err.NewBadRequestValidationError(
 			"User already exists",
+			[]rest_err.Causes{{
+				Field:   "Email",
+				Message: "An User with this e-mail already exists",
+			}},
 		)
 	}
 
