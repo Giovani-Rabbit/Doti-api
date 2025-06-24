@@ -1,12 +1,11 @@
-package userHandler
+package userhdl
 
 import (
 	"context"
 	"encoding/json"
 	"net/http"
 
-	user_request "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos/request"
-	user_response "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos/response"
+	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
@@ -21,7 +20,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user user_request.CreateUserDTO
+	var user userdto.CreateUserDTO
 	if err := decodeJSONBody(w, r, &user); err != nil {
 		handleError(w, err)
 		return
@@ -37,7 +36,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user_response.NewUserCreatedResponse(res))
+	json.NewEncoder(w).Encode(userdto.NewUserCreatedResponse(res))
 }
 
 func decodeJSONBody(_ http.ResponseWriter, r *http.Request, dst interface{}) error {

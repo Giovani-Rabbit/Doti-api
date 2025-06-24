@@ -1,10 +1,16 @@
-package user_response
+package userdto
 
 import (
 	"time"
 
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 )
+
+type CreateUserDTO struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
 type UserCreatedResponse struct {
 	ID        string    `json:"id"`

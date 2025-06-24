@@ -6,7 +6,7 @@ import (
 
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	user_request "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos/request"
+	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
 )
 
@@ -24,7 +24,7 @@ func TestCreateUserUseCase(t *testing.T) {
 
 	ctx := context.Background()
 
-	user := user_request.CreateUserDTO{
+	user := userdto.CreateUserDTO{
 		Name:     "New User",
 		Email:    "newuser@example.com",
 		Password: "password123",

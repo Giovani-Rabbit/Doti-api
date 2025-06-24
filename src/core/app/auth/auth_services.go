@@ -3,7 +3,7 @@ package authServices
 import (
 	"context"
 
-	user_request "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos/request"
+	user_request "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 )
