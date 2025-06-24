@@ -48,7 +48,7 @@ func VerifyToken(tokenValue string) (*sqlc.User, error) {
 				return []byte(secret), nil
 			}
 
-			return nil, rest_err.NewBadRequestError("invalid token")
+			return nil, rest_err.NewBadRequestError("INVALID_TOKEN", "invalid token")
 		},
 	)
 

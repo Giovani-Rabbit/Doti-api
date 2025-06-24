@@ -1,4 +1,4 @@
-package userDTO
+package user_request
 
 type CreateUserDTO struct {
 	Name     string `json:"name"`

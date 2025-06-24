@@ -1,4 +1,4 @@
-package userDTO
+package user_request
 
 type SignInDTO struct {
 	Email    string `json:"email"`

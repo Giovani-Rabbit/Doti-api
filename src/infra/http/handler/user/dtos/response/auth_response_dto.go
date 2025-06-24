@@ -1,4 +1,4 @@
-package userDTO
+package user_response
 
 import "github.com/gofrs/uuid"
 

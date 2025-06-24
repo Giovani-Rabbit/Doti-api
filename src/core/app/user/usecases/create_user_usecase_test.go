@@ -6,7 +6,7 @@ import (
 
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
+	user_request "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos/request"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
 )
 
@@ -24,14 +24,14 @@ func TestCreateUserUseCase(t *testing.T) {
 
 	ctx := context.Background()
 
-	user := userDTO.CreateUserDTO{
+	user := user_request.CreateUserDTO{
 		Name:     "New User",
 		Email:    "newuser@example.com",
 		Password: "password123",
 	}
 
 	t.Run("Create new user successfully", func(t *testing.T) {
-		err := createUser.Execute(ctx, user)
+		_, err := createUser.Execute(ctx, user)
 
 		if err != nil {
 			t.Fatalf("expected no error, but we got: %v", err)
@@ -45,7 +45,7 @@ func TestCreateUserUseCase(t *testing.T) {
 			return true, nil
 		}
 
-		err := createUser.Execute(ctx, user)
+		_, err := createUser.Execute(ctx, user)
 
 		if err == nil {
 			t.Fatalf("expected: the user already exists. But we got: %v", err)

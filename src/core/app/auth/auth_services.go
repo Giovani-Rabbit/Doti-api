@@ -3,7 +3,7 @@ package authServices
 import (
 	"context"
 
-	userDTO "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
+	user_request "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos/request"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 )
@@ -13,7 +13,7 @@ type AuthServices struct {
 }
 
 type IAuthServices interface {
-	LoginUser(ctx context.Context, userDTO userDTO.SignInDTO) (sqlc.User, string, error)
+	LoginUser(ctx context.Context, userDTO user_request.SignInDTO) (sqlc.User, string, error)
 }
 
 func NewAuthServices(
