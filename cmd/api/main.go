@@ -6,6 +6,7 @@ import (
 
 	"github.com/Giovani-Coelho/Doti-API/config"
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/http/middleware"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/http/server"
 	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db"
 )
@@ -29,7 +30,7 @@ func main() {
 
 	fmt.Printf("Server is running on port :%d", PORT)
 
-	routerWithCors := config.CorsMiddleware(router)
+	routerWithCors := middleware.CorsConfig(router)
 
 	http.ListenAndServe(
 		fmt.Sprintf(":%d", PORT),
