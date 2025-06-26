@@ -3,11 +3,13 @@ package auth
 import (
 	"context"
 
+	"github.com/Giovani-Coelho/Doti-API/config/logger"
+	authDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
-	"github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
-	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
+	authpkg "github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
+	"go.uber.org/zap"
 )
 
 type LoginUseCase struct {
@@ -30,23 +32,37 @@ func (lu *LoginUseCase) Execute(
 	ctx context.Context,
 	userDTO userdto.SignInDTO,
 ) (userDomain.IUserDomain, string, error) {
+	logger.Info("Init Login UseCase",
+		zap.String("journey", "login"),
+	)
+
 	user, err := lu.UserRepository.FindUserByEmailAndPassword(ctx, userDTO)
 
 	if err != nil {
-		return nil, "", rest_err.NewBadRequestError(
-			"UNKNOWN",
-			"Invalid login credentials",
+		logger.Error(
+			"Error: Could not find user with those credentials", err,
+			zap.String("journey", "login"),
 		)
+
+		return nil, "", userDomain.ErrCouldNotFindUser()
 	}
 
-	token, err := auth.GenerateToken(user)
+	token, err := authpkg.GenerateToken(user)
 
 	if err != nil {
-		return nil, "", rest_err.NewBadRequestError(
-			"UNKNOWN",
-			"Error on generate Token",
+		logger.Error(
+			"Error: Could not generate token", err,
+			zap.String("journey", "login"),
 		)
+
+		return nil, "", authDomain.ErrGeneratingToken()
 	}
+
+	logger.Info(
+		"Login executed successfully",
+		zap.String("token:", token),
+		zap.String("journey", "login"),
+	)
 
 	return user, token, nil
 }
