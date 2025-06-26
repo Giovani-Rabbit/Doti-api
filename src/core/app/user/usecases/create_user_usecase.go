@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
-	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
@@ -16,7 +16,7 @@ type CreateUserUseCase struct {
 }
 
 type ICreateUserUseCase interface {
-	Execute(ctx context.Context, userDTO userdto.CreateUserDTO) (userDomain.IUserDomain, error)
+	Execute(ctx context.Context, userDTO userdto.CreateUserDTO) (user.IUserDomain, error)
 }
 
 func NewCreateUserUseCase(
@@ -30,7 +30,7 @@ func NewCreateUserUseCase(
 func (us *CreateUserUseCase) Execute(
 	ctx context.Context,
 	userDTO userdto.CreateUserDTO,
-) (userDomain.IUserDomain, error) {
+) (user.IUserDomain, error) {
 	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)
@@ -45,10 +45,10 @@ func (us *CreateUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, userDomain.ErrUserAlreadyExists()
+		return nil, user.ErrUserAlreadyExists()
 	}
 
-	createUserDomain := userDomain.NewCreateUserDomain(
+	createUserDomain := user.NewCreateUserDomain(
 		userDTO.Name,
 		userDTO.Email,
 		userDTO.Password,

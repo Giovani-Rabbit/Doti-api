@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"github.com/golang-jwt/jwt"
@@ -15,13 +16,13 @@ var (
 	JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 )
 
-func GenerateToken(user sqlc.User) (string, error) {
+func GenerateToken(user user.IUserDomain) (string, error) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	claims := jwt.MapClaims{
-		"id":    user.ID,
-		"email": user.Email,
-		"name":  user.Name,
+		"id":    user.GetID(),
+		"email": user.GetEmail(),
+		"name":  user.GetName(),
 		"exp":   time.Now().Add(time.Hour * 24).Unix(),
 	}
 

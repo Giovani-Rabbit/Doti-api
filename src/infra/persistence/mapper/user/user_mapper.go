@@ -17,3 +17,16 @@ func FromCreateUserRow(
 		user.UpdatedAt,
 	)
 }
+
+func FromUser(
+	user *sqlc.User,
+) (domain userDomain.IUserDomain) {
+	return userDomain.NewUserDomain(
+		user.ID.String(),
+		user.Name,
+		user.Email,
+		user.Password,
+		user.CreatedAt,
+		user.UpdatedAt,
+	)
+}

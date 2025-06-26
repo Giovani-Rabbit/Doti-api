@@ -4,22 +4,23 @@ import (
 	"context"
 	"errors"
 
-	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	user "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 )
 
 type MockUserRepository struct {
 	Users []sqlc.User
 
-	CreateFn                     func(ctx context.Context, user userDomain.IUserDomain) (userDomain.IUserDomain, error)
+	CreateFn                     func(ctx context.Context, user user.IUserDomain) (user.IUserDomain, error)
 	CheckUserExistsFn            func(ctx context.Context, email string) (bool, error)
-	FindUserByEmailFn            func(ctx context.Context, email string) (sqlc.User, error)
-	FindUserByEmailAndPasswordFn func(ctx context.Context, args sqlc.FindUserByEmailAndPasswordParams) (sqlc.User, error)
+	FindUserByEmailFn            func(ctx context.Context, email string) (user.IUserDomain, error)
+	FindUserByEmailAndPasswordFn func(ctx context.Context, args userdto.SignInDTO) (user.IUserDomain, error)
 }
 
 func (m *MockUserRepository) Create(
-	ctx context.Context, user userDomain.IUserDomain,
-) (userDomain.IUserDomain, error) {
+	ctx context.Context, user user.IUserDomain,
+) (user.IUserDomain, error) {
 	if m.CreateFn != nil {
 		return m.CreateFn(ctx, user)
 	}
@@ -39,20 +40,20 @@ func (m *MockUserRepository) CheckUserExists(
 
 func (m *MockUserRepository) FindUserByEmail(
 	ctx context.Context, email string,
-) (sqlc.User, error) {
+) (user.IUserDomain, error) {
 	if m.FindUserByEmailFn != nil {
 		return m.FindUserByEmailFn(ctx, email)
 	}
 
-	return sqlc.User{}, errors.New("FindUserByEmailFn not implemented")
+	return nil, errors.New("FindUserByEmailFn not implemented")
 }
 
 func (m *MockUserRepository) FindUserByEmailAndPassword(
-	ctx context.Context, args sqlc.FindUserByEmailAndPasswordParams,
-) (sqlc.User, error) {
+	ctx context.Context, args userdto.SignInDTO,
+) (user.IUserDomain, error) {
 	if m.FindUserByEmailAndPasswordFn != nil {
 		return m.FindUserByEmailAndPasswordFn(ctx, args)
 	}
 
-	return sqlc.User{}, errors.New("FindUserByEmailAndPasswordFn not implemented")
+	return nil, errors.New("FindUserByEmailAndPasswordFn not implemented")
 }

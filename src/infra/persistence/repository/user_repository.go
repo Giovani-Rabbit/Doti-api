@@ -6,6 +6,7 @@ import (
 	"time"
 
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	userMapper "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/mapper/user"
 	"github.com/google/uuid"
@@ -26,11 +27,8 @@ type UserRepository struct {
 type IUserRepository interface {
 	Create(ctx context.Context, user userDomain.IUserDomain) (userDomain.IUserDomain, error)
 	CheckUserExists(ctx context.Context, email string) (bool, error)
-	FindUserByEmail(ctx context.Context, email string) (sqlc.User, error)
-	FindUserByEmailAndPassword(
-		ctx context.Context,
-		args sqlc.FindUserByEmailAndPasswordParams,
-	) (sqlc.User, error)
+	FindUserByEmail(ctx context.Context, email string) (userDomain.IUserDomain, error)
+	FindUserByEmailAndPassword(ctx context.Context, args userdto.SignInDTO) (userDomain.IUserDomain, error)
 }
 
 func (ur *UserRepository) Create(
@@ -72,25 +70,30 @@ func (ur *UserRepository) CheckUserExists(
 func (ur *UserRepository) FindUserByEmail(
 	ctx context.Context,
 	email string,
-) (sqlc.User, error) {
+) (userDomain.IUserDomain, error) {
 	user, err := ur.Queries.FindUserByEmail(ctx, email)
 
 	if err != nil {
-		return sqlc.User{}, err
+		return nil, err
 	}
 
-	return user, nil
+	return userMapper.FromUser(&user), nil
 }
 
 func (ur *UserRepository) FindUserByEmailAndPassword(
 	ctx context.Context,
-	args sqlc.FindUserByEmailAndPasswordParams,
-) (sqlc.User, error) {
-	user, err := ur.Queries.FindUserByEmailAndPassword(ctx, args)
+	args userdto.SignInDTO,
+) (userDomain.IUserDomain, error) {
+	user, err := ur.Queries.FindUserByEmailAndPassword(ctx,
+		sqlc.FindUserByEmailAndPasswordParams{
+			Email:    args.Email,
+			Password: args.Password,
+		},
+	)
 
 	if err != nil {
-		return sqlc.User{}, err
+		return nil, err
 	}
 
-	return user, nil
+	return userMapper.FromUser(&user), nil
 }
