@@ -1,6 +1,9 @@
 package user
 
-import "time"
+import (
+	"net/mail"
+	"time"
+)
 
 type userDomain struct {
 	id        string
@@ -19,3 +22,16 @@ func (u *userDomain) GetPassword() string     { return u.password }
 func (u *userDomain) GetIsAdmin() bool        { return u.isAdmin }
 func (u *userDomain) GetCreateAt() time.Time  { return u.createdAt }
 func (u *userDomain) GetUpdatedAt() time.Time { return u.updatedAt }
+
+func (u *userDomain) IsValid() bool {
+	if u.name == "" || u.email == "" || u.password == "" {
+		return false
+	}
+
+	return true
+}
+
+func (ud *userDomain) IsValidEmail() bool {
+	_, err := mail.ParseAddress(ud.email)
+	return err == nil
+}

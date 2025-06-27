@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
 )
 
@@ -24,11 +24,11 @@ func TestCreateUserUseCase(t *testing.T) {
 
 	ctx := context.Background()
 
-	user := userdto.CreateUserDTO{
-		Name:     "New User",
-		Email:    "newuser@example.com",
-		Password: "password123",
-	}
+	user := user.NewCreateUserDomain(
+		"New User",
+		"newuser@example.com",
+		"password123",
+	)
 
 	t.Run("Create new user successfully", func(t *testing.T) {
 		_, err := createUser.Execute(ctx, user)

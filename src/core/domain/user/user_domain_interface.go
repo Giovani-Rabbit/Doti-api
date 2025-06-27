@@ -10,6 +10,9 @@ type IUserDomain interface {
 	GetIsAdmin() bool
 	GetCreateAt() time.Time
 	GetUpdatedAt() time.Time
+
+	IsValid() bool
+	IsValidEmail() bool
 }
 
 func NewUserDomain(

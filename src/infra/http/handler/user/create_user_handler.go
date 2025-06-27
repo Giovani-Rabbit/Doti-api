@@ -4,21 +4,28 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	httphdl "github.com/Giovani-Coelho/Doti-API/src/infra/http/httphdl"
 )
 
 func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user userdto.CreateUserDTO
+	var userDto userdto.CreateUserDTO
 
-	if err := httphdl.DecodeJSONBody(r, &user); err != nil {
+	if err := httphdl.DecodeJSONBody(r, &userDto); err != nil {
 		httphdl.HandleError(w, err)
 		return
 	}
 
 	ctx := context.Background()
 
-	res, err := uc.CreateUserUseCase.Execute(ctx, user)
+	userDomain := user.NewCreateUserDomain(
+		userDto.Name,
+		userDto.Email,
+		userDto.Password,
+	)
+
+	res, err := uc.CreateUserUseCase.Execute(ctx, userDomain)
 	if err != nil {
 		httphdl.HandleError(w, err)
 		return
