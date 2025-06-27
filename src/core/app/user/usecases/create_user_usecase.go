@@ -43,6 +43,15 @@ func (us *CreateUserUseCase) Execute(
 		return nil, user.ErrUserValuesMissing()
 	}
 
+	if isValidEmail := userDomain.IsValidEmail(); !isValidEmail {
+		logger.Error(
+			"Error: Invalid user email format", nil,
+			zap.String("journey", "createUser"),
+		)
+
+		return nil, user.ErrInvalidUserEmailFormat()
+	}
+
 	userAlreadyExists, _ := us.UserRepository.CheckUserExists(
 		ctx, userDomain.GetEmail(),
 	)
