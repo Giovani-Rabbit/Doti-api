@@ -42,3 +42,12 @@ func NewCreateUserDomain(
 		password: encryptPassword(password),
 	}
 }
+
+func NewSignInUserDomain(
+	email string, password string,
+) IUserDomain {
+	return &userDomain{
+		email:    email,
+		password: encryptPassword(password),
+	}
+}

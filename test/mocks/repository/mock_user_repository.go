@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	user "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 )
 
@@ -15,7 +14,7 @@ type MockUserRepository struct {
 	CreateFn                     func(ctx context.Context, user user.IUserDomain) (user.IUserDomain, error)
 	CheckUserExistsFn            func(ctx context.Context, email string) (bool, error)
 	FindUserByEmailFn            func(ctx context.Context, email string) (user.IUserDomain, error)
-	FindUserByEmailAndPasswordFn func(ctx context.Context, args userdto.SignInDTO) (user.IUserDomain, error)
+	FindUserByEmailAndPasswordFn func(ctx context.Context, args user.IUserDomain) (user.IUserDomain, error)
 }
 
 func (m *MockUserRepository) Create(
@@ -49,7 +48,7 @@ func (m *MockUserRepository) FindUserByEmail(
 }
 
 func (m *MockUserRepository) FindUserByEmailAndPassword(
-	ctx context.Context, args userdto.SignInDTO,
+	ctx context.Context, args user.IUserDomain,
 ) (user.IUserDomain, error) {
 	if m.FindUserByEmailAndPasswordFn != nil {
 		return m.FindUserByEmailAndPasswordFn(ctx, args)

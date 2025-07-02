@@ -1,4 +1,4 @@
-package userdto
+package authdto
 
 import "github.com/gofrs/uuid"
 
@@ -7,7 +7,7 @@ type SignInDTO struct {
 	Password string `json:"password"`
 }
 
-type AuthResponseDTO struct {
+type SignInResponseDTO struct {
 	ID    uuid.UUID `json:"id"`
 	Email string    `json:"email"`
 	Name  string    `json:"name"`
