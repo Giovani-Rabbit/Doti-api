@@ -4,15 +4,14 @@ import (
 	"context"
 	"testing"
 
-	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
-	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
 )
 
 func TestCreateUserUseCase(t *testing.T) {
 	mockRepo := &mock_repository.MockUserRepository{
-		CreateFn: func(ctx context.Context, user userDomain.IUserDomain) (userDomain.IUserDomain, error) {
+		CreateFn: func(ctx context.Context, user userdomain.IUserDomain) (userdomain.IUserDomain, error) {
 			return user, nil
 		},
 		CheckUserExistsFn: func(ctx context.Context, email string) (bool, error) {
@@ -20,11 +19,11 @@ func TestCreateUserUseCase(t *testing.T) {
 		},
 	}
 
-	createUser := userUseCase.NewCreateUserUseCase(mockRepo)
+	createUser := usercase.NewCreateUserUseCase(mockRepo)
 
 	ctx := context.Background()
 
-	user := user.NewCreateUserDomain(
+	user := userdomain.NewCreateUserDomain(
 		"New User",
 		"newuser@example.com",
 		"password123",

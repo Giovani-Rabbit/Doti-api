@@ -5,18 +5,18 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"github.com/golang-jwt/jwt"
 	"github.com/google/uuid"
 )
 
-var (
+const (
 	JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 )
 
-func GenerateToken(user user.IUserDomain) (string, error) {
+func GenerateToken(user userdomain.IUserDomain) (string, error) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	claims := jwt.MapClaims{

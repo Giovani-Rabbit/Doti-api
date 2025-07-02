@@ -1,4 +1,4 @@
-package user
+package userdomain
 
 import rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 

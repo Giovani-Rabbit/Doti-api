@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	httphdl "github.com/Giovani-Coelho/Doti-API/src/infra/http/httphdl"
 )
@@ -19,7 +19,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 
-	userDomain := user.NewCreateUserDomain(
+	userDomain := userdomain.NewCreateUserDomain(
 		userDto.Name,
 		userDto.Email,
 		userDto.Password,
