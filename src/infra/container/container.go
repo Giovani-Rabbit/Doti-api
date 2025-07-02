@@ -3,7 +3,7 @@ package container
 import (
 	"database/sql"
 
-	userController "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user"
+	userhandler "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user"
 )
 
 type Container struct {
@@ -11,7 +11,7 @@ type Container struct {
 }
 
 type IContainer interface {
-	NewUserContainer(db *sql.DB) userController.IUserHandler
+	NewUserContainer(db *sql.DB) userhandler.IUserHandler
 }
 
 func NewContainer(db *sql.DB) *Container {

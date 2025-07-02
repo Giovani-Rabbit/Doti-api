@@ -1,17 +1,17 @@
 package container
 
 import (
-	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
-	userController "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user"
+	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	userhandler "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user"
 	userRepository "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 )
 
-func (c *Container) NewUserContainer() *userController.UserHandler {
+func (c *Container) NewUserContainer() *userhandler.UserHandler {
 	userRepository := userRepository.NewUserRepository(c.DB)
 
-	createUserUseCase := userUseCase.NewCreateUserUseCase(userRepository)
+	createUserUseCase := usercase.NewCreateUserUseCase(userRepository)
 
-	return userController.NewUserHandler(
+	return userhandler.NewUserHandler(
 		createUserUseCase,
 	)
 }
