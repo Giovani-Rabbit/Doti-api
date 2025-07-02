@@ -3,11 +3,11 @@ package userhandler
 import (
 	"net/http"
 
-	userUseCase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user"
 )
 
 type UserHandler struct {
-	CreateUserUseCase userUseCase.ICreateUserUseCase
+	CreateUserUseCase usercase.ICreateUserUseCase
 }
 
 type IUserHandler interface {
@@ -15,7 +15,7 @@ type IUserHandler interface {
 }
 
 func NewUserHandler(
-	createUserUseCase userUseCase.ICreateUserUseCase,
+	createUserUseCase usercase.ICreateUserUseCase,
 ) *UserHandler {
 	return &UserHandler{
 		CreateUserUseCase: createUserUseCase,

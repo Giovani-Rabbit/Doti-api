@@ -1,7 +1,7 @@
 package container
 
 import (
-	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user"
 	userhandler "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user"
 	userRepository "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 )

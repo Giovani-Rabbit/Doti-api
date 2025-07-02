@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user/usecases"
+	usercase "github.com/Giovani-Coelho/Doti-API/src/core/app/user"
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
 )
