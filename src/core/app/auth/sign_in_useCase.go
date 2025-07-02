@@ -1,4 +1,4 @@
-package auth
+package authcase
 
 import (
 	"context"
@@ -6,7 +6,6 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	authDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	userdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	"go.uber.org/zap"
@@ -17,7 +16,7 @@ type SignInUseCase struct {
 }
 
 type ISignInUseCase interface {
-	Execute(ctx context.Context, userDTO userdto.SignInDTO) (userDomain.IUserDomain, string, error)
+	Execute(ctx context.Context, userDTO userDomain.IUserDomain) (userDomain.IUserDomain, string, error)
 }
 
 func NewLoginUseCase(
@@ -30,7 +29,7 @@ func NewLoginUseCase(
 
 func (lu *SignInUseCase) Execute(
 	ctx context.Context,
-	userDTO userdto.SignInDTO,
+	userDTO userDomain.IUserDomain,
 ) (userDomain.IUserDomain, string, error) {
 	logger.Info("Init Login UseCase",
 		zap.String("journey", "login"),
