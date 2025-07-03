@@ -13,8 +13,13 @@ func Routes(DB *sql.DB) (router *http.ServeMux) {
 	appContainer := container.NewContainer(DB)
 
 	userHandler := appContainer.NewUserContainer()
+	authHandler := appContainer.NewAuthContainer()
 
+	// USER
 	router.HandleFunc("POST /users", userHandler.CreateUser)
+
+	// AUTH
+	router.HandleFunc("POST /sign-in", authHandler.SignIn)
 
 	return
 }

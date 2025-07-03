@@ -27,20 +27,20 @@ func NewLoginUseCase(
 	}
 }
 
-func (lu *SignInUseCase) Execute(
+func (su *SignInUseCase) Execute(
 	ctx context.Context,
 	userDTO userDomain.IUserDomain,
 ) (userDomain.IUserDomain, string, error) {
-	logger.Info("Init Login UseCase",
-		zap.String("journey", "login"),
+	logger.Info("Init Sign-In UseCase",
+		zap.String("journey", "sign-in"),
 	)
 
-	user, err := lu.UserRepository.FindUserByEmailAndPassword(ctx, userDTO)
+	user, err := su.UserRepository.FindUserByEmailAndPassword(ctx, userDTO)
 
 	if err != nil {
 		logger.Error(
 			"Error: Could not find user with those credentials", err,
-			zap.String("journey", "login"),
+			zap.String("journey", "sign-in"),
 		)
 
 		return nil, "", userDomain.ErrCouldNotFindUser()
@@ -51,16 +51,16 @@ func (lu *SignInUseCase) Execute(
 	if err != nil {
 		logger.Error(
 			"Error: Could not generate token", err,
-			zap.String("journey", "login"),
+			zap.String("journey", "sign-in"),
 		)
 
 		return nil, "", authDomain.ErrGeneratingToken()
 	}
 
 	logger.Info(
-		"Login executed successfully",
+		"sign-in executed successfully",
 		zap.String("token:", token),
-		zap.String("journey", "login"),
+		zap.String("journey", "sign-in"),
 	)
 
 	return user, token, nil
