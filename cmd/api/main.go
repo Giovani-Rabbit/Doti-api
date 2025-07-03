@@ -30,10 +30,8 @@ func main() {
 
 	fmt.Printf("Server is running on port :%d", PORT)
 
-	routerWithCors := middleware.CorsConfig(router)
-
 	http.ListenAndServe(
 		fmt.Sprintf(":%d", PORT),
-		routerWithCors,
+		middleware.CorsConfig(router),
 	)
 }

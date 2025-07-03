@@ -26,6 +26,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	)
 
 	res, err := uc.CreateUserUseCase.Execute(ctx, userDomain)
+
 	if err != nil {
 		httphdl.HandleError(w, err)
 		return
