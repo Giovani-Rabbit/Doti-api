@@ -2,7 +2,6 @@ package authhandler
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
@@ -19,8 +18,10 @@ type UserResponse struct {
 func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	var userCredentials authdto.SignInDTO
 
+	res := httphdl.NewHttpJSONResponse(w)
+
 	if err := httphdl.DecodeJSONBody(r, &userCredentials); err != nil {
-		httphdl.HandleError(w, err)
+		res.Error(err, 400)
 		return
 	}
 
@@ -34,7 +35,7 @@ func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	userDomain, token, err := ah.SignInUseCase.Execute(ctx, user)
 
 	if err != nil {
-		httphdl.HandleError(w, err)
+		res.Error(err, 500)
 		return
 	}
 
@@ -44,8 +45,7 @@ func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		Email: userDomain.GetEmail(),
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Add("Authorization", token)
-	w.WriteHeader(201)
-	json.NewEncoder(w).Encode(response)
+	res.AddHeader("authorization", token)
+	res.AddBody(response)
+	res.Write(200)
 }
