@@ -6,6 +6,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	authDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	"go.uber.org/zap"
@@ -29,13 +30,23 @@ func NewLoginUseCase(
 
 func (su *SignInUseCase) Execute(
 	ctx context.Context,
-	userDTO userDomain.IUserDomain,
+	userEntiy userDomain.IUserDomain,
 ) (userDomain.IUserDomain, string, error) {
 	logger.Info("Init Sign-In UseCase",
 		zap.String("journey", "sign-in"),
 	)
 
-	user, err := su.UserRepository.FindUserByEmailAndPassword(ctx, userDTO)
+	if userEntiy.GetEmail() == "" || userEntiy.GetPassword() == "" {
+		logger.Error(
+			"Error: Email or Password is missing", nil,
+			zap.String("journey", "sign-in"),
+		)
+
+		return nil, "", userdomain.ErrSignInValuesMissing()
+	}
+
+	userEntiy.EncryptPassword()
+	user, err := su.UserRepository.FindUserByEmailAndPassword(ctx, userEntiy)
 
 	if err != nil {
 		logger.Error(

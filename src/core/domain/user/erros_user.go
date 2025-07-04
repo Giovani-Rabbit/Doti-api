@@ -31,6 +31,13 @@ func ErrUserValuesMissing() *rest_err.RestErr {
 	)
 }
 
+func ErrSignInValuesMissing() *rest_err.RestErr {
+	return rest_err.NewBadRequestError(
+		userValuesMissing,
+		"Email or Password is missing",
+	)
+}
+
 func ErrInvalidUserEmailFormat() *rest_err.RestErr {
 	return rest_err.NewBadRequestError(
 		invalidUserEmailFormat,
