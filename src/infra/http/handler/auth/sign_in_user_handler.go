@@ -6,7 +6,7 @@ import (
 
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	authdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/auth/dtos"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/http/httphdl"
+	resp "github.com/Giovani-Coelho/Doti-API/src/infra/http/responder"
 )
 
 type UserResponse struct {
@@ -17,11 +17,9 @@ type UserResponse struct {
 
 func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	var userCredentials authdto.SignInDTO
+	res := resp.NewHttpJSONResponse(w)
 
-	res := httphdl.NewHttpJSONResponse(w)
-
-	if err := httphdl.DecodeJSONBody(r, &userCredentials); err != nil {
-		res.Error(err, 400)
+	if err := res.DecodeJSONBody(r, &userCredentials); err {
 		return
 	}
 
@@ -35,7 +33,7 @@ func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	userDomain, token, err := ah.SignInUseCase.Execute(ctx, user)
 
 	if err != nil {
-		res.Error(err, 500)
+		res.Error(err, 400)
 		return
 	}
 

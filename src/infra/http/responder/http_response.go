@@ -1,4 +1,4 @@
-package httphdl
+package resp
 
 import (
 	"encoding/json"
@@ -49,21 +49,24 @@ func (hr *HttpResponse) Write(code int) error {
 }
 
 func (hr *HttpResponse) Error(err error, code int) {
-	httpErr := rest_err.NewInternalServerError(
-		"Unexpected error" + err.Error(),
-	)
-
-	hr.AddBody(httpErr)
+	hr.AddBody(err)
 	hr.Write(code)
 }
 
-func DecodeJSONBody(r *http.Request, dst interface{}) error {
+func (hs *HttpResponse) DecodeJSONBody(r *http.Request, dst interface{}) bool {
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
 
 	if err := decoder.Decode(dst); err != nil {
-		return err
+		hs.Error(InvalidBodyRequest(), 400)
+		return true
 	}
 
-	return nil
+	return false
+}
+
+func InvalidBodyRequest() error {
+	return rest_err.NewBadRequestValidationError(
+		"JSON format is incorrect.",
+	)
 }

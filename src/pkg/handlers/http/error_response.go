@@ -3,16 +3,10 @@ package rest_err
 import "net/http"
 
 type RestErr struct {
-	Message string   `json:"message" example:"error trying to process request"`
-	Status  string   `json:"status" example:"USER_ALREADY_EXISTS"`
-	Err     string   `json:"error" example:"internal_server_error"`
-	Code    int      `json:"code" example:"500"`
-	Causes  []Causes `json:"causes"`
-}
-
-type Causes struct {
-	Field   string `json:"field" example:"name"`
-	Message string `json:"message" example:"name is required"`
+	Message string `json:"message" example:"error trying to process request"`
+	Status  string `json:"status" example:"USER_ALREADY_EXISTS"`
+	Err     string `json:"error" example:"internal_server_error"`
+	Code    int    `json:"code" example:"500"`
 }
 
 func (r *RestErr) Error() string {
@@ -36,12 +30,12 @@ func NewUnauthorizedRequestError(message string) *RestErr {
 	}
 }
 
-func NewBadRequestValidationError(message string, causes []Causes) *RestErr {
+func NewBadRequestValidationError(message string) *RestErr {
 	return &RestErr{
 		Message: message,
 		Err:     "bad_request",
+		Status:  "INVALID_REQUEST",
 		Code:    http.StatusBadRequest,
-		Causes:  causes,
 	}
 }
 
