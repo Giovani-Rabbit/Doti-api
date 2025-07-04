@@ -12,19 +12,20 @@ type HttpResponse struct {
 }
 
 type IHttpResponse interface {
-	AddHeader(string, string)
-	AddBody(any)
-	Error()
-	SetStatusCode(int)
-	Write()
+	AddHeader(key string, value string)
+	AddBody(data any)
+	DecodeJSONBody(r *http.Request, schema any) bool
+	Error(err error, statusCode int)
+	Write(statusCode int)
 }
 
-func NewHttpJSONResponse(w http.ResponseWriter) *HttpResponse {
+func NewHttpJSONResponse(w http.ResponseWriter) IHttpResponse {
 	w.Header().Set("Content-Type", "application/json")
 
 	return &HttpResponse{
 		writer: w,
 		header: map[string]string{},
+		body:   nil,
 	}
 }
 
@@ -34,21 +35,6 @@ func (hr *HttpResponse) AddHeader(key string, value string) {
 
 func (hr *HttpResponse) AddBody(data any) {
 	hr.body = data
-}
-
-func (hr *HttpResponse) Write(code int) error {
-	for k, v := range hr.header {
-		hr.writer.Header().Add(k, v)
-	}
-
-	hr.writer.WriteHeader(code)
-
-	return json.NewEncoder(hr.writer).Encode(hr.body)
-}
-
-func (hr *HttpResponse) Error(err error, code int) {
-	hr.AddBody(err)
-	hr.Write(code)
 }
 
 func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
@@ -61,4 +47,19 @@ func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
 	}
 
 	return true
+}
+
+func (hr *HttpResponse) Error(err error, statusCode int) {
+	hr.AddBody(err)
+	hr.Write(statusCode)
+}
+
+func (hr *HttpResponse) Write(statusCode int) {
+	for k, v := range hr.header {
+		hr.writer.Header().Add(k, v)
+	}
+
+	hr.writer.WriteHeader(statusCode)
+
+	json.NewEncoder(hr.writer).Encode(hr.body)
 }
