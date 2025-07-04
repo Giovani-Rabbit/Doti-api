@@ -4,8 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
-	authDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
-	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
+	authdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
@@ -17,7 +16,7 @@ type SignInUseCase struct {
 }
 
 type ISignInUseCase interface {
-	Execute(ctx context.Context, userDTO userDomain.IUserDomain) (userDomain.IUserDomain, string, error)
+	Execute(ctx context.Context, userDTO userdomain.IUserDomain) (userdomain.IUserDomain, string, error)
 }
 
 func NewLoginUseCase(
@@ -30,8 +29,8 @@ func NewLoginUseCase(
 
 func (su *SignInUseCase) Execute(
 	ctx context.Context,
-	userEntiy userDomain.IUserDomain,
-) (userDomain.IUserDomain, string, error) {
+	userEntiy userdomain.IUserDomain,
+) (userdomain.IUserDomain, string, error) {
 	logger.Info("Init Sign-In UseCase",
 		zap.String("journey", "sign-in"),
 	)
@@ -54,7 +53,7 @@ func (su *SignInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, "", userDomain.ErrCouldNotFindUser()
+		return nil, "", userdomain.ErrCouldNotFindUser()
 	}
 
 	token, err := authpkg.GenerateToken(user)
@@ -65,7 +64,7 @@ func (su *SignInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, "", authDomain.ErrGeneratingToken()
+		return nil, "", authdomain.ErrGeneratingToken()
 	}
 
 	logger.Info(
