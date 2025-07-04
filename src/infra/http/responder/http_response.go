@@ -3,8 +3,6 @@ package resp
 import (
 	"encoding/json"
 	"net/http"
-
-	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 )
 
 type HttpResponse struct {
@@ -53,20 +51,14 @@ func (hr *HttpResponse) Error(err error, code int) {
 	hr.Write(code)
 }
 
-func (hs *HttpResponse) DecodeJSONBody(r *http.Request, dst interface{}) bool {
+func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
 
-	if err := decoder.Decode(dst); err != nil {
+	if err := decoder.Decode(schema); err != nil {
 		hs.Error(InvalidBodyRequest(), 400)
-		return true
+		return false
 	}
 
-	return false
-}
-
-func InvalidBodyRequest() error {
-	return rest_err.NewBadRequestValidationError(
-		"JSON format is incorrect.",
-	)
+	return true
 }

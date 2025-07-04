@@ -16,19 +16,19 @@ type UserResponse struct {
 }
 
 func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
-	var userCredentials authdto.SignInDTO
 	res := resp.NewHttpJSONResponse(w)
 
-	if err := res.DecodeJSONBody(r, &userCredentials); err {
+	var userCredentials authdto.SignInDTO
+	if !res.DecodeJSONBody(r, &userCredentials) {
 		return
 	}
-
-	ctx := context.Background()
 
 	user := userdomain.NewSignInUserDomain(
 		userCredentials.Email,
 		userCredentials.Password,
 	)
+
+	ctx := context.Background()
 
 	userDomain, token, err := ah.SignInUseCase.Execute(ctx, user)
 
