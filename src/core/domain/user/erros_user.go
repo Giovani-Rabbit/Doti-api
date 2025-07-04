@@ -7,6 +7,7 @@ const (
 	couldNotFindUser       = "COULD_NOT_FIND_USER"
 	userValuesMissing      = "USER_VALUES_MISSING"
 	invalidUserEmailFormat = "INVALID_USER_EMAIL_FORMAT"
+	invalidPassword        = "INVALID_PASSWORD"
 )
 
 func ErrUserAlreadyExists() *rest_err.RestErr {
@@ -34,5 +35,12 @@ func ErrInvalidUserEmailFormat() *rest_err.RestErr {
 	return rest_err.NewBadRequestError(
 		invalidUserEmailFormat,
 		"Invalid user email format",
+	)
+}
+
+func ErrInvalidPassword(message error) *rest_err.RestErr {
+	return rest_err.NewBadRequestError(
+		invalidPassword,
+		message.Error(),
 	)
 }

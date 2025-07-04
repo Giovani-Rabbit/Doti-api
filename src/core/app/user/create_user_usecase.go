@@ -15,7 +15,7 @@ type CreateUserUseCase struct {
 }
 
 type ICreateUserUseCase interface {
-	Execute(ctx context.Context, user userdomain.IUserDomain) (userdomain.IUserDomain, error)
+	Execute(ctx context.Context, userEntity userdomain.IUserDomain) (userdomain.IUserDomain, error)
 }
 
 func NewCreateUserUseCase(
@@ -28,13 +28,13 @@ func NewCreateUserUseCase(
 
 func (us *CreateUserUseCase) Execute(
 	ctx context.Context,
-	userDomain userdomain.IUserDomain,
+	userEntity userdomain.IUserDomain,
 ) (userdomain.IUserDomain, error) {
 	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)
 
-	if isValidUser := userDomain.IsValid(); !isValidUser {
+	if isValidUser := userEntity.IsValid(); !isValidUser {
 		logger.Error(
 			"Error: User values are missing", nil,
 			zap.String("journey", "createUser"),
@@ -43,7 +43,16 @@ func (us *CreateUserUseCase) Execute(
 		return nil, userdomain.ErrUserValuesMissing()
 	}
 
-	if isValidEmail := userDomain.IsValidEmail(); !isValidEmail {
+	if err := userEntity.EncryptPassword(); err != nil {
+		logger.Error(
+			"Error: Invalid Password", nil,
+			zap.String("journey", "createUser"),
+		)
+
+		return nil, userdomain.ErrInvalidPassword(err)
+	}
+
+	if isValidEmail := userEntity.IsValidEmail(); !isValidEmail {
 		logger.Error(
 			"Error: Invalid user email format", nil,
 			zap.String("journey", "createUser"),
@@ -53,7 +62,7 @@ func (us *CreateUserUseCase) Execute(
 	}
 
 	userAlreadyExists, _ := us.UserRepository.CheckUserExists(
-		ctx, userDomain.GetEmail(),
+		ctx, userEntity.GetEmail(),
 	)
 
 	if userAlreadyExists {
@@ -65,7 +74,7 @@ func (us *CreateUserUseCase) Execute(
 		return nil, userdomain.ErrUserAlreadyExists()
 	}
 
-	userCreated, err := us.UserRepository.Create(ctx, userDomain)
+	userCreated, err := us.UserRepository.Create(ctx, userEntity)
 
 	if err != nil {
 		logger.Error(

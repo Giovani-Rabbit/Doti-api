@@ -3,6 +3,8 @@ package userdomain
 import "time"
 
 type IUserDomain interface {
+	EncryptPassword() error
+
 	GetID() string
 	GetName() string
 	GetEmail() string
@@ -10,6 +12,8 @@ type IUserDomain interface {
 	GetIsAdmin() bool
 	GetCreateAt() time.Time
 	GetUpdatedAt() time.Time
+
+	setPassword(password string) // private
 
 	IsValid() bool
 	IsValidEmail() bool
@@ -39,7 +43,7 @@ func NewCreateUserDomain(
 	return &userDomain{
 		name:     name,
 		email:    email,
-		password: encryptPassword(password),
+		password: password,
 	}
 }
 
@@ -48,6 +52,6 @@ func NewSignInUserDomain(
 ) IUserDomain {
 	return &userDomain{
 		email:    email,
-		password: encryptPassword(password),
+		password: password,
 	}
 }
