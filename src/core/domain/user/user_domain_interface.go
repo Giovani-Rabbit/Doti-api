@@ -13,8 +13,6 @@ type IUserDomain interface {
 	GetCreateAt() time.Time
 	GetUpdatedAt() time.Time
 
-	setPassword(password string) // private
-
 	IsValid() bool
 	IsValidEmail() bool
 }
