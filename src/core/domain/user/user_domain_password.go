@@ -17,7 +17,7 @@ func (ud *userDomain) EncryptPassword() {
 
 func (ud *userDomain) ValidatePassword() error {
 	if len(ud.password) < 4 {
-		return errors.New("password must be at least 8 characters")
+		return errors.New("password must be at least 4 characters")
 	}
 
 	hasLetter := regexp.MustCompile(`[A-Za-z]`).MatchString
