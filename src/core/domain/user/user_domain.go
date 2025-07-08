@@ -25,11 +25,7 @@ func (u *userDomain) GetUpdatedAt() time.Time     { return u.updatedAt }
 func (u *userDomain) setPassword(password string) { u.password = password }
 
 func (u *userDomain) IsValid() bool {
-	if u.name == "" || u.email == "" || u.password == "" {
-		return false
-	}
-
-	return true
+	return u.name != "" && u.email != "" && u.password != ""
 }
 
 func (ud *userDomain) IsValidEmail() bool {
