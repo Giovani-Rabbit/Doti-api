@@ -10,42 +10,42 @@ const (
 	invalidPassword        = "INVALID_PASSWORD"
 )
 
-func ErrUserAlreadyExists() *rest_err.RestErr {
+func ErrUserAlreadyExists() error {
 	return rest_err.NewBadRequestError(
 		userAlreadyExists,
 		"A user with this email already exists.",
 	)
 }
 
-func ErrCouldNotFindUser() *rest_err.RestErr {
+func ErrCouldNotFindUser() error {
 	return rest_err.NewBadRequestError(
 		couldNotFindUser,
 		"Could not find user with those credentials",
 	)
 }
 
-func ErrUserValuesMissing() *rest_err.RestErr {
+func ErrUserValuesMissing() error {
 	return rest_err.NewBadRequestError(
 		userValuesMissing,
 		"User values are missing",
 	)
 }
 
-func ErrSignInValuesMissing() *rest_err.RestErr {
+func ErrSignInValuesMissing() error {
 	return rest_err.NewBadRequestError(
 		userValuesMissing,
 		"Email or Password is missing",
 	)
 }
 
-func ErrInvalidUserEmailFormat() *rest_err.RestErr {
+func ErrInvalidUserEmailFormat() error {
 	return rest_err.NewBadRequestError(
 		invalidUserEmailFormat,
 		"Invalid user email format",
 	)
 }
 
-func ErrInvalidPassword(message error) *rest_err.RestErr {
+func ErrInvalidPassword(message error) error {
 	return rest_err.NewBadRequestError(
 		invalidPassword,
 		message.Error(),
