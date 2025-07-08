@@ -3,7 +3,7 @@ package userdomain
 import "time"
 
 type IUserDomain interface {
-	EncryptPassword() error
+	EncryptPassword()
 
 	GetID() string
 	GetName() string
@@ -15,6 +15,8 @@ type IUserDomain interface {
 
 	IsValid() bool
 	IsValidEmail() bool
+
+	ValidatePassword() error
 }
 
 func NewUserDomain(

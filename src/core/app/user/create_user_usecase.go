@@ -34,7 +34,7 @@ func (us *CreateUserUseCase) Execute(
 		zap.String("journey", "createUser"),
 	)
 
-	if isValidUser := userEntity.IsValid(); !isValidUser {
+	if !userEntity.IsValid() {
 		logger.Error(
 			"Error: User values are missing", nil,
 			zap.String("journey", "createUser"),
@@ -43,7 +43,7 @@ func (us *CreateUserUseCase) Execute(
 		return nil, userdomain.ErrUserValuesMissing()
 	}
 
-	if err := userEntity.EncryptPassword(); err != nil {
+	if err := userEntity.ValidatePassword(); err != nil {
 		logger.Error(
 			"Error: Invalid Password", nil,
 			zap.String("journey", "createUser"),
@@ -52,7 +52,9 @@ func (us *CreateUserUseCase) Execute(
 		return nil, userdomain.ErrInvalidPassword(err)
 	}
 
-	if isValidEmail := userEntity.IsValidEmail(); !isValidEmail {
+	userEntity.EncryptPassword()
+
+	if !userEntity.IsValidEmail() {
 		logger.Error(
 			"Error: Invalid user email format", nil,
 			zap.String("journey", "createUser"),
