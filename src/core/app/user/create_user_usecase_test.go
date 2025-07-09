@@ -51,7 +51,7 @@ func TestCreateUserUseCase(t *testing.T) {
 		}
 	})
 
-	t.Run("Should not be able to create user with out credentials", func(t *testing.T) {
+	t.Run("Should not be able to create user without credentials", func(t *testing.T) {
 		userInvalidPassword := userdomain.NewCreateUserDomain("", "", "")
 
 		_, err := createUser.Execute(ctx, userInvalidPassword)

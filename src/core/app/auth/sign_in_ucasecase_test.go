@@ -28,12 +28,12 @@ func TestSignInUseCase(t *testing.T) {
 	signInCase := authcase.NewLoginUseCase(mockRepo)
 	ctx := context.Background()
 
-	credentials := userdomain.NewSignInUserDomain(
-		"newuserexample@adawd.com",
-		"password123",
-	)
+	t.Run("Should be able to sign-in successfully.", func(t *testing.T) {
+		credentials := userdomain.NewSignInUserDomain(
+			"newuserexample@adawd.com",
+			"password123",
+		)
 
-	t.Run("Should be able to log in successfully.", func(t *testing.T) {
 		loggedUser, token, err := signInCase.Execute(ctx, credentials)
 
 		if err != nil {
@@ -52,6 +52,32 @@ func TestSignInUseCase(t *testing.T) {
 
 		if loggedUser.GetName() != userToken.GetName() {
 			t.Fatalf("Token Validation: Invalid username: %s", userToken.GetName())
+		}
+	})
+
+	t.Run("Should not be able to sign-in without credentials.", func(t *testing.T) {
+		credentials := userdomain.NewSignInUserDomain("", "")
+		_, _, err := signInCase.Execute(ctx, credentials)
+
+		if err == nil {
+			t.Fatalf("expected no error, but we got: %v", err)
+		}
+
+		if err.Status != userdomain.SttUserValuesMissing {
+			t.Fatalf("Expected error: USER_VALUES_MISSING, got %s", err.Status)
+		}
+	})
+
+	t.Run("Should not be able to sign-in with invalid e-mail.", func(t *testing.T) {
+		credentials := userdomain.NewSignInUserDomain("giovaniemail.com", "123")
+		_, _, err := signInCase.Execute(ctx, credentials)
+
+		if err == nil {
+			t.Fatalf("expected no error, but we got: %v", err)
+		}
+
+		if err.Status != userdomain.SttInvalidUserEmailFormat {
+			t.Fatalf("Expected error: INVALID_USER_EMAIL_FORMAT, got %s", err.Status)
 		}
 	})
 }

@@ -8,6 +8,7 @@ import (
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
+	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"go.uber.org/zap"
 )
 
@@ -16,7 +17,9 @@ type SignInUseCase struct {
 }
 
 type ISignInUseCase interface {
-	Execute(ctx context.Context, userEntity userdomain.IUserDomain) (userdomain.IUserDomain, string, error)
+	Execute(
+		ctx context.Context, userEntity userdomain.IUserDomain,
+	) (userdomain.IUserDomain, string, *rest_err.RestErr)
 }
 
 func NewLoginUseCase(
@@ -30,7 +33,7 @@ func NewLoginUseCase(
 func (su *SignInUseCase) Execute(
 	ctx context.Context,
 	userEntity userdomain.IUserDomain,
-) (userdomain.IUserDomain, string, error) {
+) (userdomain.IUserDomain, string, *rest_err.RestErr) {
 	logger.Info("Init Sign-In UseCase",
 		zap.String("journey", "sign-in"),
 	)
@@ -42,6 +45,15 @@ func (su *SignInUseCase) Execute(
 		)
 
 		return nil, "", userdomain.ErrSignInValuesMissing()
+	}
+
+	if !userEntity.IsValidEmail() {
+		logger.Error(
+			"Error: Invalid e-mail format", nil,
+			zap.String("journey", "sign-in"),
+		)
+
+		return nil, "", userdomain.ErrInvalidUserEmailFormat()
 	}
 
 	userEntity.EncryptPassword()

@@ -37,7 +37,7 @@ func GenerateToken(user userdomain.IUserDomain) (string, error) {
 	return tokenString, nil
 }
 
-func VerifyToken(tokenValue string) (userdomain.IUserDomain, error) {
+func VerifyToken(tokenValue string) (userdomain.IUserDomain, *rest_err.RestErr) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	token, err := jwt.Parse(

@@ -6,7 +6,7 @@ const (
 	errorGeneratingToken = "ERROR_GENERATIONG_TOKEN"
 )
 
-func ErrGeneratingToken() error {
+func ErrGeneratingToken() *rest_err.RestErr {
 	return rest_err.NewBadRequestError(
 		errorGeneratingToken,
 		"error generating token",
