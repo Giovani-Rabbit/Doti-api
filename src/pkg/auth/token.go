@@ -6,10 +6,8 @@ import (
 	"time"
 
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"github.com/golang-jwt/jwt"
-	"github.com/google/uuid"
 )
 
 const (
@@ -39,12 +37,12 @@ func GenerateToken(user userdomain.IUserDomain) (string, error) {
 	return tokenString, nil
 }
 
-func VerifyToken(tokenValue string) (*sqlc.User, error) {
+func VerifyToken(tokenValue string) (userdomain.IUserDomain, error) {
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	token, err := jwt.Parse(
 		RemoveBearerPrefix(tokenValue),
-		func(t *jwt.Token) (interface{}, error) {
+		func(t *jwt.Token) (any, error) {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); ok {
 				return []byte(secret), nil
 			}
@@ -63,11 +61,14 @@ func VerifyToken(tokenValue string) (*sqlc.User, error) {
 		return nil, rest_err.NewUnauthorizedRequestError("invalid token")
 	}
 
-	return &sqlc.User{
-		ID:    claims["id"].(uuid.UUID),
-		Email: claims["email"].(string),
-		Name:  claims["name"].(string),
-	}, nil
+	return userdomain.NewUserDomain(
+		claims["id"].(string),
+		claims["name"].(string),
+		claims["email"].(string),
+		"",
+		time.Now(),
+		time.Now(),
+	), nil
 }
 
 func RemoveBearerPrefix(token string) string {

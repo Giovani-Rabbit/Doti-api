@@ -16,7 +16,7 @@ type SignInUseCase struct {
 }
 
 type ISignInUseCase interface {
-	Execute(ctx context.Context, userDTO userdomain.IUserDomain) (userdomain.IUserDomain, string, error)
+	Execute(ctx context.Context, userEntity userdomain.IUserDomain) (userdomain.IUserDomain, string, error)
 }
 
 func NewLoginUseCase(
@@ -29,13 +29,13 @@ func NewLoginUseCase(
 
 func (su *SignInUseCase) Execute(
 	ctx context.Context,
-	userEntiy userdomain.IUserDomain,
+	userEntity userdomain.IUserDomain,
 ) (userdomain.IUserDomain, string, error) {
 	logger.Info("Init Sign-In UseCase",
 		zap.String("journey", "sign-in"),
 	)
 
-	if userEntiy.GetEmail() == "" || userEntiy.GetPassword() == "" {
+	if userEntity.GetEmail() == "" || userEntity.GetPassword() == "" {
 		logger.Error(
 			"Error: Email or Password is missing", nil,
 			zap.String("journey", "sign-in"),
@@ -44,8 +44,8 @@ func (su *SignInUseCase) Execute(
 		return nil, "", userdomain.ErrSignInValuesMissing()
 	}
 
-	userEntiy.EncryptPassword()
-	user, err := su.UserRepository.FindUserByEmailAndPassword(ctx, userEntiy)
+	userEntity.EncryptPassword()
+	user, err := su.UserRepository.FindUserByEmailAndPassword(ctx, userEntity)
 
 	if err != nil {
 		logger.Error(
