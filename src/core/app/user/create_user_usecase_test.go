@@ -70,4 +70,24 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("Expected invalid password error")
 		}
 	})
+
+	t.Run("Should not be able to use a invalid e-mail", func(t *testing.T) {
+		userInvalidPassword := userdomain.NewCreateUserDomain(
+			"giovani",
+			"giovaniemai.com",
+			"abc123",
+		)
+
+		// password must contain both letter and numbers
+		// passsword must be at least 4 characters
+		_, err := createUser.Execute(ctx, userInvalidPassword)
+
+		if err == nil {
+			t.Fatalf("An Error was expected. But we got nil")
+		}
+
+		if err.Status != userdomain.SttInvalidUserEmailFormat {
+			t.Fatalf("Expected invalid email format error, gor: %s", err)
+		}
+	})
 }
