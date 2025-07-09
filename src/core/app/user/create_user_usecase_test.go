@@ -51,6 +51,20 @@ func TestCreateUserUseCase(t *testing.T) {
 		}
 	})
 
+	t.Run("Should not be able to create user with out credentials", func(t *testing.T) {
+		userInvalidPassword := userdomain.NewCreateUserDomain("", "", "")
+
+		_, err := createUser.Execute(ctx, userInvalidPassword)
+
+		if err == nil {
+			t.Fatalf("An Error was expected. But we got nil")
+		}
+
+		if err.Status != userdomain.SttUserValuesMissing {
+			t.Fatalf("Expected values missing error, got %s:", err.Status)
+		}
+	})
+
 	t.Run("Should not be able to use a invalid password", func(t *testing.T) {
 		userInvalidPassword := userdomain.NewCreateUserDomain(
 			"giovani",
@@ -78,8 +92,6 @@ func TestCreateUserUseCase(t *testing.T) {
 			"abc123",
 		)
 
-		// password must contain both letter and numbers
-		// passsword must be at least 4 characters
 		_, err := createUser.Execute(ctx, userInvalidPassword)
 
 		if err == nil {
