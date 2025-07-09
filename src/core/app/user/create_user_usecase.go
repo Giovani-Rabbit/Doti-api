@@ -15,7 +15,7 @@ type CreateUserUseCase struct {
 }
 
 type ICreateUserUseCase interface {
-	Execute(ctx context.Context, userEntity userdomain.IUserDomain) (userdomain.IUserDomain, error)
+	Execute(ctx context.Context, userEntity userdomain.IUserDomain) (userdomain.IUserDomain, *rest_err.RestErr)
 }
 
 func NewCreateUserUseCase(
@@ -29,7 +29,7 @@ func NewCreateUserUseCase(
 func (us *CreateUserUseCase) Execute(
 	ctx context.Context,
 	userEntity userdomain.IUserDomain,
-) (userdomain.IUserDomain, error) {
+) (userdomain.IUserDomain, *rest_err.RestErr) {
 	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)

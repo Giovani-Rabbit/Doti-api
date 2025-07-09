@@ -29,7 +29,7 @@ func TestCreateUserUseCase(t *testing.T) {
 		"password123",
 	)
 
-	t.Run("Create new user successfully", func(t *testing.T) {
+	t.Run("Should be able to create new user successfully", func(t *testing.T) {
 		_, err := createUser.Execute(ctx, user)
 
 		if err != nil {
@@ -37,7 +37,7 @@ func TestCreateUserUseCase(t *testing.T) {
 		}
 	})
 
-	t.Run("User already exists", func(t *testing.T) {
+	t.Run("Should not be able to create an already existing user", func(t *testing.T) {
 		mockRepo.CheckUserExistsFn = func(
 			ctx context.Context, email string,
 		) (bool, error) {
@@ -48,6 +48,26 @@ func TestCreateUserUseCase(t *testing.T) {
 
 		if err == nil {
 			t.Fatalf("expected: the user already exists. But we got: %v", err)
+		}
+	})
+
+	t.Run("Should not be able to use a invalid password", func(t *testing.T) {
+		userInvalidPassword := userdomain.NewCreateUserDomain(
+			"giovani",
+			"giovani@emai.com",
+			"12",
+		)
+
+		// password must contain both letter and numbers
+		// passsword must be at least 4 characters
+		_, err := createUser.Execute(ctx, userInvalidPassword)
+
+		if err == nil {
+			t.Fatalf("An Error was expected. But we got nil")
+		}
+
+		if err.Status != userdomain.SttInvalidPassword {
+			t.Fatalf("Expected invalid password error")
 		}
 	})
 }
