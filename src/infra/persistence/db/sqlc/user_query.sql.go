@@ -73,7 +73,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateU
 }
 
 const findUserByEmail = `-- name: FindUserByEmail :one
-SELECT id, email, name, password, is_admin, created_at, updated_at FROM users WHERE Email = $1 LIMIT 1
+SELECT id, email, name, password, is_admin, avatar, created_at, updated_at FROM users WHERE Email = $1 LIMIT 1
 `
 
 func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, error) {
@@ -85,6 +85,7 @@ func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, erro
 		&i.Name,
 		&i.Password,
 		&i.IsAdmin,
+		&i.Avatar,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -92,7 +93,7 @@ func (q *Queries) FindUserByEmail(ctx context.Context, email string) (User, erro
 }
 
 const findUserByEmailAndPassword = `-- name: FindUserByEmailAndPassword :one
-SELECT id, email, name, password, is_admin, created_at, updated_at FROM users WHERE Email = $1 AND Password = $2 LIMIT 1
+SELECT id, email, name, password, is_admin, avatar, created_at, updated_at FROM users WHERE Email = $1 AND Password = $2 LIMIT 1
 `
 
 type FindUserByEmailAndPasswordParams struct {
@@ -109,6 +110,7 @@ func (q *Queries) FindUserByEmailAndPassword(ctx context.Context, arg FindUserBy
 		&i.Name,
 		&i.Password,
 		&i.IsAdmin,
+		&i.Avatar,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)

@@ -17,6 +17,10 @@
 
 ## Running
 
+- Execute the container.
+- Run the migrations.
+- Run the server.
+
 ### Docker
 Run docker container:
 ```

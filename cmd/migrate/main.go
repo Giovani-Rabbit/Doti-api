@@ -36,10 +36,14 @@ func main() {
 
 	switch cmd := os.Args[len(os.Args)-1]; cmd {
 	case "up":
-		m.Up()
+		if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+			log.Fatal("Migration Error:", err)
+		}
 	case "down":
-		m.Down()
+		if err := m.Down(); err != nil {
+			log.Fatal("Error reverting migration:", err)
+		}
 	default:
-		log.Fatalf("Invalid option: %s", cmd)
+		log.Fatal("Invalid option. Use: up, down or force <version>")
 	}
 }
