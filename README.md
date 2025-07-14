@@ -13,6 +13,7 @@ This project was created to practice Golang. I tried to use native Golang as muc
 ### Built With
 - [Golang](https://go.dev/)
 - [Zap](https://github.com/uber-go/zap)
+- [Sqlc](https://sqlc.dev/)
 - [Migrate](https://github.com/golang-migrate/migrate)
 - [godotenv](github.com/joho/godotenv)
 
