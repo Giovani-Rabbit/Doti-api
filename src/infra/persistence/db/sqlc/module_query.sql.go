@@ -7,7 +7,6 @@ package sqlc
 
 import (
 	"context"
-	"database/sql"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,20 +19,20 @@ RETURNING id, name, is_open, icon
 `
 
 type CreateModuleParams struct {
-	ID        uuid.UUID    `json:"id"`
-	UserID    uuid.UUID    `json:"user_id"`
-	Name      string       `json:"name"`
-	IsOpen    sql.NullBool `json:"is_open"`
-	Icon      string       `json:"icon"`
-	CreatedAt time.Time    `json:"created_at"`
-	UpdatedAt time.Time    `json:"updated_at"`
+	ID        uuid.UUID `json:"id"`
+	UserID    uuid.UUID `json:"user_id"`
+	Name      string    `json:"name"`
+	IsOpen    bool      `json:"is_open"`
+	Icon      string    `json:"icon"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type CreateModuleRow struct {
-	ID     uuid.UUID    `json:"id"`
-	Name   string       `json:"name"`
-	IsOpen sql.NullBool `json:"is_open"`
-	Icon   string       `json:"icon"`
+	ID     uuid.UUID `json:"id"`
+	Name   string    `json:"name"`
+	IsOpen bool      `json:"is_open"`
+	Icon   string    `json:"icon"`
 }
 
 func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (CreateModuleRow, error) {

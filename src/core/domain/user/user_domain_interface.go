@@ -19,7 +19,7 @@ type IUserDomain interface {
 	ValidatePassword() error
 }
 
-func NewUserDomain(
+func New(
 	id string,
 	name string,
 	email string,
@@ -37,7 +37,7 @@ func NewUserDomain(
 	}
 }
 
-func NewCreateUserDomain(
+func NewCreateUser(
 	name string, email string, password string,
 ) IUserDomain {
 	return &userDomain{
@@ -47,7 +47,7 @@ func NewCreateUserDomain(
 	}
 }
 
-func NewSignInUserDomain(
+func NewSignInUser(
 	email string, password string,
 ) IUserDomain {
 	return &userDomain{

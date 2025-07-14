@@ -12,13 +12,13 @@ import (
 )
 
 type Module struct {
-	ID        uuid.UUID    `json:"id"`
-	UserID    uuid.UUID    `json:"user_id"`
-	Name      string       `json:"name"`
-	IsOpen    sql.NullBool `json:"is_open"`
-	Icon      string       `json:"icon"`
-	CreatedAt time.Time    `json:"created_at"`
-	UpdatedAt time.Time    `json:"updated_at"`
+	ID        uuid.UUID `json:"id"`
+	UserID    uuid.UUID `json:"user_id"`
+	Name      string    `json:"name"`
+	IsOpen    bool      `json:"is_open"`
+	Icon      string    `json:"icon"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type User struct {

@@ -23,7 +23,7 @@ func TestCreateUserUseCase(t *testing.T) {
 
 	ctx := context.Background()
 
-	user := userdomain.NewCreateUserDomain(
+	user := userdomain.NewCreateUser(
 		"New User",
 		"newuser@example.com",
 		"password123",
@@ -52,7 +52,7 @@ func TestCreateUserUseCase(t *testing.T) {
 	})
 
 	t.Run("Should not be able to create user without credentials", func(t *testing.T) {
-		userInvalidPassword := userdomain.NewCreateUserDomain("", "", "")
+		userInvalidPassword := userdomain.NewCreateUser("", "", "")
 
 		_, err := createUser.Execute(ctx, userInvalidPassword)
 
@@ -66,7 +66,7 @@ func TestCreateUserUseCase(t *testing.T) {
 	})
 
 	t.Run("Should not be able to use a invalid password", func(t *testing.T) {
-		userInvalidPassword := userdomain.NewCreateUserDomain(
+		userInvalidPassword := userdomain.NewCreateUser(
 			"giovani",
 			"giovani@emai.com",
 			"12",
@@ -86,7 +86,7 @@ func TestCreateUserUseCase(t *testing.T) {
 	})
 
 	t.Run("Should not be able to use a invalid e-mail", func(t *testing.T) {
-		userInvalidPassword := userdomain.NewCreateUserDomain(
+		userInvalidPassword := userdomain.NewCreateUser(
 			"giovani",
 			"giovaniemai.com",
 			"abc123",

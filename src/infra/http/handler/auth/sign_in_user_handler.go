@@ -17,7 +17,7 @@ func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userModel := userdomain.NewSignInUserDomain(
+	userModel := userdomain.NewSignInUser(
 		userCredentials.Email,
 		userCredentials.Password,
 	)

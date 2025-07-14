@@ -61,7 +61,7 @@ func VerifyToken(tokenValue string) (userdomain.IUserDomain, *rest_err.RestErr) 
 		return nil, rest_err.NewUnauthorizedRequestError("invalid token")
 	}
 
-	return userdomain.NewUserDomain(
+	return userdomain.New(
 		claims["id"].(string),
 		claims["name"].(string),
 		claims["email"].(string),

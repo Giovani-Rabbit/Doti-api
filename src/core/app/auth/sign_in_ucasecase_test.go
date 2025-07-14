@@ -16,7 +16,7 @@ func TestSignInUseCase(t *testing.T) {
 		FindUserByEmailAndPasswordFn: func(
 			ctx context.Context, args userdomain.IUserDomain,
 		) (userdomain.IUserDomain, error) {
-			return userdomain.NewUserDomain(
+			return userdomain.New(
 				"1", "giovani",
 				"newuser@example.com",
 				"password123",
@@ -29,7 +29,7 @@ func TestSignInUseCase(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Should be able to sign-in successfully.", func(t *testing.T) {
-		credentials := userdomain.NewSignInUserDomain(
+		credentials := userdomain.NewSignInUser(
 			"newuserexample@adawd.com",
 			"password123",
 		)
@@ -56,7 +56,7 @@ func TestSignInUseCase(t *testing.T) {
 	})
 
 	t.Run("Should not be able to sign-in without credentials.", func(t *testing.T) {
-		credentials := userdomain.NewSignInUserDomain("", "")
+		credentials := userdomain.NewSignInUser("", "")
 		_, _, err := signInCase.Execute(ctx, credentials)
 
 		if err == nil {
@@ -69,7 +69,7 @@ func TestSignInUseCase(t *testing.T) {
 	})
 
 	t.Run("Should not be able to sign-in with invalid e-mail.", func(t *testing.T) {
-		credentials := userdomain.NewSignInUserDomain("giovaniemail.com", "123")
+		credentials := userdomain.NewSignInUser("giovaniemail.com", "123")
 		_, _, err := signInCase.Execute(ctx, credentials)
 
 		if err == nil {

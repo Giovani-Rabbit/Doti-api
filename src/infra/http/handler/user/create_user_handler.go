@@ -17,7 +17,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userDomain := userdomain.NewCreateUserDomain(
+	userDomain := userdomain.NewCreateUser(
 		userDto.Name,
 		userDto.Email,
 		userDto.Password,
