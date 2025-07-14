@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS modules {
+CREATE TABLE IF NOT EXISTS modules (
     id         UUID                     NOT NULL    PRIMARY KEY,
     user_id    UUID                     NOT NULL,
     is_open    BOOLEAN                              DEFAULT false,
@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS modules {
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL    DEFAULT now()
 
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
-}
+)
