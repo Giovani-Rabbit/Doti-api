@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	moduledomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
@@ -19,7 +20,7 @@ type IModuleRepository interface {
 	Create(ctx context.Context, module moduledomain.IModuleDomain) (moduledomain.IModuleDomain, error)
 }
 
-func New(dtb *sql.DB) IModuleRepository {
+func NewModuleRepository(dtb *sql.DB) IModuleRepository {
 	return &ModuleRepository{
 		DB:      dtb,
 		Queries: sqlc.New(dtb),
@@ -41,10 +42,10 @@ func (mr *ModuleRepository) Create(
 			ID:        uuid.New(),
 			UserID:    userID,
 			Name:      module.GetName(),
-			IsOpen:    module.GetIsOpen(),
+			IsOpen:    false,
 			Icon:      module.GetIcon(),
-			CreatedAt: module.GetCreateAt(),
-			UpdatedAt: module.GetUpdatedAt(),
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
 		},
 	)
 

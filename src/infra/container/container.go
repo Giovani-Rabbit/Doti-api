@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	authhandler "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/auth"
+	modulehandler "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/module"
 	userhandler "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/user"
 )
 
@@ -14,6 +15,7 @@ type Container struct {
 type IContainer interface {
 	NewUserContainer() userhandler.IUserHandler
 	NewAuthContainer() authhandler.IAuthHandler
+	NewModuleContainer() modulehandler.IModuleHandler
 }
 
 func NewContainer(db *sql.DB) *Container {

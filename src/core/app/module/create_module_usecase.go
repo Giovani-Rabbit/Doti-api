@@ -18,7 +18,7 @@ type ICreateModuleUseCase interface {
 	Execute(ctx context.Context, moduleEntity moduledomain.IModuleDomain) (moduledomain.IModuleDomain, error)
 }
 
-func New(
+func NewCreateModuleUseCase(
 	moduleRepo repository.IModuleRepository,
 ) ICreateModuleUseCase {
 	return &CreateModuleUseCase{
