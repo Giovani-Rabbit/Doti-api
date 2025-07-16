@@ -3,6 +3,8 @@ package resp
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/Giovani-Coelho/Doti-API/config/logger"
 )
 
 type HttpResponse struct {
@@ -42,6 +44,7 @@ func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
 	decoder.DisallowUnknownFields()
 
 	if err := decoder.Decode(schema); err != nil {
+		logger.Error("Invalid request body.", nil)
 		hs.Error(InvalidBodyRequest(), 400)
 		return false
 	}
