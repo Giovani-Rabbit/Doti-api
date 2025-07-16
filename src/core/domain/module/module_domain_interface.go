@@ -31,3 +31,15 @@ func New(
 		updatedAt: updatedAt,
 	}
 }
+
+func NewCreateModule(
+	userId string,
+	name string,
+	icon string,
+) IModuleDomain {
+	return &moduleDomain{
+		userId: userId,
+		name:   name,
+		icon:   icon,
+	}
+}

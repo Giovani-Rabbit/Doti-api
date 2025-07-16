@@ -7,7 +7,7 @@ import (
 
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
-	userMapper "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/mapper/user"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/mapper"
 	"github.com/google/uuid"
 )
 
@@ -50,7 +50,7 @@ func (ur *UserRepository) Create(
 		return nil, err
 	}
 
-	return userMapper.FromCreateUserRow(&userEntity), nil
+	return mapper.FromCreateUserRow(&userEntity), nil
 }
 
 func (ur *UserRepository) CheckUserExists(
@@ -76,7 +76,7 @@ func (ur *UserRepository) FindUserByEmail(
 		return nil, err
 	}
 
-	return userMapper.FromUser(&user), nil
+	return mapper.FromUser(&user), nil
 }
 
 func (ur *UserRepository) FindUserByEmailAndPassword(
@@ -94,5 +94,5 @@ func (ur *UserRepository) FindUserByEmailAndPassword(
 		return nil, err
 	}
 
-	return userMapper.FromUser(&user), nil
+	return mapper.FromUser(&user), nil
 }

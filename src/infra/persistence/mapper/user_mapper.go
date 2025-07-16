@@ -1,4 +1,4 @@
-package usermp
+package mapper
 
 import (
 	userDomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
