@@ -46,12 +46,12 @@ func TestSignInUseCase(t *testing.T) {
 			t.Fatalf("Invalid Token: %v", err)
 		}
 
-		if loggedUser.GetEmail() != userToken.GetEmail() {
-			t.Fatalf("Token Validation: Invalid e-mail: %s", userToken.GetEmail())
+		if loggedUser.GetEmail() != userToken.Email {
+			t.Fatalf("Token Validation: Invalid e-mail: %s", userToken.Email)
 		}
 
-		if loggedUser.GetName() != userToken.GetName() {
-			t.Fatalf("Token Validation: Invalid username: %s", userToken.GetName())
+		if loggedUser.GetName() != userToken.Name {
+			t.Fatalf("Token Validation: Invalid username: %s", userToken.Name)
 		}
 	})
 
