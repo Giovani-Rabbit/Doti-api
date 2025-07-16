@@ -1,7 +1,6 @@
 package authhandler
 
 import (
-	"context"
 	"net/http"
 
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
@@ -22,9 +21,7 @@ func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 		userCredentials.Password,
 	)
 
-	ctx := context.Background()
-
-	userAuth, token, err := ah.SignInUseCase.Execute(ctx, userModel)
+	userAuth, token, err := ah.SignInUseCase.Execute(r.Context(), userModel)
 
 	if err != nil {
 		res.Error(err, 400)

@@ -1,7 +1,6 @@
 package userhandler
 
 import (
-	"context"
 	"net/http"
 
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
@@ -23,9 +22,7 @@ func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		userDto.Password,
 	)
 
-	ctx := context.Background()
-
-	user, err := uc.CreateUserUseCase.Execute(ctx, userDomain)
+	user, err := uc.CreateUserUseCase.Execute(r.Context(), userDomain)
 
 	if err != nil {
 		res.Error(err, 400)

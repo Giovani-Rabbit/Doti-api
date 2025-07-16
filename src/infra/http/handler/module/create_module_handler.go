@@ -1,7 +1,6 @@
 package modulehandler
 
 import (
-	"context"
 	"net/http"
 
 	moduledomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/module"
@@ -23,8 +22,7 @@ func (mh *ModuleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
 		createModuleDTO.Icon,
 	)
 
-	ctx := context.Background()
-	module, err := mh.CreateModuleUseCase.Execute(ctx, moduleEntity)
+	module, err := mh.CreateModuleUseCase.Execute(r.Context(), moduleEntity)
 
 	if err != nil {
 		res.Error(err, 400)
