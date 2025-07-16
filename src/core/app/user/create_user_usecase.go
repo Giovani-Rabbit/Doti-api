@@ -80,7 +80,7 @@ func (us *CreateUserUseCase) Execute(
 
 	if err != nil {
 		logger.Error(
-			"Error in repository", nil,
+			"Error in repository", err,
 			zap.String("journey", "createUser"),
 		)
 
