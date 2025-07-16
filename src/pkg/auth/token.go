@@ -41,7 +41,7 @@ func VerifyToken(tokenValue string) (userdomain.IUserDomain, *rest_err.RestErr) 
 	secret := os.Getenv(JWT_TOKEN_KEY)
 
 	token, err := jwt.Parse(
-		RemoveBearerPrefix(tokenValue),
+		removeBearerPrefix(tokenValue),
 		func(t *jwt.Token) (any, error) {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); ok {
 				return []byte(secret), nil
@@ -71,7 +71,7 @@ func VerifyToken(tokenValue string) (userdomain.IUserDomain, *rest_err.RestErr) 
 	), nil
 }
 
-func RemoveBearerPrefix(token string) string {
+func removeBearerPrefix(token string) string {
 	if strings.HasPrefix(token, "Bearer ") {
 		token = strings.TrimPrefix("Bearer ", token)
 	}
