@@ -60,6 +60,6 @@ Execute the server:
 go run cmd/api/main.go
 ```
 
-## Referencias
+## REFERÊNCIAS
 
 - [Golang Middleware](https://drstearns.github.io/tutorials/gomiddleware/)
