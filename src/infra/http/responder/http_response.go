@@ -64,5 +64,7 @@ func (hr *HttpResponse) Write(statusCode int) {
 
 	hr.writer.WriteHeader(statusCode)
 
-	json.NewEncoder(hr.writer).Encode(hr.body)
+	if hr.body != nil {
+		json.NewEncoder(hr.writer).Encode(hr.body)
+	}
 }

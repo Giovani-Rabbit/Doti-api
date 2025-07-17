@@ -6,6 +6,7 @@ import (
 	moduledomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/module"
 	moduledto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/module/dtos"
 	resp "github.com/Giovani-Coelho/Doti-API/src/infra/http/responder"
+	"github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 )
 
 func (mh *ModuleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
@@ -16,8 +17,15 @@ func (mh *ModuleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userAuth, ok := auth.GetAuthenticatedUserFromContext(r.Context())
+
+	if !ok {
+		res.Error(nil, 400)
+		return
+	}
+
 	moduleEntity := moduledomain.NewCreateModule(
-		"146681af-2cee-493a-a145-d23609ae056d", // get the user Foreign key from jwt
+		userAuth.ID,
 		createModuleDTO.Name,
 		createModuleDTO.Icon,
 	)

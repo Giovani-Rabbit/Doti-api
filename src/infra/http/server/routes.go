@@ -5,10 +5,11 @@ import (
 	"net/http"
 
 	"github.com/Giovani-Coelho/Doti-API/src/infra/container"
+	"github.com/Giovani-Coelho/Doti-API/src/infra/http/middleware"
 )
 
-func Routes(DB *sql.DB) (router *http.ServeMux) {
-	router = http.NewServeMux()
+func Routes(DB *sql.DB) (mux *http.ServeMux) {
+	mux = http.NewServeMux()
 
 	appContainer := container.NewContainer(DB)
 
@@ -17,13 +18,17 @@ func Routes(DB *sql.DB) (router *http.ServeMux) {
 	moduleHandler := appContainer.NewModuleContainer()
 
 	// USER
-	router.HandleFunc("POST /users", userHandler.CreateUser)
+	mux.HandleFunc("POST /users", userHandler.CreateUser)
 
 	// AUTH
-	router.HandleFunc("POST /sign-in", authHandler.SignIn)
+	mux.HandleFunc("POST /sign-in", authHandler.SignIn)
 
 	// MODULE
-	router.HandleFunc("POST /module", moduleHandler.CreateModule)
+	mux.Handle("POST /module",
+		middleware.EnsureAuth(http.HandlerFunc(
+			moduleHandler.CreateModule,
+		)),
+	)
 
 	return
 }

@@ -13,9 +13,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-const (
-	JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
-)
+const JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 
 var secretKey = os.Getenv(JWT_TOKEN_KEY)
 
