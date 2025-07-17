@@ -12,3 +12,10 @@ func ErrGeneratingToken() *rest_err.RestErr {
 		"error generating token",
 	)
 }
+
+func ErrGetUserFromContext() *rest_err.RestErr {
+	return rest_err.NewBadRequestError(
+		"INTERNAL_ERROR",
+		"Error retrieving user data via token",
+	)
+}

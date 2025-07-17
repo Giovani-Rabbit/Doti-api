@@ -17,10 +17,10 @@ func (mh *ModuleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userAuth, ok := auth.GetAuthenticatedUserFromContext(r.Context())
+	userAuth, err := auth.GetAuthenticatedUserFromContext(r.Context())
 
-	if !ok {
-		res.Error(nil, 400)
+	if err != nil {
+		res.Error(err, 400)
 		return
 	}
 
