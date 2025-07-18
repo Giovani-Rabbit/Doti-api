@@ -14,7 +14,7 @@ func EnsureAuth(next http.Handler) http.Handler {
 		if err != nil {
 			res := resp.NewHttpJSONResponse(w)
 			res.AddBody(map[string]string{
-				"error":   "unauthorized",
+				"error":   err.Error(),
 				"message": "Please sign in to access this resource",
 			})
 			res.Write(401)
