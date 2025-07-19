@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"net/http"
 	"os"
 	"time"
@@ -39,7 +40,11 @@ func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *rest_err.RestErr) 
 	)
 
 	if err != nil || !token.Valid {
-		return nil, rest_err.NewUnauthorizedRequestError("Unauthorized | Invalid Token")
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			return nil, rest_err.NewUnauthorizedRequestError("Expired Token")
+		}
+
+		return nil, rest_err.NewUnauthorizedRequestError("Unauthorized")
 	}
 
 	return claims, nil
