@@ -8,7 +8,6 @@ import (
 
 	authdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	authdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/auth/dtos"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -17,29 +16,18 @@ const JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 
 var secretKey = os.Getenv(JWT_TOKEN_KEY)
 
-func GenerateToken(user userdomain.IUserDomain) (authdto.AuthTokenDTO, error) {
-	expirationTime := time.Now().Add(24 * time.Hour)
-
+func GenerateToken(user userdomain.IUserDomain) (string, error) {
 	claims := authdomain.AuthClaims{
 		ID:    user.GetID(),
 		Name:  user.GetName(),
 		Email: user.GetEmail(),
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 		},
 	}
 
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(secretKey))
-
-	if err != nil {
-		return authdto.AuthTokenDTO{},
-			rest_err.NewUnauthorizedRequestError("Error generating token")
-	}
-
-	return authdto.AuthTokenDTO{
-		AccessToken: token,
-		ExpiresIn:   int64(time.Until(expirationTime).Seconds()),
-	}, nil
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(secretKey))
 }
 
 func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *rest_err.RestErr) {

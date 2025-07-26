@@ -6,9 +6,7 @@ type SignInDTO struct {
 }
 
 type SignInResponseDTO struct {
-	ID          string `json:"id"`
-	Email       string `json:"email"`
-	Name        string `json:"name"`
-	ExpiresIn   int64  `json:"expires_in"`
-	AccessToken string `json:"accessToken"`
+	ID    string `json:"id"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
 }

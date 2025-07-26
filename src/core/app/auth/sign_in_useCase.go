@@ -6,7 +6,6 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	authdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	authdto "github.com/Giovani-Coelho/Doti-API/src/infra/http/handler/auth/dtos"
 	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/src/pkg/auth"
 	rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
@@ -20,7 +19,7 @@ type SignInUseCase struct {
 type ISignInUseCase interface {
 	Execute(
 		ctx context.Context, userEntity userdomain.IUserDomain,
-	) (userdomain.IUserDomain, *authdto.AuthTokenDTO, *rest_err.RestErr)
+	) (userdomain.IUserDomain, string, *rest_err.RestErr)
 }
 
 func NewLoginUseCase(
@@ -34,7 +33,7 @@ func NewLoginUseCase(
 func (su *SignInUseCase) Execute(
 	ctx context.Context,
 	userEntity userdomain.IUserDomain,
-) (userdomain.IUserDomain, *authdto.AuthTokenDTO, *rest_err.RestErr) {
+) (userdomain.IUserDomain, string, *rest_err.RestErr) {
 	logger.Info("Init Sign-In UseCase",
 		zap.String("journey", "sign-in"),
 	)
@@ -45,7 +44,7 @@ func (su *SignInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, nil, userdomain.ErrSignInValuesMissing()
+		return nil, "", userdomain.ErrSignInValuesMissing()
 	}
 
 	if !userEntity.IsValidEmail() {
@@ -54,7 +53,7 @@ func (su *SignInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, nil, userdomain.ErrInvalidUserEmailFormat()
+		return nil, "", userdomain.ErrInvalidUserEmailFormat()
 	}
 
 	userEntity.EncryptPassword()
@@ -66,7 +65,7 @@ func (su *SignInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, nil, userdomain.ErrCouldNotFindUser()
+		return nil, "", userdomain.ErrCouldNotFindUser()
 	}
 
 	token, err := authpkg.GenerateToken(user)
@@ -77,14 +76,14 @@ func (su *SignInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, nil, authdomain.ErrGeneratingToken()
+		return nil, "", authdomain.ErrGeneratingToken()
 	}
 
 	logger.Info(
 		"sign-in executed successfully",
-		zap.String("token:", token.AccessToken),
+		zap.String("token:", token),
 		zap.String("journey", "sign-in"),
 	)
 
-	return user, &token, nil
+	return user, token, nil
 }

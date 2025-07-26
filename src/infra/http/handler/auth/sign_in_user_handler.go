@@ -29,13 +29,12 @@ func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := authdto.SignInResponseDTO{
-		ID:          userAuth.GetID(),
-		Name:        userAuth.GetName(),
-		Email:       userAuth.GetEmail(),
-		AccessToken: token.AccessToken,
-		ExpiresIn:   token.ExpiresIn,
+		ID:    userAuth.GetID(),
+		Name:  userAuth.GetName(),
+		Email: userAuth.GetEmail(),
 	}
 
+	res.AddHeader("authorization", token)
 	res.AddBody(response)
 	res.Write(200)
 }
