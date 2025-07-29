@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	user "github.com/Giovani-Coelho/Doti-API/src/core/domain/user"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
+	user "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db/sqlc"
 )
 
 type MockUserRepository struct {

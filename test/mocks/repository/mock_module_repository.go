@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	module "github.com/Giovani-Coelho/Doti-API/src/core/domain/module"
-	"github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db/sqlc"
+	module "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db/sqlc"
 )
 
 type MockModuleRepository struct {

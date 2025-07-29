@@ -1,9 +1,0 @@
-package resp
-
-import rest_err "github.com/Giovani-Coelho/Doti-API/src/pkg/handlers/http"
-
-func InvalidBodyRequest() error {
-	return rest_err.NewBadRequestValidationError(
-		"Invalid request body. The submitted data does not match the expected format.",
-	)
-}

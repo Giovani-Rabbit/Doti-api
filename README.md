@@ -18,7 +18,7 @@ This project was created to practice Golang. I tried to use native Golang as muc
 - [godotenv](github.com/joho/godotenv)
 
 ### Relationship
-<img src="./public/relationship.png">
+<img internal="./public/relationship.png">
 
 ## Running
 

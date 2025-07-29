@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	database "github.com/Giovani-Coelho/Doti-API/src/infra/persistence/db"
+	database "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -25,7 +25,7 @@ func main() {
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://src/infra/persistence/db/migrations/", // migrations path
+		"file://internal/infra/persistence/db/migrations/", // migrations path
 		"postgres",
 		driver,
 	)
