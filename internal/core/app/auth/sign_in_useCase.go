@@ -12,11 +12,11 @@ import (
 	"go.uber.org/zap"
 )
 
-type SignInUseCase struct {
+type signInUseCase struct {
 	UserRepository repository.IUserRepository
 }
 
-type ISignInUseCase interface {
+type SignInUseCase interface {
 	Execute(
 		ctx context.Context, userEntity userdomain.User,
 	) (userdomain.User, string, *http.RestErr)
@@ -24,13 +24,13 @@ type ISignInUseCase interface {
 
 func NewLoginUseCase(
 	userRepository repository.IUserRepository,
-) ISignInUseCase {
-	return &SignInUseCase{
+) SignInUseCase {
+	return &signInUseCase{
 		UserRepository: userRepository,
 	}
 }
 
-func (su *SignInUseCase) Execute(
+func (su *signInUseCase) Execute(
 	ctx context.Context,
 	userEntity userdomain.User,
 ) (userdomain.User, string, *http.RestErr) {

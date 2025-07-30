@@ -7,7 +7,7 @@ import (
 )
 
 type AuthHandler struct {
-	SignInUseCase authcase.ISignInUseCase
+	SignInUseCase authcase.SignInUseCase
 }
 
 type IAuthHandler interface {
@@ -15,7 +15,7 @@ type IAuthHandler interface {
 }
 
 func NewAuthHandler(
-	signInUseCase authcase.ISignInUseCase,
+	signInUseCase authcase.SignInUseCase,
 ) *AuthHandler {
 	return &AuthHandler{
 		SignInUseCase: signInUseCase,
