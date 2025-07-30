@@ -8,7 +8,7 @@ import (
 
 	authdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
-	rest_err "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+	httperr "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -16,7 +16,7 @@ const JWT_TOKEN_KEY = "JWT_TOKEN_KEY"
 
 var secretKey = os.Getenv(JWT_TOKEN_KEY)
 
-func GenerateToken(user userdomain.IUserDomain) (string, error) {
+func GenerateToken(user userdomain.User) (string, error) {
 	claims := authdomain.AuthClaims{
 		ID:    user.GetID(),
 		Name:  user.GetName(),
@@ -30,7 +30,7 @@ func GenerateToken(user userdomain.IUserDomain) (string, error) {
 	return token.SignedString([]byte(secretKey))
 }
 
-func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *rest_err.RestErr) {
+func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *httperr.RestErr) {
 	claims := &authdomain.AuthClaims{}
 
 	token, err := jwt.ParseWithClaims(tokenValue, claims,
@@ -41,10 +41,10 @@ func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *rest_err.RestErr) 
 
 	if err != nil || !token.Valid {
 		if errors.Is(err, jwt.ErrTokenExpired) {
-			return nil, rest_err.NewUnauthorizedRequestError("Expired Token")
+			return nil, httperr.NewUnauthorizedRequestError("Expired Token")
 		}
 
-		return nil, rest_err.NewUnauthorizedRequestError("Unauthorized")
+		return nil, httperr.NewUnauthorizedRequestError("Unauthorized")
 	}
 
 	return claims, nil

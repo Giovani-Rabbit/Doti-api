@@ -1,20 +1,20 @@
 package authdomain
 
-import rest_err "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 const (
 	errorGeneratingToken = "ERROR_GENERATIONG_TOKEN"
 )
 
-func ErrGeneratingToken() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrGeneratingToken() *http.RestErr {
+	return http.NewBadRequestError(
 		errorGeneratingToken,
 		"error generating token",
 	)
 }
 
-func ErrGetUserFromContext() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrGetUserFromContext() *http.RestErr {
+	return http.NewBadRequestError(
 		"INTERNAL_ERROR",
 		"Error retrieving user data via token",
 	)

@@ -20,7 +20,7 @@ type UserCreatedResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func NewUserCreatedResponse(user userDomain.IUserDomain) UserCreatedResponse {
+func NewUserCreatedResponse(user userDomain.User) UserCreatedResponse {
 	return UserCreatedResponse{
 		ID:        user.GetID(),
 		Name:      user.GetName(),

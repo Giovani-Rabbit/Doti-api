@@ -11,15 +11,15 @@ import (
 type MockUserRepository struct {
 	Users []sqlc.User
 
-	CreateFn                     func(ctx context.Context, user user.IUserDomain) (user.IUserDomain, error)
+	CreateFn                     func(ctx context.Context, user user.User) (user.User, error)
 	CheckUserExistsFn            func(ctx context.Context, email string) (bool, error)
-	FindUserByEmailFn            func(ctx context.Context, email string) (user.IUserDomain, error)
-	FindUserByEmailAndPasswordFn func(ctx context.Context, args user.IUserDomain) (user.IUserDomain, error)
+	FindUserByEmailFn            func(ctx context.Context, email string) (user.User, error)
+	FindUserByEmailAndPasswordFn func(ctx context.Context, args user.User) (user.User, error)
 }
 
 func (m *MockUserRepository) Create(
-	ctx context.Context, user user.IUserDomain,
-) (user.IUserDomain, error) {
+	ctx context.Context, user user.User,
+) (user.User, error) {
 	if m.CreateFn != nil {
 		return m.CreateFn(ctx, user)
 	}
@@ -39,7 +39,7 @@ func (m *MockUserRepository) CheckUserExists(
 
 func (m *MockUserRepository) FindUserByEmail(
 	ctx context.Context, email string,
-) (user.IUserDomain, error) {
+) (user.User, error) {
 	if m.FindUserByEmailFn != nil {
 		return m.FindUserByEmailFn(ctx, email)
 	}
@@ -48,8 +48,8 @@ func (m *MockUserRepository) FindUserByEmail(
 }
 
 func (m *MockUserRepository) FindUserByEmailAndPassword(
-	ctx context.Context, args user.IUserDomain,
-) (user.IUserDomain, error) {
+	ctx context.Context, args user.User,
+) (user.User, error) {
 	if m.FindUserByEmailAndPasswordFn != nil {
 		return m.FindUserByEmailAndPasswordFn(ctx, args)
 	}

@@ -24,16 +24,16 @@ type UserRepository struct {
 }
 
 type IUserRepository interface {
-	Create(ctx context.Context, user userDomain.IUserDomain) (userDomain.IUserDomain, error)
+	Create(ctx context.Context, user userDomain.User) (userDomain.User, error)
 	CheckUserExists(ctx context.Context, email string) (bool, error)
-	FindUserByEmail(ctx context.Context, email string) (userDomain.IUserDomain, error)
-	FindUserByEmailAndPassword(ctx context.Context, args userDomain.IUserDomain) (userDomain.IUserDomain, error)
+	FindUserByEmail(ctx context.Context, email string) (userDomain.User, error)
+	FindUserByEmailAndPassword(ctx context.Context, args userDomain.User) (userDomain.User, error)
 }
 
 func (ur *UserRepository) Create(
 	ctx context.Context,
-	domainUser userDomain.IUserDomain,
-) (userDomain.IUserDomain, error) {
+	domainUser userDomain.User,
+) (userDomain.User, error) {
 	userEntity, err := ur.Queries.CreateUser(ctx,
 		sqlc.CreateUserParams{
 			ID:        uuid.New(),
@@ -69,7 +69,7 @@ func (ur *UserRepository) CheckUserExists(
 func (ur *UserRepository) FindUserByEmail(
 	ctx context.Context,
 	email string,
-) (userDomain.IUserDomain, error) {
+) (userDomain.User, error) {
 	user, err := ur.Queries.FindUserByEmail(ctx, email)
 
 	if err != nil {
@@ -81,8 +81,8 @@ func (ur *UserRepository) FindUserByEmail(
 
 func (ur *UserRepository) FindUserByEmailAndPassword(
 	ctx context.Context,
-	args userDomain.IUserDomain,
-) (userDomain.IUserDomain, error) {
+	args userDomain.User,
+) (userDomain.User, error) {
 	user, err := ur.Queries.FindUserByEmailAndPassword(ctx,
 		sqlc.FindUserByEmailAndPasswordParams{
 			Email:    args.GetEmail(),

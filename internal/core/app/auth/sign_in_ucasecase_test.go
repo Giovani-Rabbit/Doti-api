@@ -14,8 +14,8 @@ import (
 func TestSignInUseCase(t *testing.T) {
 	mockRepo := &mock_repository.MockUserRepository{
 		FindUserByEmailAndPasswordFn: func(
-			ctx context.Context, args userdomain.IUserDomain,
-		) (userdomain.IUserDomain, error) {
+			ctx context.Context, args userdomain.User,
+		) (userdomain.User, error) {
 			return userdomain.New(
 				"1", "giovani",
 				"newuser@example.com",

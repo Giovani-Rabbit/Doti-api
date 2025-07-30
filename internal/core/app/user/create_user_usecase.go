@@ -6,30 +6,30 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
-	rest_err "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"go.uber.org/zap"
 )
 
-type CreateUserUseCase struct {
+type createUserUseCase struct {
 	UserRepository repository.IUserRepository
 }
 
-type ICreateUserUseCase interface {
-	Execute(ctx context.Context, userEntity userdomain.IUserDomain) (userdomain.IUserDomain, *rest_err.RestErr)
+type CreateUserUseCase interface {
+	Execute(ctx context.Context, userEntity userdomain.User) (userdomain.User, *http.RestErr)
 }
 
 func NewCreateUserUseCase(
 	userRepository repository.IUserRepository,
-) ICreateUserUseCase {
-	return &CreateUserUseCase{
+) CreateUserUseCase {
+	return &createUserUseCase{
 		UserRepository: userRepository,
 	}
 }
 
-func (us *CreateUserUseCase) Execute(
+func (us *createUserUseCase) Execute(
 	ctx context.Context,
-	userEntity userdomain.IUserDomain,
-) (userdomain.IUserDomain, *rest_err.RestErr) {
+	userEntity userdomain.User,
+) (userdomain.User, *http.RestErr) {
 	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)
@@ -84,7 +84,7 @@ func (us *CreateUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, rest_err.NewInternalServerError(
+		return nil, http.NewInternalServerError(
 			"Internal error saving user",
 		)
 	}

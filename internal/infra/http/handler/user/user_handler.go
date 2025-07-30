@@ -7,7 +7,7 @@ import (
 )
 
 type UserHandler struct {
-	CreateUserUseCase usercase.ICreateUserUseCase
+	CreateUserUseCase usercase.CreateUserUseCase
 }
 
 type IUserHandler interface {
@@ -15,7 +15,7 @@ type IUserHandler interface {
 }
 
 func NewUserHandler(
-	createUserUseCase usercase.ICreateUserUseCase,
+	createUserUseCase usercase.CreateUserUseCase,
 ) *UserHandler {
 	return &UserHandler{
 		CreateUserUseCase: createUserUseCase,

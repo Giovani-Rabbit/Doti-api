@@ -6,7 +6,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
-	rest_err "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"go.uber.org/zap"
 )
 
@@ -42,7 +42,7 @@ func (mu *CreateModuleUseCase) Execute(
 			zap.String("journey", "createModule"),
 		)
 
-		return nil, rest_err.NewInternalServerError(
+		return nil, http.NewInternalServerError(
 			"Internal error saving module",
 		)
 	}

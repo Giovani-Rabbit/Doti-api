@@ -11,7 +11,7 @@ import (
 
 func TestCreateUserUseCase(t *testing.T) {
 	mockRepo := &mock_repository.MockUserRepository{
-		CreateFn: func(ctx context.Context, user userdomain.IUserDomain) (userdomain.IUserDomain, error) {
+		CreateFn: func(ctx context.Context, user userdomain.User) (userdomain.User, error) {
 			return user, nil
 		},
 		CheckUserExistsFn: func(ctx context.Context, email string) (bool, error) {

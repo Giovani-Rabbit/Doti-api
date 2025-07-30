@@ -2,7 +2,7 @@ package userdomain
 
 import "time"
 
-type IUserDomain interface {
+type User interface {
 	EncryptPassword()
 
 	GetID() string
@@ -26,7 +26,7 @@ func New(
 	password string,
 	createdAt time.Time,
 	updatedAt time.Time,
-) IUserDomain {
+) User {
 	return &userDomain{
 		id:        id,
 		name:      name,
@@ -39,7 +39,7 @@ func New(
 
 func NewCreateUser(
 	name string, email string, password string,
-) IUserDomain {
+) User {
 	return &userDomain{
 		name:     name,
 		email:    email,
@@ -49,7 +49,7 @@ func NewCreateUser(
 
 func NewSignInUser(
 	email string, password string,
-) IUserDomain {
+) User {
 	return &userDomain{
 		email:    email,
 		password: password,

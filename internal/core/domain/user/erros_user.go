@@ -1,6 +1,6 @@
 package userdomain
 
-import rest_err "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 const (
 	SttUserAlreadyExists      = "USER_ALREADY_EXISTS"
@@ -10,43 +10,43 @@ const (
 	SttInvalidPassword        = "INVALID_PASSWORD"
 )
 
-func ErrUserAlreadyExists() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrUserAlreadyExists() *http.RestErr {
+	return http.NewBadRequestError(
 		SttUserAlreadyExists,
 		"A user with this email already exists.",
 	)
 }
 
-func ErrCouldNotFindUser() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrCouldNotFindUser() *http.RestErr {
+	return http.NewBadRequestError(
 		SttCouldNotFindUser,
 		"Could not find user with those credentials",
 	)
 }
 
-func ErrUserValuesMissing() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrUserValuesMissing() *http.RestErr {
+	return http.NewBadRequestError(
 		SttUserValuesMissing,
 		"User values are missing",
 	)
 }
 
-func ErrSignInValuesMissing() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrSignInValuesMissing() *http.RestErr {
+	return http.NewBadRequestError(
 		SttUserValuesMissing,
 		"Email or Password is missing",
 	)
 }
 
-func ErrInvalidUserEmailFormat() *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrInvalidUserEmailFormat() *http.RestErr {
+	return http.NewBadRequestError(
 		SttInvalidUserEmailFormat,
 		"Invalid user email format",
 	)
 }
 
-func ErrInvalidPassword(message error) *rest_err.RestErr {
-	return rest_err.NewBadRequestError(
+func ErrInvalidPassword(message error) *http.RestErr {
+	return http.NewBadRequestError(
 		SttInvalidPassword,
 		message.Error(),
 	)

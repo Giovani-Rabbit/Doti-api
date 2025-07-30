@@ -7,7 +7,7 @@ import (
 
 func FromCreateUserRow(
 	user *sqlc.CreateUserRow,
-) (domain userDomain.IUserDomain) {
+) (domain userDomain.User) {
 	return userDomain.New(
 		user.ID.String(),
 		user.Name,
@@ -20,7 +20,7 @@ func FromCreateUserRow(
 
 func FromUser(
 	user *sqlc.User,
-) (domain userDomain.IUserDomain) {
+) (domain userDomain.User) {
 	return userDomain.New(
 		user.ID.String(),
 		user.Name,
