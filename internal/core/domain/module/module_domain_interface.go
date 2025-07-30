@@ -2,7 +2,7 @@ package moduledomain
 
 import "time"
 
-type IModuleDomain interface {
+type Module interface {
 	GetID() string
 	GetUserId() string
 	GetName() string
@@ -20,7 +20,7 @@ func New(
 	icon string,
 	createdAt time.Time,
 	updatedAt time.Time,
-) IModuleDomain {
+) Module {
 	return &moduleDomain{
 		id:        id,
 		userId:    userId,
@@ -36,7 +36,7 @@ func NewCreateModule(
 	userId string,
 	name string,
 	icon string,
-) IModuleDomain {
+) Module {
 	return &moduleDomain{
 		userId: userId,
 		name:   name,

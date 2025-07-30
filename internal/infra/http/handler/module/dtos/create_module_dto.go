@@ -20,7 +20,7 @@ type CreateModuleResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func NewModuleCreatedResponse(module moduledomain.IModuleDomain) CreateModuleResponse {
+func NewModuleCreatedResponse(module moduledomain.Module) CreateModuleResponse {
 	return CreateModuleResponse{
 		ID:        module.GetID(),
 		Name:      module.GetName(),

@@ -7,7 +7,7 @@ import (
 )
 
 type ModuleHandler struct {
-	CreateModuleUseCase modulecase.ICreateModuleUseCase
+	CreateModuleUseCase modulecase.CreateModuleUseCase
 }
 
 type IModuleHandler interface {
@@ -15,7 +15,7 @@ type IModuleHandler interface {
 }
 
 func New(
-	createModulecase modulecase.ICreateModuleUseCase,
+	createModulecase modulecase.CreateModuleUseCase,
 ) IModuleHandler {
 	return &ModuleHandler{
 		CreateModuleUseCase: createModulecase,

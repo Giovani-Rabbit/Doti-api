@@ -11,13 +11,13 @@ import (
 type MockModuleRepository struct {
 	Modules []sqlc.Module
 
-	CreateFn func(ctx context.Context, module module.IModuleDomain) (module.IModuleDomain, error)
+	CreateFn func(ctx context.Context, module module.Module) (module.Module, error)
 }
 
 func (m *MockModuleRepository) Create(
 	ctx context.Context,
-	module module.IModuleDomain,
-) (module.IModuleDomain, error) {
+	module module.Module,
+) (module.Module, error) {
 	if m.CreateFn == nil {
 		return nil, errors.New("createFn not implemented")
 	}

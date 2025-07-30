@@ -10,26 +10,26 @@ import (
 	"go.uber.org/zap"
 )
 
-type CreateModuleUseCase struct {
+type createModuleUseCase struct {
 	ModuleRepository repository.IModuleRepository
 }
 
-type ICreateModuleUseCase interface {
-	Execute(ctx context.Context, moduleEntity moduledomain.IModuleDomain) (moduledomain.IModuleDomain, error)
+type CreateModuleUseCase interface {
+	Execute(ctx context.Context, moduleEntity moduledomain.Module) (moduledomain.Module, error)
 }
 
 func NewCreateModuleUseCase(
 	moduleRepo repository.IModuleRepository,
-) ICreateModuleUseCase {
-	return &CreateModuleUseCase{
+) CreateModuleUseCase {
+	return &createModuleUseCase{
 		ModuleRepository: moduleRepo,
 	}
 }
 
-func (mu *CreateModuleUseCase) Execute(
+func (mu *createModuleUseCase) Execute(
 	ctx context.Context,
-	moduleEntity moduledomain.IModuleDomain,
-) (moduledomain.IModuleDomain, error) {
+	moduleEntity moduledomain.Module,
+) (moduledomain.Module, error) {
 	logger.Info("Init create module",
 		zap.String("journey", "createModule"),
 	)

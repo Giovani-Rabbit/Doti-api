@@ -12,7 +12,7 @@ import (
 
 func TestCreateModuleUseCase(t *testing.T) {
 	module := &mock.MockModuleRepository{
-		CreateFn: func(ctx context.Context, module moduledomain.IModuleDomain) (moduledomain.IModuleDomain, error) {
+		CreateFn: func(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error) {
 			_, err := uuid.Parse(module.GetUserId())
 
 			if err != nil {

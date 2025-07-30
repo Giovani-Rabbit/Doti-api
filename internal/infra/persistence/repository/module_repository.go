@@ -17,7 +17,7 @@ type ModuleRepository struct {
 }
 
 type IModuleRepository interface {
-	Create(ctx context.Context, module moduledomain.IModuleDomain) (moduledomain.IModuleDomain, error)
+	Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error)
 }
 
 func NewModuleRepository(dtb *sql.DB) IModuleRepository {
@@ -29,8 +29,8 @@ func NewModuleRepository(dtb *sql.DB) IModuleRepository {
 
 func (mr *ModuleRepository) Create(
 	ctx context.Context,
-	module moduledomain.IModuleDomain,
-) (moduledomain.IModuleDomain, error) {
+	module moduledomain.Module,
+) (moduledomain.Module, error) {
 	userID, err := uuid.Parse(module.GetUserId())
 
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 
 func FromCreateModuleRow(
 	module *sqlc.CreateModuleRow,
-) (domain moduledomain.IModuleDomain) {
+) (domain moduledomain.Module) {
 	return moduledomain.New(
 		module.ID.String(),
 		"",
