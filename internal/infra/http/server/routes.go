@@ -13,9 +13,9 @@ func Routes(DB *sql.DB) (mux *http.ServeMux) {
 
 	appContainer := container.NewContainer(DB)
 
-	userHandler := appContainer.NewUserContainer()
-	authHandler := appContainer.NewAuthContainer()
-	moduleHandler := appContainer.NewModuleContainer()
+	userHandler := appContainer.NewUser()
+	authHandler := appContainer.NewAuth()
+	moduleHandler := appContainer.NewModule()
 
 	// USER
 	mux.HandleFunc("POST /users", userHandler.CreateUser)

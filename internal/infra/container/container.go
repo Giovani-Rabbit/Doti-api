@@ -8,16 +8,16 @@ import (
 	userhandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/user"
 )
 
-type Container struct {
+type container struct {
 	DB *sql.DB
 }
 
-type IContainer interface {
-	NewUserContainer() userhandler.IUserHandler
-	NewAuthContainer() authhandler.IAuthHandler
-	NewModuleContainer() modulehandler.IModuleHandler
+type Container interface {
+	NewUser() userhandler.UserHandler
+	NewAuth() authhandler.AuthHandler
+	NewModule() modulehandler.ModuleHandler
 }
 
-func NewContainer(db *sql.DB) *Container {
-	return &Container{DB: db}
+func NewContainer(db *sql.DB) Container {
+	return &container{DB: db}
 }

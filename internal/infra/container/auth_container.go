@@ -6,7 +6,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 )
 
-func (c *Container) NewAuthContainer() *authhandler.AuthHandler {
+func (c *container) NewAuth() authhandler.AuthHandler {
 	userRepository := repository.NewUserRepository(c.DB)
 
 	signIncase := authcase.NewLoginUseCase(userRepository)

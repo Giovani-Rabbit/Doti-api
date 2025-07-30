@@ -8,7 +8,7 @@ import (
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 )
 
-func (ah *AuthHandler) SignIn(w http.ResponseWriter, r *http.Request) {
+func (ah *authHandler) SignIn(w http.ResponseWriter, r *http.Request) {
 	res := resp.NewHttpJSONResponse(w)
 
 	var userCredentials authdto.SignInDTO

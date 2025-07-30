@@ -8,7 +8,7 @@ import (
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 )
 
-func (uc *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (uc *userHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	res := resp.NewHttpJSONResponse(w)
 
 	var userDto userdto.CreateUserDTO

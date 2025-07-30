@@ -6,18 +6,18 @@ import (
 	authcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/auth"
 )
 
-type AuthHandler struct {
+type authHandler struct {
 	SignInUseCase authcase.SignInUseCase
 }
 
-type IAuthHandler interface {
+type AuthHandler interface {
 	SignIn(w http.ResponseWriter, r *http.Request)
 }
 
 func NewAuthHandler(
 	signInUseCase authcase.SignInUseCase,
-) *AuthHandler {
-	return &AuthHandler{
+) AuthHandler {
+	return &authHandler{
 		SignInUseCase: signInUseCase,
 	}
 }

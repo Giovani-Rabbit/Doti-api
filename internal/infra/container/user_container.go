@@ -6,7 +6,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 )
 
-func (c *Container) NewUserContainer() *userhandler.UserHandler {
+func (c *container) NewUser() userhandler.UserHandler {
 	userRepository := repository.NewUserRepository(c.DB)
 
 	createUserUseCase := usercase.NewCreateUserUseCase(userRepository)

@@ -9,7 +9,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
 )
 
-func (mh *ModuleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
+func (mh *moduleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
 	res := resp.NewHttpJSONResponse(w)
 
 	var createModuleDTO moduledto.CreateModuleDTO
