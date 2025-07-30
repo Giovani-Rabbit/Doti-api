@@ -13,7 +13,7 @@ import (
 )
 
 type signInUseCase struct {
-	UserRepository repository.IUserRepository
+	UserRepository repository.UserRepository
 }
 
 type SignInUseCase interface {
@@ -23,7 +23,7 @@ type SignInUseCase interface {
 }
 
 func NewLoginUseCase(
-	userRepository repository.IUserRepository,
+	userRepository repository.UserRepository,
 ) SignInUseCase {
 	return &signInUseCase{
 		UserRepository: userRepository,

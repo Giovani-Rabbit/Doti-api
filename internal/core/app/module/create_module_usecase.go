@@ -11,7 +11,7 @@ import (
 )
 
 type createModuleUseCase struct {
-	ModuleRepository repository.IModuleRepository
+	ModuleRepository repository.ModuleRepository
 }
 
 type CreateModuleUseCase interface {
@@ -19,7 +19,7 @@ type CreateModuleUseCase interface {
 }
 
 func NewCreateModuleUseCase(
-	moduleRepo repository.IModuleRepository,
+	moduleRepo repository.ModuleRepository,
 ) CreateModuleUseCase {
 	return &createModuleUseCase{
 		ModuleRepository: moduleRepo,

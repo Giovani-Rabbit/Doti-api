@@ -11,26 +11,26 @@ import (
 	"github.com/google/uuid"
 )
 
-func NewUserRepository(dtb *sql.DB) IUserRepository {
-	return &UserRepository{
-		DB:      dtb,
-		Queries: sqlc.New(dtb),
-	}
-}
-
-type UserRepository struct {
+type userRepository struct {
 	DB      *sql.DB
 	Queries *sqlc.Queries
 }
 
-type IUserRepository interface {
+type UserRepository interface {
 	Create(ctx context.Context, user userDomain.User) (userDomain.User, error)
 	CheckUserExists(ctx context.Context, email string) (bool, error)
 	FindUserByEmail(ctx context.Context, email string) (userDomain.User, error)
 	FindUserByEmailAndPassword(ctx context.Context, args userDomain.User) (userDomain.User, error)
 }
 
-func (ur *UserRepository) Create(
+func NewUserRepository(dtb *sql.DB) UserRepository {
+	return &userRepository{
+		DB:      dtb,
+		Queries: sqlc.New(dtb),
+	}
+}
+
+func (ur *userRepository) Create(
 	ctx context.Context,
 	domainUser userDomain.User,
 ) (userDomain.User, error) {
@@ -53,7 +53,7 @@ func (ur *UserRepository) Create(
 	return mapper.FromCreateUserRow(&userEntity), nil
 }
 
-func (ur *UserRepository) CheckUserExists(
+func (ur *userRepository) CheckUserExists(
 	ctx context.Context,
 	email string,
 ) (bool, error) {
@@ -66,7 +66,7 @@ func (ur *UserRepository) CheckUserExists(
 	return exists, nil
 }
 
-func (ur *UserRepository) FindUserByEmail(
+func (ur *userRepository) FindUserByEmail(
 	ctx context.Context,
 	email string,
 ) (userDomain.User, error) {
@@ -79,7 +79,7 @@ func (ur *UserRepository) FindUserByEmail(
 	return mapper.FromUser(&user), nil
 }
 
-func (ur *UserRepository) FindUserByEmailAndPassword(
+func (ur *userRepository) FindUserByEmailAndPassword(
 	ctx context.Context,
 	args userDomain.User,
 ) (userDomain.User, error) {

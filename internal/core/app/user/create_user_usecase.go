@@ -11,7 +11,7 @@ import (
 )
 
 type createUserUseCase struct {
-	UserRepository repository.IUserRepository
+	UserRepository repository.UserRepository
 }
 
 type CreateUserUseCase interface {
@@ -19,7 +19,7 @@ type CreateUserUseCase interface {
 }
 
 func NewCreateUserUseCase(
-	userRepository repository.IUserRepository,
+	userRepository repository.UserRepository,
 ) CreateUserUseCase {
 	return &createUserUseCase{
 		UserRepository: userRepository,

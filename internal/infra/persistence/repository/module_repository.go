@@ -11,23 +11,23 @@ import (
 	"github.com/google/uuid"
 )
 
-type ModuleRepository struct {
+type moduleRepository struct {
 	DB      *sql.DB
 	Queries *sqlc.Queries
 }
 
-type IModuleRepository interface {
+type ModuleRepository interface {
 	Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error)
 }
 
-func NewModuleRepository(dtb *sql.DB) IModuleRepository {
-	return &ModuleRepository{
+func NewModuleRepository(dtb *sql.DB) ModuleRepository {
+	return &moduleRepository{
 		DB:      dtb,
 		Queries: sqlc.New(dtb),
 	}
 }
 
-func (mr *ModuleRepository) Create(
+func (mr *moduleRepository) Create(
 	ctx context.Context,
 	module moduledomain.Module,
 ) (moduledomain.Module, error) {
