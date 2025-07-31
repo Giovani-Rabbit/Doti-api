@@ -11,7 +11,19 @@ import (
 type MockModuleRepository struct {
 	Modules []sqlc.Module
 
-	CreateFn func(ctx context.Context, module module.Module) (module.Module, error)
+	CreateFn             func(ctx context.Context, module module.Module) (module.Module, error)
+	ListModuleByUserIDFn func(ctx context.Context, userId string) ([]module.Module, error)
+}
+
+func (m *MockModuleRepository) ListModulesByUserID(
+	ctx context.Context,
+	userId string,
+) ([]module.Module, error) {
+	if m.ListModuleByUserIDFn == nil {
+		return nil, errors.New("ListModuleByUserIDFn not implemented")
+	}
+
+	return m.ListModuleByUserIDFn(ctx, userId)
 }
 
 func (m *MockModuleRepository) Create(

@@ -15,7 +15,7 @@ import (
 const createModule = `-- name: CreateModule :one
 INSERT INTO modules (id, user_id, Name, is_open, icon, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7)
-RETURNING id, name, is_open, icon
+RETURNING id, user_id, name, is_open, icon, created_at, updated_at
 `
 
 type CreateModuleParams struct {
@@ -28,14 +28,7 @@ type CreateModuleParams struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type CreateModuleRow struct {
-	ID     uuid.UUID `json:"id"`
-	Name   string    `json:"name"`
-	IsOpen bool      `json:"is_open"`
-	Icon   string    `json:"icon"`
-}
-
-func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (CreateModuleRow, error) {
+func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error) {
 	row := q.db.QueryRowContext(ctx, createModule,
 		arg.ID,
 		arg.UserID,
@@ -45,12 +38,52 @@ func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Cre
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
-	var i CreateModuleRow
+	var i Module
 	err := row.Scan(
 		&i.ID,
+		&i.UserID,
 		&i.Name,
 		&i.IsOpen,
 		&i.Icon,
+		&i.CreatedAt,
+		&i.UpdatedAt,
 	)
 	return i, err
+}
+
+const listModuleByUserID = `-- name: ListModuleByUserID :many
+SELECT id, user_id, name, is_open, icon, created_at, updated_at 
+FROM modules
+WHERE user_id = $1
+`
+
+func (q *Queries) ListModuleByUserID(ctx context.Context, userID uuid.UUID) ([]Module, error) {
+	rows, err := q.db.QueryContext(ctx, listModuleByUserID, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Module
+	for rows.Next() {
+		var i Module
+		if err := rows.Scan(
+			&i.ID,
+			&i.UserID,
+			&i.Name,
+			&i.IsOpen,
+			&i.Icon,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }

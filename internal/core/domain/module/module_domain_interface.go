@@ -14,7 +14,7 @@ type Module interface {
 
 func New(
 	id string,
-	userId string,
+	user_id string,
 	name string,
 	isOpen bool,
 	icon string,
@@ -23,7 +23,7 @@ func New(
 ) Module {
 	return &moduleDomain{
 		id:        id,
-		userId:    userId,
+		userId:    user_id,
 		name:      name,
 		isOpen:    isOpen,
 		icon:      icon,

@@ -18,6 +18,7 @@ type moduleRepository struct {
 
 type ModuleRepository interface {
 	Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error)
+	ListModulesByUserID(ctx context.Context, userId string) ([]moduledomain.Module, error)
 }
 
 func NewModuleRepository(dtb *sql.DB) ModuleRepository {
@@ -53,5 +54,24 @@ func (mr *moduleRepository) Create(
 		return nil, err
 	}
 
-	return mapper.FromCreateModuleRow(&moduleEntity), nil
+	return mapper.ConvertCreateModuleRowToModule(&moduleEntity), nil
+}
+
+func (mr *moduleRepository) ListModulesByUserID(
+	ctx context.Context,
+	userId string,
+) ([]moduledomain.Module, error) {
+	uuidUserId, err := uuid.Parse(userId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	moduleEntities, err := mr.Queries.ListModuleByUserID(ctx, uuidUserId)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mapper.ConvertListModuleByUserIdRowToModules(&moduleEntities), nil
 }
