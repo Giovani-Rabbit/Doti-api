@@ -10,8 +10,10 @@ func (c *container) NewModule() modulehandler.ModuleHandler {
 	moduleRepo := repository.NewModuleRepository(c.DB)
 
 	createModulecase := modulecase.NewCreateModuleUseCase(moduleRepo)
+	getModulescase := modulecase.NewGetModules(moduleRepo)
 
 	return modulehandler.New(
 		createModulecase,
+		getModulescase,
 	)
 }

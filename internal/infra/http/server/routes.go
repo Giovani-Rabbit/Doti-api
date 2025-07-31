@@ -30,5 +30,11 @@ func Routes(DB *sql.DB) (mux *http.ServeMux) {
 		)),
 	)
 
+	mux.Handle("GET /module",
+		middleware.EnsureAuth(http.HandlerFunc(
+			moduleHandler.GetModules,
+		)),
+	)
+
 	return
 }

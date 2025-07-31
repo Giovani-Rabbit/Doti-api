@@ -8,16 +8,20 @@ import (
 
 type moduleHandler struct {
 	CreateModuleUseCase modulecase.CreateModuleUseCase
+	GetModulesUseCase   modulecase.GetModulesUseCase
 }
 
 type ModuleHandler interface {
 	CreateModule(w http.ResponseWriter, r *http.Request)
+	GetModules(w http.ResponseWriter, r *http.Request)
 }
 
 func New(
 	createModulecase modulecase.CreateModuleUseCase,
+	getModulesCase modulecase.GetModulesUseCase,
 ) ModuleHandler {
 	return &moduleHandler{
 		CreateModuleUseCase: createModulecase,
+		GetModulesUseCase:   getModulesCase,
 	}
 }
