@@ -6,6 +6,10 @@ import (
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 )
 
+type ModulesResponse struct {
+	Modules []ModuleListResponse `json:"modules"`
+}
+
 type ModuleListResponse struct {
 	Id        string    `json:"id"`
 	Name      string    `json:"name"`
@@ -17,7 +21,9 @@ type ModuleListResponse struct {
 
 func NewModuleListDTO(
 	modules []moduledomain.Module,
-) (moduleList []ModuleListResponse) {
+) (modulesRes ModulesResponse) {
+	var moduleList = make([]ModuleListResponse, 0, len(modules))
+
 	for _, m := range modules {
 		moduleList = append(
 			moduleList,
@@ -31,5 +37,6 @@ func NewModuleListDTO(
 			},
 		)
 	}
-	return
+
+	return ModulesResponse{Modules: moduleList}
 }
