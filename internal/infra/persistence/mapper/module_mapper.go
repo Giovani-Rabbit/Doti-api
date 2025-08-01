@@ -22,6 +22,8 @@ func ConvertCreateModuleRowToModule(
 func ConvertListModuleByUserIdRowToModules(
 	modules *[]sqlc.Module,
 ) (moduleList []moduledomain.Module) {
+	moduleList = make([]moduledomain.Module, 0, len(*modules))
+
 	for _, m := range *modules {
 		moduleList = append(moduleList, moduledomain.New(
 			m.ID.String(),
