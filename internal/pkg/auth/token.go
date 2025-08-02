@@ -51,6 +51,22 @@ func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *httperr.RestErr) {
 }
 
 func GetAuthenticatedUser(r *http.Request) (*authdomain.AuthClaims, error) {
+	cookieToken, err := GetTokenFromCookie(r)
+
+	if err == nil {
+		return cookieToken, nil
+	}
+
+	headerToken, err := GetTokenFromHeader(r)
+
+	if err == nil {
+		return headerToken, nil
+	}
+
+	return nil, errors.New("no token found")
+}
+
+func GetTokenFromHeader(r *http.Request) (*authdomain.AuthClaims, error) {
 	authHeader := r.Header.Get("Authorization")
 
 	user, err := VerifyToken(authHeader)
@@ -60,4 +76,20 @@ func GetAuthenticatedUser(r *http.Request) (*authdomain.AuthClaims, error) {
 	}
 
 	return user, nil
+}
+
+func GetTokenFromCookie(r *http.Request) (*authdomain.AuthClaims, error) {
+	cookie, err := r.Cookie("access-token")
+
+	if err != nil {
+		return nil, err
+	}
+
+	user, invalid := VerifyToken(cookie.Value)
+
+	if invalid != nil {
+		return nil, err
+	}
+
+	return user, err
 }
