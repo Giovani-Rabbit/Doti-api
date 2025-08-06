@@ -6,21 +6,15 @@ import (
 
 	usercase "github.com/Giovani-Coelho/Doti-API/internal/core/app/user"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
-	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	"github.com/golang/mock/gomock"
 )
 
 func TestCreateUserUseCase(t *testing.T) {
-	mockRepo := &mock_repository.MockUserRepository{
-		CreateFn: func(ctx context.Context, user userdomain.User) (userdomain.User, error) {
-			return user, nil
-		},
-		CheckUserExistsFn: func(ctx context.Context, email string) (bool, error) {
-			return false, nil
-		},
-	}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-	createUser := usercase.NewCreateUserUseCase(mockRepo)
-
+	mockRepo := mocks.NewMockUserRepository(ctrl)
 	ctx := context.Background()
 
 	user := userdomain.NewCreateUser(
@@ -28,6 +22,16 @@ func TestCreateUserUseCase(t *testing.T) {
 		"newuser@example.com",
 		"password123",
 	)
+
+	mockRepo.EXPECT().
+		Create(ctx, user).
+		Return(user, nil)
+
+	mockRepo.EXPECT().
+		CheckUserExists(ctx, "newuser@example.com").
+		Return(false, nil)
+
+	createUser := usercase.NewCreateUserUseCase(mockRepo)
 
 	t.Run("Should be able to create new user successfully", func(t *testing.T) {
 		_, err := createUser.Execute(ctx, user)
@@ -38,11 +42,9 @@ func TestCreateUserUseCase(t *testing.T) {
 	})
 
 	t.Run("Should not be able to create an already existing user", func(t *testing.T) {
-		mockRepo.CheckUserExistsFn = func(
-			ctx context.Context, email string,
-		) (bool, error) {
-			return true, nil
-		}
+		mockRepo.EXPECT().
+			CheckUserExists(ctx, "newuser@example.com").
+			Return(true, nil)
 
 		_, err := createUser.Execute(ctx, user)
 

@@ -3,36 +3,33 @@ package authcase_test
 import (
 	"context"
 	"testing"
-	"time"
 
 	authcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
-	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
+	"github.com/golang/mock/gomock"
 )
 
 func TestSignInUseCase(t *testing.T) {
-	mockRepo := &mock_repository.MockUserRepository{
-		FindUserByEmailAndPasswordFn: func(
-			ctx context.Context, args userdomain.User,
-		) (userdomain.User, error) {
-			return userdomain.New(
-				"1", "giovani",
-				"newuser@example.com",
-				"password123",
-				time.Now(), time.Now(),
-			), nil
-		},
-	}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockRepo := mocks.NewMockUserRepository(ctrl)
 
 	signInCase := authcase.NewLoginUseCase(mockRepo)
 	ctx := context.Background()
 
+	credentials := userdomain.NewSignInUser(
+		"newuserexample@adawd.com",
+		"password123",
+	)
+
+	mockRepo.EXPECT().
+		FindUserByEmailAndPassword(ctx, credentials).
+		Return(credentials, nil)
+
 	t.Run("Should be able to sign-in successfully.", func(t *testing.T) {
-		credentials := userdomain.NewSignInUser(
-			"newuserexample@adawd.com",
-			"password123",
-		)
 
 		loggedUser, token, err := signInCase.Execute(ctx, credentials)
 
