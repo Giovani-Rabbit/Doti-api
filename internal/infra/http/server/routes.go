@@ -24,13 +24,13 @@ func Routes(DB *sql.DB) (mux *http.ServeMux) {
 	mux.HandleFunc("POST /sign-in", authHandler.SignIn)
 
 	// MODULE
-	mux.Handle("POST /module/",
+	mux.Handle("POST /module",
 		middleware.EnsureAuth(http.HandlerFunc(
 			moduleHandler.CreateModule,
 		)),
 	)
 
-	mux.Handle("GET /module/",
+	mux.Handle("GET /module",
 		middleware.EnsureAuth(http.HandlerFunc(
 			moduleHandler.GetModules,
 		)),

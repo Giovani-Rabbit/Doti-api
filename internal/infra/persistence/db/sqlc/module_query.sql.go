@@ -54,7 +54,7 @@ func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Mod
 const listModuleByUserID = `-- name: ListModuleByUserID :many
 SELECT id, user_id, name, is_open, icon, created_at, updated_at 
 FROM modules
-WHERE user_id = $1
+WHERE user_id = $1 ORDER BY created_at ASC
 `
 
 func (q *Queries) ListModuleByUserID(ctx context.Context, userID uuid.UUID) ([]Module, error) {

@@ -6,7 +6,7 @@ RETURNING id, user_id, name, is_open, icon, created_at, updated_at;
 -- name: ListModuleByUserID :many
 SELECT id, user_id, name, is_open, icon, created_at, updated_at 
 FROM modules
-WHERE user_id = $1;
+WHERE user_id = $1 ORDER BY created_at ASC;
 
 -- name: UpdateModuleName :exec
 UPDATE modules 
