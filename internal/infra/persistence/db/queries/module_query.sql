@@ -7,3 +7,8 @@ RETURNING id, user_id, name, is_open, icon, created_at, updated_at;
 SELECT id, user_id, name, is_open, icon, created_at, updated_at 
 FROM modules
 WHERE user_id = $1;
+
+-- name: UpdateModuleName :exec
+UPDATE modules 
+SET name = $2
+WHERE id = $1;

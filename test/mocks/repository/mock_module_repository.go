@@ -13,6 +13,7 @@ type MockModuleRepository struct {
 
 	CreateFn             func(ctx context.Context, module module.Module) (module.Module, error)
 	ListModuleByUserIDFn func(ctx context.Context, userId string) ([]module.Module, error)
+	UpdateModuleNameFn   func(ctx context.Context, id string, name string) error
 }
 
 func (m *MockModuleRepository) ListModulesByUserID(
@@ -35,4 +36,15 @@ func (m *MockModuleRepository) Create(
 	}
 
 	return m.CreateFn(ctx, module)
+}
+
+func (m *MockModuleRepository) UpdateModuleName(
+	ctx context.Context,
+	id string, name string,
+) error {
+	if m.UpdateModuleNameFn == nil {
+		return errors.New("UpdateModuleNameFn not implemented")
+	}
+
+	return m.UpdateModuleNameFn(ctx, id, name)
 }

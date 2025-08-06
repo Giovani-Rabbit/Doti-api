@@ -18,7 +18,7 @@ type getModulesUseCase struct {
 	moduleRepo repository.ModuleRepository
 }
 
-func NewGetModules(
+func NewGetModulesUseCase(
 	moduleRepo repository.ModuleRepository,
 ) GetModulesUseCase {
 	return &getModulesUseCase{

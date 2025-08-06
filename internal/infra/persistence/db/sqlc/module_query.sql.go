@@ -87,3 +87,19 @@ func (q *Queries) ListModuleByUserID(ctx context.Context, userID uuid.UUID) ([]M
 	}
 	return items, nil
 }
+
+const updateModuleName = `-- name: UpdateModuleName :exec
+UPDATE modules 
+SET name = $2
+WHERE id = $1
+`
+
+type UpdateModuleNameParams struct {
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
+}
+
+func (q *Queries) UpdateModuleName(ctx context.Context, arg UpdateModuleNameParams) error {
+	_, err := q.db.ExecContext(ctx, updateModuleName, arg.ID, arg.Name)
+	return err
+}
