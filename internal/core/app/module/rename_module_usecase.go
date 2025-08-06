@@ -40,7 +40,7 @@ func (rm *renameModuleUsecase) Execute(
 			zap.String("journey", "renameModule"),
 		)
 
-		return moduledomain.ErrRenamingModule()
+		return moduledomain.ErrRenamingModule(err)
 	}
 
 	logger.Info("Module renamed successfully",
