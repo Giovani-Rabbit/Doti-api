@@ -4,8 +4,6 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
-	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
-	authdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
@@ -45,7 +43,7 @@ func (su *signInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, "", apperr.ErrSignInValuesMissing()
+		return nil, "", userdomain.ErrSignInValuesMissing()
 	}
 
 	if !userEntity.IsValidEmail() {
@@ -54,7 +52,7 @@ func (su *signInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, "", apperr.ErrInvalidUserEmailFormat()
+		return nil, "", userdomain.ErrInvalidUserEmailFormat()
 	}
 
 	userEntity.EncryptPassword()
@@ -66,7 +64,7 @@ func (su *signInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, "", apperr.ErrCouldNotFindUser()
+		return nil, "", userdomain.ErrCouldNotFindUser()
 	}
 
 	token, err := authpkg.GenerateToken(user)
@@ -77,7 +75,7 @@ func (su *signInUseCase) Execute(
 			zap.String("journey", "sign-in"),
 		)
 
-		return nil, "", authdomain.ErrGeneratingToken()
+		return nil, "", userdomain.ErrGeneratingToken()
 	}
 
 	logger.Info(

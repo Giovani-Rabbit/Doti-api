@@ -4,6 +4,7 @@ import (
 	"context"
 
 	authdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/auth"
+	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 )
 
 type contextKey int
@@ -14,7 +15,7 @@ func GetAuthenticatedUserFromContext(ctx context.Context) (*authdomain.AuthClaim
 	user, ok := ctx.Value(authenticatedUserKey).(*authdomain.AuthClaims)
 
 	if !ok || user == nil {
-		return nil, authdomain.ErrGetUserFromContext()
+		return nil, userdomain.ErrGetUserFromContext()
 	}
 
 	return user, nil

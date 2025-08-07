@@ -1,14 +1,29 @@
-package apperr
+package userdomain
 
 import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 const (
-	SttUserAlreadyExists      = "USER_ALREADY_EXISTS"
 	SttCouldNotFindUser       = "COULD_NOT_FIND_USER"
-	SttUserValuesMissing      = "USER_VALUES_MISSING"
 	SttInvalidUserEmailFormat = "INVALID_USER_EMAIL_FORMAT"
 	SttInvalidPassword        = "INVALID_PASSWORD"
+	SttErrorGeneratingToken   = "ERROR_GENERATIONG_TOKEN"
+	SttUserValuesMissing      = "USER_VALUES_MISSING"
+	SttUserAlreadyExists      = "USER_ALREADY_EXISTS"
 )
+
+func ErrGeneratingToken() *http.RestErr {
+	return http.NewBadRequestError(
+		SttErrorGeneratingToken,
+		"error generating token",
+	)
+}
+
+func ErrGetUserFromContext() *http.RestErr {
+	return http.NewBadRequestError(
+		"INTERNAL_ERROR",
+		"Error retrieving user data via token",
+	)
+}
 
 func ErrUserAlreadyExists() *http.RestErr {
 	return http.NewBadRequestError(

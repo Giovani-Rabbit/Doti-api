@@ -4,7 +4,6 @@ import (
 	"context"
 	"testing"
 
-	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
 	usercase "github.com/Giovani-Coelho/Doti-API/internal/core/app/user"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
@@ -63,7 +62,7 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("An Error was expected. But we got nil")
 		}
 
-		if err.Status != apperr.SttUserValuesMissing {
+		if err.Status != userdomain.SttUserValuesMissing {
 			t.Fatalf("Expected values missing error, got %s:", err.Status)
 		}
 	})
@@ -83,7 +82,7 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("An Error was expected. But we got nil")
 		}
 
-		if err.Status != apperr.SttInvalidPassword {
+		if err.Status != userdomain.SttInvalidPassword {
 			t.Fatalf("Expected invalid password error")
 		}
 	})
@@ -101,7 +100,7 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("An Error was expected. But we got nil")
 		}
 
-		if err.Status != apperr.SttInvalidUserEmailFormat {
+		if err.Status != userdomain.SttInvalidUserEmailFormat {
 			t.Fatalf("Expected invalid email format error, gor: %s", err)
 		}
 	})
