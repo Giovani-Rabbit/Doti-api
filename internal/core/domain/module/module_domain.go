@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/google/uuid"
+	val "github.com/Giovani-Coelho/Doti-API/internal/pkg/validator"
 )
 
 type moduleDomain struct {
@@ -26,10 +26,10 @@ func (md *moduleDomain) GetCreateAt() time.Time  { return md.createdAt }
 func (md *moduleDomain) GetUpdatedAt() time.Time { return md.updatedAt }
 
 func (md *moduleDomain) IsValid() error {
-	_, err := uuid.Parse(md.GetUserId())
+	err := val.IsValidUUID(md.userId)
 
-	if err != nil {
-		return err
+	if !err {
+		return errors.New("invalid user id format")
 	}
 
 	if md.icon == "" || md.name == "" {

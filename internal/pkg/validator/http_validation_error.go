@@ -1,11 +1,19 @@
-package apperr
+package val
 
 import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 const (
-	SttInternalServerError  = "INTERNAL_SERVER_ERROR"
 	SttFieldValidationError = "FIELD_VALIDATION_ERROR"
+	SttInternalServerError  = "INTERNAL_SERVER_ERROR"
+	SttInvalidUUID          = "INVALID_UUID"
 )
+
+func ErrInvalidUUID() *http.RestErr {
+	return http.NewBadRequestError(
+		SttInvalidUUID,
+		"id format invalid",
+	)
+}
 
 func ErrValidationDomain(err error) *http.RestErr {
 	return http.NewBadRequestError(
