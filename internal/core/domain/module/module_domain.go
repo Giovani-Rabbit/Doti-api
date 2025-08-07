@@ -32,7 +32,7 @@ func (md *moduleDomain) IsValid() error {
 		return err
 	}
 
-	if md.icon == "" || md.name == "" {
+	if md.userId == "" || md.icon == "" || md.name == "" {
 		return errors.New("missing required fields")
 	}
 

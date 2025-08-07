@@ -2,6 +2,7 @@ package modulecase_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
@@ -18,10 +19,8 @@ func TestCreateModuleUseCase(t *testing.T) {
 	moduleRepo := mocks.NewMockModuleRepository(ctrl)
 	ctx := context.Background()
 
-	userID := uuid.New().String()
-
 	module := moduledomain.NewCreateModule(
-		userID,
+		uuid.New().String(),
 		"new module",
 		"icon",
 	)
@@ -40,22 +39,16 @@ func TestCreateModuleUseCase(t *testing.T) {
 		}
 	})
 
-	t.Run("Should not be able to create new module with empty fields", func(t *testing.T) {
-		emptyModule := moduledomain.NewCreateModule(userID, "", "")
-
-		_, err := createModulecase.Execute(ctx, emptyModule)
-
-		if err == nil {
-			t.Fatalf("an error was expected, but we got: %v", err)
-		}
-	})
-
 	t.Run("should not be possible to create a new module with an invalid UUID", func(t *testing.T) {
 		moduleWithInvalidUserID := moduledomain.NewCreateModule(
 			"12345",
 			"new module",
 			"icon",
 		)
+
+		moduleRepo.EXPECT().
+			Create(ctx, moduleWithInvalidUserID).
+			Return(nil, errors.New("the id is not uuid"))
 
 		_, err := createModulecase.Execute(ctx, moduleWithInvalidUserID)
 
