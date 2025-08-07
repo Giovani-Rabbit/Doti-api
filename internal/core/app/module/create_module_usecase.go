@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
+	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/domain/errors"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
-	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"go.uber.org/zap"
 )
 
@@ -34,6 +34,15 @@ func (mu *createModuleUseCase) Execute(
 		zap.String("journey", "createModule"),
 	)
 
+	if err := moduleEntity.IsValid(); err != nil {
+		logger.Error(
+			"Validation domain error", nil,
+			zap.String("journey", "createModule"),
+		)
+
+		return nil, apperr.ErrValidationDomain(err)
+	}
+
 	moduleCreated, err := mu.ModuleRepository.Create(ctx, moduleEntity)
 
 	if err != nil {
@@ -42,8 +51,8 @@ func (mu *createModuleUseCase) Execute(
 			zap.String("journey", "createModule"),
 		)
 
-		return nil, http.NewInternalServerError(
-			"Internal error saving module",
+		return nil, apperr.ErrInternal(
+			"Error saving module", err,
 		)
 	}
 

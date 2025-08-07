@@ -2,39 +2,37 @@ package modulecase_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
-	mock "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
 
 func TestCreateModuleUseCase(t *testing.T) {
-	module := &mock.MockModuleRepository{
-		CreateFn: func(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error) {
-			_, err := uuid.Parse(module.GetUserId())
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-			if err != nil {
-				return nil, err
-			}
-
-			return module, nil
-		},
-	}
-
-	createModule := modulecase.NewCreateModuleUseCase(module)
-
+	moduleRepo := mocks.NewMockModuleRepository(ctrl)
 	ctx := context.Background()
 
-	newModule := moduledomain.NewCreateModule(
-		"146681af-2cee-493a-a145-d23609ae056d",
-		"Math",
-		"PI",
+	module := moduledomain.NewCreateModule(
+		uuid.New().String(),
+		"new module",
+		"icon",
 	)
 
+	moduleRepo.EXPECT().
+		Create(ctx, module).
+		Return(module, nil)
+
+	createModulecase := modulecase.NewCreateModuleUseCase(moduleRepo)
+
 	t.Run("Should be able to create new module successfully", func(t *testing.T) {
-		_, err := createModule.Execute(ctx, newModule)
+		_, err := createModulecase.Execute(ctx, module)
 
 		if err != nil {
 			t.Fatalf("expected no error, but we got: %v", err)
@@ -44,11 +42,15 @@ func TestCreateModuleUseCase(t *testing.T) {
 	t.Run("should not be possible to create a new module with an invalid UUID", func(t *testing.T) {
 		moduleWithInvalidUserID := moduledomain.NewCreateModule(
 			"12345",
-			"Math",
-			"PI",
+			"new module",
+			"icon",
 		)
 
-		_, err := createModule.Execute(ctx, moduleWithInvalidUserID)
+		moduleRepo.EXPECT().
+			Create(ctx, moduleWithInvalidUserID).
+			Return(nil, errors.New("the id is not uuid"))
+
+		_, err := createModulecase.Execute(ctx, moduleWithInvalidUserID)
 
 		if err == nil {
 			t.Fatalf("expected error, but we got: %v", err)

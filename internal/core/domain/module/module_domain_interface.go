@@ -10,6 +10,8 @@ type Module interface {
 	GetIcon() string
 	GetCreateAt() time.Time
 	GetUpdatedAt() time.Time
+
+	IsValid() error
 }
 
 func New(

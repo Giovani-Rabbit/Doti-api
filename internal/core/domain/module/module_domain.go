@@ -1,6 +1,11 @@
 package moduledomain
 
-import "time"
+import (
+	"errors"
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type moduleDomain struct {
 	id        string
@@ -19,3 +24,17 @@ func (md *moduleDomain) GetIsOpen() bool         { return md.isOpen }
 func (md *moduleDomain) GetIcon() string         { return md.icon }
 func (md *moduleDomain) GetCreateAt() time.Time  { return md.createdAt }
 func (md *moduleDomain) GetUpdatedAt() time.Time { return md.updatedAt }
+
+func (md *moduleDomain) IsValid() error {
+	_, err := uuid.Parse(md.GetUserId())
+
+	if err != nil {
+		return err
+	}
+
+	if md.userId == "" || md.icon == "" || md.name == "" {
+		return errors.New("missing required fields")
+	}
+
+	return nil
+}
