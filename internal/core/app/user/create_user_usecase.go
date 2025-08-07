@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
+	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
@@ -40,7 +41,7 @@ func (us *createUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, userdomain.ErrUserValuesMissing()
+		return nil, apperr.ErrUserValuesMissing()
 	}
 
 	if err := userEntity.ValidatePassword(); err != nil {
@@ -49,7 +50,7 @@ func (us *createUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, userdomain.ErrInvalidPassword(err)
+		return nil, apperr.ErrInvalidPassword(err)
 	}
 
 	userEntity.EncryptPassword()
@@ -60,7 +61,7 @@ func (us *createUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, userdomain.ErrInvalidUserEmailFormat()
+		return nil, apperr.ErrInvalidUserEmailFormat()
 	}
 
 	userAlreadyExists, _ := us.UserRepository.CheckUserExists(
@@ -73,7 +74,7 @@ func (us *createUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, userdomain.ErrUserAlreadyExists()
+		return nil, apperr.ErrUserAlreadyExists()
 	}
 
 	userCreated, err := us.UserRepository.Create(ctx, userEntity)

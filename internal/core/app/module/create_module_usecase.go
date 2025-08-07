@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
-	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/domain/errors"
+	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	"go.uber.org/zap"

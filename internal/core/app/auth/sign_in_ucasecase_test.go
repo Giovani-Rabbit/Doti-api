@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	authcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/auth"
+	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
@@ -60,7 +61,7 @@ func TestSignInUseCase(t *testing.T) {
 			t.Fatalf("expected no error, but we got: %v", err)
 		}
 
-		if err.Status != userdomain.SttUserValuesMissing {
+		if err.Status != apperr.SttUserValuesMissing {
 			t.Fatalf("Expected error: USER_VALUES_MISSING, got %s", err.Status)
 		}
 	})
@@ -73,7 +74,7 @@ func TestSignInUseCase(t *testing.T) {
 			t.Fatalf("expected no error, but we got: %v", err)
 		}
 
-		if err.Status != userdomain.SttInvalidUserEmailFormat {
+		if err.Status != apperr.SttInvalidUserEmailFormat {
 			t.Fatalf("Expected error: INVALID_USER_EMAIL_FORMAT, got %s", err.Status)
 		}
 	})

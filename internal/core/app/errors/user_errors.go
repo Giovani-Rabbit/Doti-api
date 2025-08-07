@@ -1,4 +1,4 @@
-package userdomain
+package apperr
 
 import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 

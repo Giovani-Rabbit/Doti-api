@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
+	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	"go.uber.org/zap"
@@ -40,7 +41,7 @@ func (gm *getModulesUseCase) Execute(
 			zap.String("journey", "getModule"),
 		)
 
-		return nil, moduledomain.ErrGettingModule(err)
+		return nil, apperr.ErrGettingModule(err)
 	}
 
 	logger.Info("getModule executed successfully",

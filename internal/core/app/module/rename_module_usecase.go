@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
-	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
+	apperr "github.com/Giovani-Coelho/Doti-API/internal/core/app/errors"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	"go.uber.org/zap"
 )
@@ -40,7 +40,7 @@ func (rm *renameModuleUsecase) Execute(
 			zap.String("journey", "renameModule"),
 		)
 
-		return moduledomain.ErrRenamingModule(err)
+		return apperr.ErrRenamingModule(err)
 	}
 
 	logger.Info("Module renamed successfully",
