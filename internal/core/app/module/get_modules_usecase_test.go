@@ -6,13 +6,16 @@ import (
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
-	mock_repository "github.com/Giovani-Coelho/Doti-API/test/mocks/repository"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
 
 func TestGetModulesUseCase(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-	var uuiduserId = uuid.New()
+	var uuiduserId = uuid.New().String()
 	var modules []moduledomain.Module
 
 	modulesQuantity := 6
@@ -21,25 +24,24 @@ func TestGetModulesUseCase(t *testing.T) {
 		modules = append(
 			modules,
 			moduledomain.NewCreateModule(
-				uuiduserId.String(),
+				uuiduserId,
 				"module",
 				"icon",
 			),
 		)
 	}
 
-	moduleRepo := mock_repository.MockModuleRepository{
-		ListModuleByUserIDFn: func(ctx context.Context, userId string) ([]moduledomain.Module, error) {
-			return modules, nil
-		},
-	}
-
-	getModules := modulecase.NewGetModulesUseCase(&moduleRepo)
+	moduleRepo := mocks.NewMockModuleRepository(ctrl)
+	getModules := modulecase.NewGetModulesUseCase(moduleRepo)
 
 	ctx := context.Background()
 
 	t.Run("Should be able to list modules", func(t *testing.T) {
-		modulesList, err := getModules.Execute(ctx, uuiduserId.String())
+		moduleRepo.EXPECT().
+			ListModulesByUserID(ctx, uuiduserId).
+			Return(modules, nil)
+
+		modulesList, err := getModules.Execute(ctx, uuiduserId)
 
 		if err != nil {
 			t.Fatalf("expected no error, but we got: %v", err)
