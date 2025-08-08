@@ -7,6 +7,7 @@ import (
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
@@ -26,27 +27,17 @@ func TestCreateModuleUseCase(t *testing.T) {
 		"icon",
 	)
 
-	moduleRepo.EXPECT().
-		Create(ctx, module).
-		Return(module, nil)
-
 	createModulecase := modulecase.NewCreateModuleUseCase(moduleRepo)
 
 	t.Run("Should be able to create new module successfully", func(t *testing.T) {
+		moduleRepo.EXPECT().
+			Create(ctx, module).
+			Return(module, nil)
+
 		_, err := createModulecase.Execute(ctx, module)
 
 		if err != nil {
 			t.Fatalf("expected no error, but we got: %v", err)
-		}
-	})
-
-	t.Run("Should not be able to create new module with empty fields", func(t *testing.T) {
-		emptyModule := moduledomain.NewCreateModule(userID, "", "")
-
-		_, err := createModulecase.Execute(ctx, emptyModule)
-
-		if err == nil {
-			t.Fatalf("an error was expected, but we got: %v", err)
 		}
 	})
 
@@ -61,6 +52,28 @@ func TestCreateModuleUseCase(t *testing.T) {
 
 		if err == nil {
 			t.Fatalf("expected error, but we got: %v", err)
+		}
+
+		sttErr := err.(*http.RestErr).Status
+
+		if sttErr != moduledomain.SttInvalidUserID {
+			t.Fatalf("an error of the type INVALID_USER_ID was expected, but we got: %v", sttErr)
+		}
+	})
+
+	t.Run("Should not be able to create new module with empty fields", func(t *testing.T) {
+		emptyModule := moduledomain.NewCreateModule(userID, "", "")
+
+		_, err := createModulecase.Execute(ctx, emptyModule)
+
+		if err == nil {
+			t.Fatalf("an error was expected, but we got: %v", err)
+		}
+
+		sttErr := err.(*http.RestErr).Status
+
+		if sttErr != moduledomain.SttInvalidModuleFields {
+			t.Fatalf("an error of the type INVALID_MODULE_FIELDS was expected, but we got: %v", sttErr)
 		}
 	})
 }

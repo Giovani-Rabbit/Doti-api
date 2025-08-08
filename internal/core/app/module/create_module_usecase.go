@@ -7,6 +7,7 @@ import (
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+	val "github.com/Giovani-Coelho/Doti-API/internal/pkg/validator"
 	"go.uber.org/zap"
 )
 
@@ -34,13 +35,22 @@ func (mu *createModuleUseCase) Execute(
 		zap.String("journey", "createModule"),
 	)
 
-	if err := moduleEntity.IsValid(); err != nil {
+	if !val.IsValidUUID(moduleEntity.GetUserId()) {
+		logger.Error(
+			"User id validation error", nil,
+			zap.String("journey", "createModule"),
+		)
+
+		return nil, moduledomain.ErrInvalidUserId()
+	}
+
+	if !moduleEntity.IsValid() {
 		logger.Error(
 			"Module validation error", nil,
 			zap.String("journey", "createModule"),
 		)
 
-		return nil, moduledomain.ErrInvalidModuleFields(err)
+		return nil, moduledomain.ErrInvalidModuleFields()
 	}
 
 	moduleCreated, err := mu.ModuleRepository.Create(ctx, moduleEntity)

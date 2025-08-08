@@ -11,7 +11,7 @@ type Module interface {
 	GetCreateAt() time.Time
 	GetUpdatedAt() time.Time
 
-	IsValid() error
+	IsValid() bool
 }
 
 func New(

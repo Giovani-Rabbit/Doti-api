@@ -1,11 +1,8 @@
 package moduledomain
 
 import (
-	"errors"
 	"strings"
 	"time"
-
-	val "github.com/Giovani-Coelho/Doti-API/internal/pkg/validator"
 )
 
 type moduleDomain struct {
@@ -46,16 +43,6 @@ func (md *moduleDomain) GetUpdatedAt() time.Time {
 	return md.updatedAt
 }
 
-func (md *moduleDomain) IsValid() error {
-	err := val.IsValidUUID(md.userId)
-
-	if !err {
-		return errors.New("invalid user id format")
-	}
-
-	if strings.TrimSpace(md.icon) == "" || strings.TrimSpace(md.name) == "" {
-		return errors.New("missing required fields")
-	}
-
-	return nil
+func (md *moduleDomain) IsValid() bool {
+	return strings.TrimSpace(md.icon) != "" && strings.TrimSpace(md.name) != ""
 }

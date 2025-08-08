@@ -23,17 +23,17 @@ func TestCreateUserUseCase(t *testing.T) {
 		"password123",
 	)
 
-	mockRepo.EXPECT().
-		Create(ctx, user).
-		Return(user, nil)
-
-	mockRepo.EXPECT().
-		CheckUserExists(ctx, "newuser@example.com").
-		Return(false, nil)
-
 	createUser := usercase.NewCreateUserUseCase(mockRepo)
 
 	t.Run("Should be able to create new user successfully", func(t *testing.T) {
+		mockRepo.EXPECT().
+			Create(ctx, user).
+			Return(user, nil)
+
+		mockRepo.EXPECT().
+			CheckUserExists(ctx, "newuser@example.com").
+			Return(false, nil)
+
 		_, err := createUser.Execute(ctx, user)
 
 		if err != nil {
@@ -53,8 +53,8 @@ func TestCreateUserUseCase(t *testing.T) {
 		}
 	})
 
-	t.Run("Should not be able to create user without credentials", func(t *testing.T) {
-		userInvalidPassword := userdomain.NewCreateUser("", "", "")
+	t.Run("Should not be able to create user with missing values", func(t *testing.T) {
+		userInvalidPassword := userdomain.NewCreateUser("", "   ", "")
 
 		_, err := createUser.Execute(ctx, userInvalidPassword)
 
