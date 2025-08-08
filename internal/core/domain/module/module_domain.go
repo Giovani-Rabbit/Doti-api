@@ -2,6 +2,7 @@ package moduledomain
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	val "github.com/Giovani-Coelho/Doti-API/internal/pkg/validator"
@@ -17,13 +18,33 @@ type moduleDomain struct {
 	updatedAt time.Time
 }
 
-func (md *moduleDomain) GetID() string           { return md.id }
-func (md *moduleDomain) GetUserId() string       { return md.userId }
-func (md *moduleDomain) GetName() string         { return md.name }
-func (md *moduleDomain) GetIsOpen() bool         { return md.isOpen }
-func (md *moduleDomain) GetIcon() string         { return md.icon }
-func (md *moduleDomain) GetCreateAt() time.Time  { return md.createdAt }
-func (md *moduleDomain) GetUpdatedAt() time.Time { return md.updatedAt }
+func (md *moduleDomain) GetID() string {
+	return md.id
+
+}
+func (md *moduleDomain) GetUserId() string {
+	return md.userId
+}
+
+func (md *moduleDomain) GetName() string {
+	return md.name
+}
+
+func (md *moduleDomain) GetIsOpen() bool {
+	return md.isOpen
+}
+
+func (md *moduleDomain) GetIcon() string {
+	return md.icon
+}
+
+func (md *moduleDomain) GetCreateAt() time.Time {
+	return md.createdAt
+}
+
+func (md *moduleDomain) GetUpdatedAt() time.Time {
+	return md.updatedAt
+}
 
 func (md *moduleDomain) IsValid() error {
 	err := val.IsValidUUID(md.userId)
@@ -32,7 +53,7 @@ func (md *moduleDomain) IsValid() error {
 		return errors.New("invalid user id format")
 	}
 
-	if md.icon == "" || md.name == "" {
+	if strings.TrimSpace(md.icon) == "" || strings.TrimSpace(md.name) == "" {
 		return errors.New("missing required fields")
 	}
 

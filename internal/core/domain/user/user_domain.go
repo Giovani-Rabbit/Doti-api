@@ -2,6 +2,7 @@ package userdomain
 
 import (
 	"net/mail"
+	"strings"
 	"time"
 )
 
@@ -25,7 +26,9 @@ func (u *userDomain) GetUpdatedAt() time.Time     { return u.updatedAt }
 func (u *userDomain) setPassword(password string) { u.password = password }
 
 func (u *userDomain) IsValid() bool {
-	return u.name != "" && u.email != "" && u.password != ""
+	return strings.TrimSpace(u.name) != "" &&
+		strings.TrimSpace(u.email) != "" &&
+		strings.TrimSpace(u.password) != ""
 }
 
 func (ud *userDomain) IsValidEmail() bool {

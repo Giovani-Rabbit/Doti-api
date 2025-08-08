@@ -42,7 +42,7 @@ func ErrCouldNotFindUser() *http.RestErr {
 func ErrUserValuesMissing() *http.RestErr {
 	return http.NewBadRequestError(
 		SttUserValuesMissing,
-		"User values are missing",
+		"Missing required fields. Please check that all required fields are provided.",
 	)
 }
 

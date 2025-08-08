@@ -22,6 +22,15 @@ func NewBadRequestError(status string, message string) *RestErr {
 	}
 }
 
+func ErrInternal(msg string, err error) *RestErr {
+	return &RestErr{
+		Message: msg,
+		Status:  "INTERNAL_ERROR",
+		Err:     err.Error(),
+		Code:    http.StatusBadRequest,
+	}
+}
+
 func NewRestError(status string, message string, err error) *RestErr {
 	return &RestErr{
 		Message: message,

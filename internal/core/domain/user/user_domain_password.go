@@ -5,17 +5,25 @@ import (
 	"encoding/hex"
 	"errors"
 	"regexp"
+	"strings"
 )
 
 func (ud *userDomain) EncryptPassword() {
 	hash := md5.New()
 
 	defer hash.Reset()
-	hash.Write([]byte(ud.GetPassword()))
+	hash.Write([]byte(strings.TrimSpace(
+		ud.GetPassword(),
+	)))
+
 	ud.setPassword(hex.EncodeToString(hash.Sum(nil)))
 }
 
 func (ud *userDomain) ValidatePassword() error {
+	if strings.TrimSpace(ud.password) == "" {
+		return errors.New("the password cannot be empty")
+	}
+
 	if len(ud.password) < 4 {
 		return errors.New("password must be at least 4 characters")
 	}
