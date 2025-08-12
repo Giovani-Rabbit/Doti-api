@@ -6,7 +6,7 @@ import (
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
@@ -31,7 +31,7 @@ func TestGetModulesUseCase(t *testing.T) {
 		)
 	}
 
-	moduleRepo := mocks.NewMockModuleRepository(ctrl)
+	moduleRepo := mock_repository.NewMockModuleRepository(ctrl)
 	getModules := modulecase.NewGetModulesUseCase(moduleRepo)
 
 	ctx := context.Background()

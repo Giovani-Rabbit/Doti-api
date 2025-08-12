@@ -6,7 +6,7 @@ import (
 
 	authcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
 	"github.com/golang/mock/gomock"
 )
@@ -15,7 +15,7 @@ func TestSignInUseCase(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockRepo := mocks.NewMockUserRepository(ctrl)
+	mockRepo := mock_repository.NewMockUserRepository(ctrl)
 
 	signInCase := authcase.NewLoginUseCase(mockRepo)
 	ctx := context.Background()

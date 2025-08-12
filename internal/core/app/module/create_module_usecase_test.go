@@ -6,7 +6,7 @@ import (
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
@@ -16,7 +16,7 @@ func TestCreateModuleUseCase(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	moduleRepo := mocks.NewMockModuleRepository(ctrl)
+	moduleRepo := mock_repository.NewMockModuleRepository(ctrl)
 	ctx := context.Background()
 
 	userID := uuid.New().String()

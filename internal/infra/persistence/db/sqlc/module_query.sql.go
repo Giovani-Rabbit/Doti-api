@@ -51,6 +51,15 @@ func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Mod
 	return i, err
 }
 
+const deleteModule = `-- name: DeleteModule :exec
+DELETE FROM modules WHERE id = $1
+`
+
+func (q *Queries) DeleteModule(ctx context.Context, id uuid.UUID) error {
+	_, err := q.db.ExecContext(ctx, deleteModule, id)
+	return err
+}
+
 const listModuleByUserID = `-- name: ListModuleByUserID :many
 SELECT id, user_id, name, is_open, icon, created_at, updated_at 
 FROM modules

@@ -20,6 +20,7 @@ type ModuleRepository interface {
 	Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error)
 	ListModulesByUserID(ctx context.Context, userId string) ([]moduledomain.Module, error)
 	UpdateModuleName(ctx context.Context, id string, name string) error
+	DeleteModule(ctx context.Context, id string) error
 }
 
 func NewModuleRepository(dtb *sql.DB) ModuleRepository {
@@ -92,6 +93,24 @@ func (mr *moduleRepository) UpdateModuleName(
 		ID:   moduleId,
 		Name: name,
 	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (mr *moduleRepository) DeleteModule(
+	ctx context.Context, id string,
+) error {
+	moduleId, err := uuid.Parse(id)
+
+	if err != nil {
+		return err
+	}
+
+	err = mr.Queries.DeleteModule(ctx, moduleId)
 
 	if err != nil {
 		return err

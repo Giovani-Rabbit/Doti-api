@@ -6,7 +6,7 @@ import (
 
 	usercase "github.com/Giovani-Coelho/Doti-API/internal/core/app/user"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
+	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func TestCreateUserUseCase(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockRepo := mocks.NewMockUserRepository(ctrl)
+	mockRepo := mock_repository.NewMockUserRepository(ctrl)
 	ctx := context.Background()
 
 	user := userdomain.NewCreateUser(

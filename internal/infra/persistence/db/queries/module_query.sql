@@ -12,3 +12,6 @@ WHERE user_id = $1 ORDER BY created_at ASC;
 UPDATE modules 
 SET name = $2
 WHERE id = $1;
+
+-- name: DeleteModule :exec
+DELETE FROM modules WHERE id = $1;
