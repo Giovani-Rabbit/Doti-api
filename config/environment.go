@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type Envirounment struct {
+type envirounment struct {
 	DbDatabase string
 	DbPassword string
 	DbPort     int
@@ -20,14 +20,14 @@ type Envirounment struct {
 
 var Env = newEnvirounment()
 
-func newEnvirounment() *Envirounment {
+func newEnvirounment() *envirounment {
 	err := godotenv.Load()
 
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	return &Envirounment{
+	return &envirounment{
 		DbDatabase: os.Getenv("DB_DATABASE"),
 		DbPassword: os.Getenv("DB_PASSWORD"),
 		DbPort:     getEnvirounmentVariableAsInt("DB_PORT"),
