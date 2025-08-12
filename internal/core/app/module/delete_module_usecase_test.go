@@ -2,6 +2,7 @@ package modulecase_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
@@ -21,29 +22,58 @@ func TestDeleteModuleUseCase(t *testing.T) {
 
 	ctx := context.Background()
 
-	t.Run("Should be able to delete a module by id", func(t *testing.T) {
+	t.Run("Should delete module successfully", func(t *testing.T) {
 		moduleID := uuid.New().String()
 
-		moduleRepo.EXPECT().DeleteModule(ctx, moduleID)
-		err := deleteModuleCase.Execute(ctx, moduleID)
+		moduleRepo.EXPECT().DeleteModule(gomock.Any(), moduleID)
 
+		err := deleteModuleCase.Execute(ctx, moduleID)
 		if err != nil {
-			t.Fatalf("The error was not expected, but we got: %s", err)
+			t.Fatalf("Expected nil error, got %v", err)
 		}
 	})
 
-	t.Run("Should not be able to delete a module with an invalid id", func(t *testing.T) {
+	t.Run("Should return error if id is invalid", func(t *testing.T) {
 		moduleID := "12345"
+
+		err := deleteModuleCase.Execute(ctx, moduleID)
+		if err == nil {
+			t.Fatal("Expected an error for invalid module id, but got nil")
+		}
+
+		restErr, ok := err.(*http.RestErr)
+		if !ok {
+			t.Fatalf("Expected error of type RestErr, but got: %T", err)
+		}
+
+		if restErr.Status != moduledomain.SttInvalidModuleID {
+			t.Fatalf(
+				"An status error of INVALID_MODULE_ID was expected, but we got: %s",
+				restErr.Status,
+			)
+		}
+	})
+
+	t.Run("Should return error if repository fails", func(t *testing.T) {
+		moduleID := uuid.New().String()
+
+		moduleRepo.EXPECT().
+			DeleteModule(gomock.Any(), moduleID).
+			Return(errors.New("db error"))
+
 		err := deleteModuleCase.Execute(ctx, moduleID)
 
 		if err == nil {
-			t.Fatalf("An invalid module id error was expected, but we got %s", err)
+			t.Fatal("Expected error from repository, got nil")
 		}
 
-		sttErr := err.(*http.RestErr).Status
+		restErr, ok := err.(*http.RestErr)
+		if !ok {
+			t.Fatalf("Expected *http.RestErr, got %T", err)
+		}
 
-		if sttErr != moduledomain.SttInvalidModuleID {
-			t.Fatalf("An status error of INVALID_MODULE_ID was expected, but we got: %s", sttErr)
+		if restErr.Status != moduledomain.SttDeletingModule {
+			t.Fatalf("Expected status DELETING_MODULE, got %s", restErr.Status)
 		}
 	})
 }
