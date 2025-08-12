@@ -5,6 +5,7 @@ import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 const (
 	SttCouldNotRenameModule = "COULD_NOT_RENAME_MODULE"
 	SttCouldNotGetModules   = "COULD_NOT_GET_MODULES"
+	SttDeletingModule       = "COULD_NOT_DELETE_MODULE"
 	SttInvalidModuleFields  = "INVALID_MODULE_FIELDS"
 	SttInvalidModuleID      = "INVALID_MODULE_ID"
 	SttInvalidUserID        = "INVALID_USER_ID"
@@ -51,6 +52,14 @@ func ErrGettingModule(err error) *http.RestErr {
 	return http.NewRestError(
 		SttCouldNotGetModules,
 		"Internal error getting modules",
+		err,
+	)
+}
+
+func ErrDeletingModule(err error) *http.RestErr {
+	return http.NewRestError(
+		SttDeletingModule,
+		"Error deleting a module",
 		err,
 	)
 }
