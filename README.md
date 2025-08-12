@@ -60,6 +60,11 @@ Execute the server:
 go run cmd/api/main.go
 ```
 
+### Running tests
+```
+go test ./...
+```
+
 ## REFERÊNCIAS
 
 - [Golang Middleware](https://drstearns.github.io/tutorials/gomiddleware/)
