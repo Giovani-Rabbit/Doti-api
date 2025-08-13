@@ -12,10 +12,12 @@ func (c *container) NewModule() modulehandler.ModuleHandler {
 	createModulecase := modulecase.NewCreateModuleUseCase(moduleRepo)
 	getModulescase := modulecase.NewGetModulesUseCase(moduleRepo)
 	renameModulecase := modulecase.NewRenameModuleUseCase(moduleRepo)
+	deleteModuleCase := modulecase.NewDeleteModuleUseCase(moduleRepo)
 
 	return modulehandler.New(
 		createModulecase,
 		getModulescase,
 		renameModulecase,
+		deleteModuleCase,
 	)
 }

@@ -57,9 +57,10 @@ func ErrGettingModule(err error) *http.RestErr {
 }
 
 func ErrDeletingModule(err error) *http.RestErr {
-	return http.NewRestError(
-		SttDeletingModule,
-		"Error deleting a module",
-		err,
-	)
+	return &http.RestErr{
+		Message: "Error deleting a module",
+		Status:  SttDeletingModule,
+		Err:     err.Error(),
+		Code:    400,
+	}
 }

@@ -10,10 +10,12 @@ type moduleHandler struct {
 	CreateModuleUseCase modulecase.CreateModuleUseCase
 	GetModulesUseCase   modulecase.GetModulesUseCase
 	RenameModuleUseCase modulecase.RenameModuleUseCase
+	DeleteModuleUseCase modulecase.DeleteModuleUseCase
 }
 
 type ModuleHandler interface {
 	CreateModule(w http.ResponseWriter, r *http.Request)
+	DeleteModule(w http.ResponseWriter, r *http.Request)
 	GetModules(w http.ResponseWriter, r *http.Request)
 	RenameModule(w http.ResponseWriter, r *http.Request)
 }
@@ -22,10 +24,12 @@ func New(
 	createModulecase modulecase.CreateModuleUseCase,
 	getModulesCase modulecase.GetModulesUseCase,
 	renameModuleCase modulecase.RenameModuleUseCase,
+	deleteModulecase modulecase.DeleteModuleUseCase,
 ) ModuleHandler {
 	return &moduleHandler{
 		CreateModuleUseCase: createModulecase,
 		GetModulesUseCase:   getModulesCase,
 		RenameModuleUseCase: renameModuleCase,
+		DeleteModuleUseCase: deleteModulecase,
 	}
 }

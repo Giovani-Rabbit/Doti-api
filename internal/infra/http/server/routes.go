@@ -29,16 +29,19 @@ func Routes(DB *sql.DB) (mux *http.ServeMux) {
 			moduleHandler.CreateModule,
 		)),
 	)
-
 	mux.Handle("GET /module",
 		middleware.EnsureAuth(http.HandlerFunc(
 			moduleHandler.GetModules,
 		)),
 	)
-
 	mux.Handle("PATCH /module/{id}",
 		middleware.EnsureAuth(http.HandlerFunc(
 			moduleHandler.RenameModule,
+		)),
+	)
+	mux.Handle("DELETE /module/{id}",
+		middleware.EnsureAuth(http.HandlerFunc(
+			moduleHandler.DeleteModule,
 		)),
 	)
 
