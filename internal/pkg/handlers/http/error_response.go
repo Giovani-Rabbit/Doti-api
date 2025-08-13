@@ -22,10 +22,10 @@ func NewBadRequestError(status string, message string) *RestErr {
 	}
 }
 
-func ErrInternal(msg string, err error) *RestErr {
+func ErrInternal(msg string, stt string, err error) *RestErr {
 	return &RestErr{
 		Message: msg,
-		Status:  "INTERNAL_ERROR",
+		Status:  stt,
 		Err:     err.Error(),
 		Code:    http.StatusBadRequest,
 	}

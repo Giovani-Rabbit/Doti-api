@@ -59,7 +59,7 @@ func (rm *renameModuleUsecase) Execute(
 			zap.String("journey", "renameModule"),
 		)
 
-		return moduledomain.ErrRenamingModule(err)
+		return moduledomain.ErrCouldNotPersistModule(err)
 	}
 
 	logger.Info("Module renamed successfully",

@@ -72,7 +72,7 @@ func TestDeleteModuleUseCase(t *testing.T) {
 			t.Fatalf("Expected *http.RestErr, got %T", err)
 		}
 
-		if restErr.Status != moduledomain.SttDeletingModule {
+		if restErr.Status != moduledomain.SttCouldNotPersistModule {
 			t.Fatalf("Expected status DELETING_MODULE, got %s", restErr.Status)
 		}
 	})

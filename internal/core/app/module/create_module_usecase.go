@@ -6,7 +6,6 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
-	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	val "github.com/Giovani-Coelho/Doti-API/internal/pkg/validator"
 	"go.uber.org/zap"
 )
@@ -61,9 +60,7 @@ func (mu *createModuleUseCase) Execute(
 			zap.String("journey", "createModule"),
 		)
 
-		return nil, http.ErrInternal(
-			"Error saving module", err,
-		)
+		return nil, moduledomain.ErrCouldNotPersistModule(err)
 	}
 
 	logger.Info(

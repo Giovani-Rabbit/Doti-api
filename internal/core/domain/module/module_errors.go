@@ -3,13 +3,14 @@ package moduledomain
 import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 const (
-	SttCouldNotRenameModule = "COULD_NOT_RENAME_MODULE"
-	SttCouldNotGetModules   = "COULD_NOT_GET_MODULES"
-	SttDeletingModule       = "COULD_NOT_DELETE_MODULE"
-	SttInvalidModuleFields  = "INVALID_MODULE_FIELDS"
-	SttInvalidModuleID      = "INVALID_MODULE_ID"
-	SttInvalidUserID        = "INVALID_USER_ID"
-	SttNewModuleNameIsEmpty = "NEW_MODULE_NAME_IS_EMPTY"
+	SttCouldNotRenameModule  = "COULD_NOT_RENAME_MODULE"
+	SttCouldNotGetModules    = "COULD_NOT_GET_MODULES"
+	SttDeletingModule        = "COULD_NOT_DELETE_MODULE"
+	SttInvalidModuleFields   = "INVALID_MODULE_FIELDS"
+	SttInvalidModuleID       = "INVALID_MODULE_ID"
+	SttInvalidUserID         = "INVALID_USER_ID"
+	SttNewModuleNameIsEmpty  = "NEW_MODULE_NAME_IS_EMPTY"
+	SttCouldNotPersistModule = "COULD_NOT_PERSIST_MODULE"
 )
 
 func ErrInvalidModuleFields() *http.RestErr {
@@ -33,14 +34,6 @@ func ErrInvalidModuleID() *http.RestErr {
 	)
 }
 
-func ErrRenamingModule(err error) *http.RestErr {
-	return http.NewRestError(
-		SttCouldNotRenameModule,
-		"Error renaming module",
-		err,
-	)
-}
-
 func ErrNewModuleNameIsEmpty() *http.RestErr {
 	return http.NewBadRequestError(
 		SttNewModuleNameIsEmpty,
@@ -48,19 +41,10 @@ func ErrNewModuleNameIsEmpty() *http.RestErr {
 	)
 }
 
-func ErrGettingModule(err error) *http.RestErr {
-	return http.NewRestError(
-		SttCouldNotGetModules,
-		"Internal error getting modules",
+func ErrCouldNotPersistModule(err error) *http.RestErr {
+	return http.ErrInternal(
+		"Error saving module",
+		SttCouldNotPersistModule,
 		err,
 	)
-}
-
-func ErrDeletingModule(err error) *http.RestErr {
-	return &http.RestErr{
-		Message: "Error deleting a module",
-		Status:  SttDeletingModule,
-		Err:     err.Error(),
-		Code:    400,
-	}
 }

@@ -46,7 +46,7 @@ func (dm *deleteModuleUseCase) Execute(ctx context.Context, id string) error {
 			zap.String("journey", "deleteModule"),
 		)
 
-		return moduledomain.ErrDeletingModule(err)
+		return moduledomain.ErrCouldNotPersistModule(err)
 	}
 
 	logger.Info(

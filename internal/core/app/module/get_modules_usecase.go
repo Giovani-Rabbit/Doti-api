@@ -45,7 +45,7 @@ func (gm *getModulesUseCase) Execute(
 			zap.String("journey", "getModule"),
 		)
 
-		return nil, moduledomain.ErrGettingModule(err)
+		return nil, moduledomain.ErrCouldNotPersistModule(err)
 	}
 
 	logger.Info("getModule executed successfully",
