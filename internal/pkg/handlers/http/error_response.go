@@ -27,16 +27,7 @@ func ErrInternal(msg string, stt string, err error) *RestErr {
 		Message: msg,
 		Status:  stt,
 		Err:     err.Error(),
-		Code:    http.StatusBadRequest,
-	}
-}
-
-func NewRestError(status string, message string, err error) *RestErr {
-	return &RestErr{
-		Message: message,
-		Status:  status,
-		Err:     err.Error(),
-		Code:    http.StatusBadRequest,
+		Code:    http.StatusInternalServerError,
 	}
 }
 
@@ -54,29 +45,5 @@ func NewBadRequestValidationError(message string) *RestErr {
 		Err:     "bad_request",
 		Status:  "INVALID_REQUEST",
 		Code:    http.StatusBadRequest,
-	}
-}
-
-func NewInternalServerError(message string) *RestErr {
-	return &RestErr{
-		Message: message,
-		Err:     "internal_server_error",
-		Code:    http.StatusInternalServerError,
-	}
-}
-
-func NewNotFoundError(message string) *RestErr {
-	return &RestErr{
-		Message: message,
-		Err:     "not_found",
-		Code:    http.StatusNotFound,
-	}
-}
-
-func NewForbiddenError(message string) *RestErr {
-	return &RestErr{
-		Message: message,
-		Err:     "forbidden",
-		Code:    http.StatusForbidden,
 	}
 }
