@@ -4,6 +4,7 @@ import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 const (
 	SttCouldNotFindUser       = "COULD_NOT_FIND_USER"
+	SttCouldNotPersistUser    = "COULD_NOT_PERSIST_USER"
 	SttInvalidUserEmailFormat = "INVALID_USER_EMAIL_FORMAT"
 	SttInvalidPassword        = "INVALID_PASSWORD"
 	SttErrorGeneratingToken   = "ERROR_GENERATIONG_TOKEN"
@@ -64,5 +65,13 @@ func ErrInvalidPassword(message error) *http.RestErr {
 	return http.NewBadRequestError(
 		SttInvalidPassword,
 		message.Error(),
+	)
+}
+
+func ErrCouldNotPersistUser(err error) *http.RestErr {
+	return http.ErrInternal(
+		"Error saving user",
+		SttCouldNotPersistUser,
+		err,
 	)
 }

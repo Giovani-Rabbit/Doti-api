@@ -84,9 +84,7 @@ func (us *createUserUseCase) Execute(
 			zap.String("journey", "createUser"),
 		)
 
-		return nil, http.NewInternalServerError(
-			"Internal error saving user",
-		)
+		return nil, userdomain.ErrCouldNotPersistUser(err)
 	}
 
 	logger.Info(
