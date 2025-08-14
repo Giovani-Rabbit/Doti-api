@@ -39,7 +39,25 @@ func (dm *deleteModuleUseCase) Execute(ctx context.Context, id string) error {
 		return moduledomain.ErrInvalidModuleID()
 	}
 
-	err := dm.moduleRepository.DeleteModule(ctx, id)
+	moduleExists, err := dm.moduleRepository.CheckExistsById(ctx, id)
+
+	if err != nil {
+		logger.Error("Error finding a module", err,
+			zap.String("journey", "deleteModule"),
+		)
+
+		return moduledomain.ErrCouldNotPersistModule(err)
+	}
+
+	if !moduleExists {
+		logger.Info("Module not find",
+			zap.String("journey", "deleteModule"),
+		)
+
+		return moduledomain.ErrCouldNotFindModuleByID()
+	}
+
+	err = dm.moduleRepository.DeleteModule(ctx, id)
 
 	if err != nil {
 		logger.Error("Error deleting a module", err,

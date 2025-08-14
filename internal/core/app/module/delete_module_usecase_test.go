@@ -25,7 +25,8 @@ func TestDeleteModuleUseCase(t *testing.T) {
 	t.Run("Should delete module successfully", func(t *testing.T) {
 		moduleID := uuid.New().String()
 
-		moduleRepo.EXPECT().DeleteModule(gomock.Any(), moduleID)
+		moduleRepo.EXPECT().CheckExistsById(gomock.Any(), moduleID).Return(true, nil)
+		moduleRepo.EXPECT().DeleteModule(gomock.Any(), moduleID).Return(nil)
 
 		err := deleteModuleCase.Execute(ctx, moduleID)
 		if err != nil {
@@ -54,8 +55,38 @@ func TestDeleteModuleUseCase(t *testing.T) {
 		}
 	})
 
+	t.Run("Should return error if module does not exist", func(t *testing.T) {
+		moduleID := uuid.New().String()
+
+		moduleRepo.EXPECT().
+			CheckExistsById(gomock.Any(), moduleID).
+			Return(false, nil)
+
+		err := deleteModuleCase.Execute(ctx, moduleID)
+
+		if err == nil {
+			t.Fatal("Expected a module not found error, but got nil")
+		}
+
+		restErr, ok := err.(*http.RestErr)
+		if !ok {
+			t.Fatalf("Expected error of type RestErr, but got: %T", err)
+		}
+
+		if restErr.Status != moduledomain.SttCouldNotFindModuleByID {
+			t.Fatalf(
+				"An status error of COULD_NOT_FIND_MODULE_BY_ID was expected, but we got: %s",
+				restErr.Status,
+			)
+		}
+	})
+
 	t.Run("Should return error if repository fails", func(t *testing.T) {
 		moduleID := uuid.New().String()
+
+		moduleRepo.EXPECT().
+			CheckExistsById(gomock.Any(), moduleID).
+			Return(true, nil)
 
 		moduleRepo.EXPECT().
 			DeleteModule(gomock.Any(), moduleID).

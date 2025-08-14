@@ -17,10 +17,11 @@ type moduleRepository struct {
 }
 
 type ModuleRepository interface {
+	CheckExistsById(ctx context.Context, id string) (bool, error)
 	Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error)
+	DeleteModule(ctx context.Context, id string) error
 	ListModulesByUserID(ctx context.Context, userId string) ([]moduledomain.Module, error)
 	UpdateModuleName(ctx context.Context, id string, name string) error
-	DeleteModule(ctx context.Context, id string) error
 }
 
 func NewModuleRepository(dtb *sql.DB) ModuleRepository {
@@ -28,6 +29,24 @@ func NewModuleRepository(dtb *sql.DB) ModuleRepository {
 		DB:      dtb,
 		Queries: sqlc.New(dtb),
 	}
+}
+
+func (mr *moduleRepository) CheckExistsById(
+	ctx context.Context, id string,
+) (bool, error) {
+	moduleID, err := uuid.Parse(id)
+
+	if err != nil {
+		return false, err
+	}
+
+	exists, err := mr.Queries.CheckModuleExists(ctx, moduleID)
+
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
 }
 
 func (mr *moduleRepository) Create(
@@ -57,6 +76,24 @@ func (mr *moduleRepository) Create(
 	}
 
 	return mapper.ConvertCreateModuleRowToModule(&moduleEntity), nil
+}
+
+func (mr *moduleRepository) DeleteModule(
+	ctx context.Context, id string,
+) error {
+	moduleId, err := uuid.Parse(id)
+
+	if err != nil {
+		return err
+	}
+
+	err = mr.Queries.DeleteModule(ctx, moduleId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (mr *moduleRepository) ListModulesByUserID(
@@ -93,24 +130,6 @@ func (mr *moduleRepository) UpdateModuleName(
 		ID:   moduleId,
 		Name: name,
 	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (mr *moduleRepository) DeleteModule(
-	ctx context.Context, id string,
-) error {
-	moduleId, err := uuid.Parse(id)
-
-	if err != nil {
-		return err
-	}
-
-	err = mr.Queries.DeleteModule(ctx, moduleId)
 
 	if err != nil {
 		return err

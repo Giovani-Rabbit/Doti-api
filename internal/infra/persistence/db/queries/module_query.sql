@@ -15,3 +15,10 @@ WHERE id = $1;
 
 -- name: DeleteModule :exec
 DELETE FROM modules WHERE id = $1;
+
+-- name: CheckModuleExists :one
+SELECT EXISTS (
+    SELECT 1 
+    FROM modules 
+    WHERE id = $1
+) AS EXISTS;

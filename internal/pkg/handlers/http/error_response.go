@@ -47,3 +47,12 @@ func NewBadRequestValidationError(message string) *RestErr {
 		Code:    http.StatusBadRequest,
 	}
 }
+
+func NewCouldNotFind(message string, status string) *RestErr {
+	return &RestErr{
+		Message: message,
+		Status:  status,
+		Err:     "not_found",
+		Code:    http.StatusNotFound,
+	}
+}

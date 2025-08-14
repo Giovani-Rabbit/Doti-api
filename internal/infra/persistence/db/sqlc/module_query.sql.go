@@ -12,6 +12,21 @@ import (
 	"github.com/google/uuid"
 )
 
+const checkModuleExists = `-- name: CheckModuleExists :one
+SELECT EXISTS (
+    SELECT 1 
+    FROM modules 
+    WHERE id = $1
+) AS EXISTS
+`
+
+func (q *Queries) CheckModuleExists(ctx context.Context, id uuid.UUID) (bool, error) {
+	row := q.db.QueryRowContext(ctx, checkModuleExists, id)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const createModule = `-- name: CreateModule :one
 INSERT INTO modules (id, user_id, Name, is_open, icon, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7)

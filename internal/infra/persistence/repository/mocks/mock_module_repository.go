@@ -35,6 +35,21 @@ func (m *MockModuleRepository) EXPECT() *MockModuleRepositoryMockRecorder {
 	return m.recorder
 }
 
+// CheckExistsById mocks base method.
+func (m *MockModuleRepository) CheckExistsById(ctx context.Context, id string) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckExistsById", ctx, id)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckExistsById indicates an expected call of CheckExistsById.
+func (mr *MockModuleRepositoryMockRecorder) CheckExistsById(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckExistsById", reflect.TypeOf((*MockModuleRepository)(nil).CheckExistsById), ctx, id)
+}
+
 // Create mocks base method.
 func (m *MockModuleRepository) Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error) {
 	m.ctrl.T.Helper()
