@@ -52,7 +52,7 @@ func ErrCouldNotPersistModule(err error) *http.RestErr {
 
 func ErrCouldNotFindModuleByID() *http.RestErr {
 	return http.NewCouldNotFind(
-		"Module not found",
+		"The module was not found",
 		SttCouldNotFindModuleByID,
 	)
 }
