@@ -4,16 +4,16 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/container"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/di"
 )
 
 func Routes(DB *sql.DB) (mux *http.ServeMux) {
 	mux = http.NewServeMux()
 
-	c := container.Setup(DB)
+	handlers := di.New(DB)
 
-	UserRoutes(mux, c.User)
-	ModuleRoutes(mux, c.Module)
+	UserRoutes(mux, handlers.User)
+	ModuleRoutes(mux, handlers.Module)
 
 	return
 }

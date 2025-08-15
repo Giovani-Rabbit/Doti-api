@@ -11,7 +11,7 @@ import (
 )
 
 type Create interface {
-	Handler(w http.ResponseWriter, r *http.Request)
+	Execute(w http.ResponseWriter, r *http.Request)
 }
 
 type create struct {
@@ -26,7 +26,7 @@ func NewCreateModuleHandler(
 	}
 }
 
-func (mh *create) Handler(w http.ResponseWriter, r *http.Request) {
+func (mh *create) Execute(w http.ResponseWriter, r *http.Request) {
 	res := resp.NewHttpJSONResponse(w)
 
 	var createModuleDTO moduledto.CreateModuleDTO

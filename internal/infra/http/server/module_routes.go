@@ -3,15 +3,15 @@ package server
 import (
 	"net/http"
 
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/container"
+	dihdl "github.com/Giovani-Coelho/Doti-API/internal/infra/di/handler"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/http/middleware"
 )
 
-func ModuleRoutes(mux *http.ServeMux, module *container.ModuleHandler) (m *http.ServeMux) {
+func ModuleRoutes(mux *http.ServeMux, module *dihdl.ModuleHandlers) (m *http.ServeMux) {
 
 	mux.Handle("POST /module",
 		middleware.EnsureAuth(http.HandlerFunc(
-			module.Create.Handler,
+			module.Create.Execute,
 		)),
 	)
 
