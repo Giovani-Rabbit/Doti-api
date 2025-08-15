@@ -9,10 +9,10 @@ import (
 
 type contextKey int
 
-const authenticatedUserKey contextKey = 0
+const AuthenticatedUserKey contextKey = 0
 
 func GetAuthenticatedUserFromContext(ctx context.Context) (*authdomain.AuthClaims, error) {
-	user, ok := ctx.Value(authenticatedUserKey).(*authdomain.AuthClaims)
+	user, ok := ctx.Value(AuthenticatedUserKey).(*authdomain.AuthClaims)
 
 	if !ok || user == nil {
 		return nil, userdomain.ErrGetUserFromContext()
@@ -24,5 +24,5 @@ func GetAuthenticatedUserFromContext(ctx context.Context) (*authdomain.AuthClaim
 func SetUserInContext(
 	ctx context.Context, user *authdomain.AuthClaims,
 ) context.Context {
-	return context.WithValue(ctx, authenticatedUserKey, user)
+	return context.WithValue(ctx, AuthenticatedUserKey, user)
 }
