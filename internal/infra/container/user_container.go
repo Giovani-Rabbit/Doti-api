@@ -1,17 +1,19 @@
 package container
 
 import (
+	authcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/auth"
 	usercase "github.com/Giovani-Coelho/Doti-API/internal/core/app/user"
-	userhandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 )
 
-func (c *container) NewUser() userhandler.UserHandler {
-	userRepository := repository.NewUserRepository(c.DB)
+type UserCase struct {
+	create usercase.CreateUserUseCase
+	signIn authcase.SignInUseCase
+}
 
-	createUserUseCase := usercase.NewCreateUserUseCase(userRepository)
-
-	return userhandler.NewUserHandler(
-		createUserUseCase,
-	)
+func newUserCase(userRepo repository.UserRepository) *UserCase {
+	return &UserCase{
+		create: usercase.NewCreateUserUseCase(userRepo),
+		signIn: authcase.NewLoginUseCase(userRepo),
+	}
 }

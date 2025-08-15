@@ -2,22 +2,21 @@ package container
 
 import (
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
-	modulehandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 )
 
-func (c *container) NewModule() modulehandler.ModuleHandler {
-	moduleRepo := repository.NewModuleRepository(c.DB)
+type ModuleCase struct {
+	create modulecase.CreateModuleUseCase
+	get    modulecase.GetModulesUseCase
+	rename modulecase.RenameModuleUseCase
+	delete modulecase.DeleteModuleUseCase
+}
 
-	createModulecase := modulecase.NewCreateModuleUseCase(moduleRepo)
-	getModulescase := modulecase.NewGetModulesUseCase(moduleRepo)
-	renameModulecase := modulecase.NewRenameModuleUseCase(moduleRepo)
-	deleteModuleCase := modulecase.NewDeleteModuleUseCase(moduleRepo)
-
-	return modulehandler.New(
-		createModulecase,
-		getModulescase,
-		renameModulecase,
-		deleteModuleCase,
-	)
+func newModuleCase(moduleRepo repository.ModuleRepository) *ModuleCase {
+	return &ModuleCase{
+		create: modulecase.NewCreateModuleUseCase(moduleRepo),
+		get:    modulecase.NewGetModulesUseCase(moduleRepo),
+		rename: modulecase.NewRenameModuleUseCase(moduleRepo),
+		delete: modulecase.NewDeleteModuleUseCase(moduleRepo),
+	}
 }

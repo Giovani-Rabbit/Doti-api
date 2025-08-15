@@ -2,22 +2,21 @@ package container
 
 import (
 	"database/sql"
-
-	authhandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/auth"
-	modulehandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module"
-	userhandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/user"
 )
 
 type container struct {
-	DB *sql.DB
+	Module *ModuleHandler
+	User   *UserHandler
 }
 
-type Container interface {
-	NewUser() userhandler.UserHandler
-	NewAuth() authhandler.AuthHandler
-	NewModule() modulehandler.ModuleHandler
-}
+func Setup(db *sql.DB) *container {
+	repo := newRepository(db)
 
-func NewContainer(db *sql.DB) Container {
-	return &container{DB: db}
+	moduleCase := newModuleCase(repo.moduleRepo)
+	userCase := newUserCase(repo.userRepo)
+
+	return &container{
+		Module: newModuleHandler(moduleCase),
+		User:   newUserHandler(userCase),
+	}
 }

@@ -3,13 +3,30 @@ package modulehandler
 import (
 	"net/http"
 
+	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	moduledto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module/dtos"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
 )
 
-func (mh *moduleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
+type Create interface {
+	Handler(w http.ResponseWriter, r *http.Request)
+}
+
+type create struct {
+	createModuleUseCase modulecase.CreateModuleUseCase
+}
+
+func NewCreateModuleHandler(
+	createModulecase modulecase.CreateModuleUseCase,
+) Create {
+	return &create{
+		createModuleUseCase: createModulecase,
+	}
+}
+
+func (mh *create) Handler(w http.ResponseWriter, r *http.Request) {
 	res := resp.NewHttpJSONResponse(w)
 
 	var createModuleDTO moduledto.CreateModuleDTO
@@ -30,7 +47,7 @@ func (mh *moduleHandler) CreateModule(w http.ResponseWriter, r *http.Request) {
 		createModuleDTO.Icon,
 	)
 
-	module, err := mh.CreateModuleUseCase.Execute(r.Context(), moduleEntity)
+	module, err := mh.createModuleUseCase.Execute(r.Context(), moduleEntity)
 
 	if err != nil {
 		res.Error(err, 400)

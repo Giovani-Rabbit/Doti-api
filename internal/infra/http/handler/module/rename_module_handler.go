@@ -3,14 +3,31 @@ package modulehandler
 import (
 	"net/http"
 
+	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 )
+
+type rename struct {
+	renameCase modulecase.RenameModuleUseCase
+}
+
+type Rename interface {
+	Execute(w http.ResponseWriter, r *http.Request)
+}
+
+func NewRenameHandler(
+	renameUseCase modulecase.RenameModuleUseCase,
+) Rename {
+	return &rename{
+		renameCase: renameUseCase,
+	}
+}
 
 type NewModuleNameDTO struct {
 	Name string `json:"name"`
 }
 
-func (mh *moduleHandler) RenameModule(w http.ResponseWriter, r *http.Request) {
+func (rm *rename) Execute(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	res := resp.NewHttpJSONResponse(w)
 
@@ -19,7 +36,7 @@ func (mh *moduleHandler) RenameModule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := mh.RenameModuleUseCase.Execute(r.Context(), id, moduleName.Name)
+	err := rm.renameCase.Execute(r.Context(), id, moduleName.Name)
 
 	if err != nil {
 		res.Error(err, 400)
