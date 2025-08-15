@@ -7,7 +7,7 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config"
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/http/middleware"
-	"github.com/Giovani-Coelho/Doti-API/internal/infra/http/server"
+	"github.com/Giovani-Coelho/Doti-API/internal/infra/http/router"
 	database "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db"
 )
 
@@ -26,7 +26,7 @@ func main() {
 
 	defer conn.Close()
 
-	router := server.Routes(conn)
+	router := router.Routes(conn)
 
 	fmt.Printf("Server is running on port :%d", PORT)
 
