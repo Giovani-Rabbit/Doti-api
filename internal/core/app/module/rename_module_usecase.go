@@ -11,23 +11,23 @@ import (
 	"go.uber.org/zap"
 )
 
-type renameModuleUsecase struct {
+type rename struct {
 	ModuleRepo repository.ModuleRepository
 }
 
-type RenameModuleUseCase interface {
+type Rename interface {
 	Execute(ctx context.Context, id string, name string) error
 }
 
 func NewRenameModuleUseCase(
 	moduleRepo repository.ModuleRepository,
-) RenameModuleUseCase {
-	return &renameModuleUsecase{
+) Rename {
+	return &rename{
 		ModuleRepo: moduleRepo,
 	}
 }
 
-func (rm *renameModuleUsecase) Execute(
+func (rm *rename) Execute(
 	ctx context.Context,
 	moduleId string, name string,
 ) error {

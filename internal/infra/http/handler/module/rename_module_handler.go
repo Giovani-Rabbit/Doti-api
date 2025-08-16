@@ -8,7 +8,7 @@ import (
 )
 
 type rename struct {
-	renameCase modulecase.RenameModuleUseCase
+	renameModule modulecase.Rename
 }
 
 type Rename interface {
@@ -16,10 +16,10 @@ type Rename interface {
 }
 
 func NewRenameHandler(
-	renameUseCase modulecase.RenameModuleUseCase,
+	renameModuleUseCase modulecase.Rename,
 ) Rename {
 	return &rename{
-		renameCase: renameUseCase,
+		renameModule: renameModuleUseCase,
 	}
 }
 
@@ -36,7 +36,7 @@ func (rm *rename) Execute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := rm.renameCase.Execute(r.Context(), id, moduleName.Name)
+	err := rm.renameModule.Execute(r.Context(), id, moduleName.Name)
 
 	if err != nil {
 		res.Error(err, 400)

@@ -15,14 +15,14 @@ type Create interface {
 }
 
 type create struct {
-	createModuleUseCase modulecase.Create
+	createModule modulecase.Create
 }
 
 func NewCreateModuleHandler(
-	createModulecase modulecase.Create,
+	createModuleUseCase modulecase.Create,
 ) Create {
 	return &create{
-		createModuleUseCase: createModulecase,
+		createModule: createModuleUseCase,
 	}
 }
 
@@ -47,7 +47,7 @@ func (mh *create) Execute(w http.ResponseWriter, r *http.Request) {
 		createModuleDTO.Icon,
 	)
 
-	module, err := mh.createModuleUseCase.Execute(r.Context(), moduleEntity)
+	module, err := mh.createModule.Execute(r.Context(), moduleEntity)
 
 	if err != nil {
 		res.Error(err, 400)

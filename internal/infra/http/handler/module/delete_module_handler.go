@@ -10,7 +10,7 @@ import (
 )
 
 type delete struct {
-	deleteCase modulecase.Delete
+	deleteModule modulecase.Delete
 }
 
 type Delete interface {
@@ -18,10 +18,10 @@ type Delete interface {
 }
 
 func NewDeleteHandler(
-	deleteUseCase modulecase.Delete,
+	deleteModuleUseCase modulecase.Delete,
 ) Delete {
 	return &delete{
-		deleteCase: deleteUseCase,
+		deleteModule: deleteModuleUseCase,
 	}
 }
 
@@ -29,7 +29,7 @@ func (dm *delete) Execute(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	res := resp.NewHttpJSONResponse(w)
 
-	err := dm.deleteCase.Execute(r.Context(), id)
+	err := dm.deleteModule.Execute(r.Context(), id)
 
 	if err != nil {
 		resterr, ok := err.(*httperr.RestErr)
