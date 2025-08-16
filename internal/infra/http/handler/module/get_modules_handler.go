@@ -10,7 +10,7 @@ import (
 )
 
 type get struct {
-	getCase modulecase.GetModulesUseCase
+	getModuleByUser modulecase.GetByUser
 }
 
 type Get interface {
@@ -18,10 +18,10 @@ type Get interface {
 }
 
 func NewGetHandler(
-	getModulesUseCase modulecase.GetModulesUseCase,
+	getModulesUseCase modulecase.GetByUser,
 ) Get {
 	return &get{
-		getCase: getModulesUseCase,
+		getModuleByUser: getModulesUseCase,
 	}
 }
 
@@ -35,7 +35,7 @@ func (gh *get) Execute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	modules, err := gh.getCase.Execute(r.Context(), userAuth.ID)
+	modules, err := gh.getModuleByUser.Execute(r.Context(), userAuth.ID)
 
 	if err != nil {
 		res.Error(err, 400)

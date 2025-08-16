@@ -7,7 +7,7 @@ import (
 
 type ModuleUseCases struct {
 	Create modulecase.Create
-	Get    modulecase.GetModulesUseCase
+	Get    modulecase.GetByUser
 	Rename modulecase.RenameModuleUseCase
 	Delete modulecase.Delete
 }

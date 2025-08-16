@@ -10,23 +10,23 @@ import (
 	"go.uber.org/zap"
 )
 
-type GetModulesUseCase interface {
+type GetByUser interface {
 	Execute(ctx context.Context, userId string) ([]moduledomain.Module, error)
 }
 
-type getModulesUseCase struct {
+type getByUser struct {
 	moduleRepo repository.ModuleRepository
 }
 
 func NewGetModulesUseCase(
 	moduleRepo repository.ModuleRepository,
-) GetModulesUseCase {
-	return &getModulesUseCase{
+) GetByUser {
+	return &getByUser{
 		moduleRepo: moduleRepo,
 	}
 }
 
-func (gm *getModulesUseCase) Execute(
+func (gm *getByUser) Execute(
 	ctx context.Context, userId string,
 ) ([]moduledomain.Module, error) {
 	logger.Info("Init get module",
