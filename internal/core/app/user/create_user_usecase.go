@@ -10,23 +10,23 @@ import (
 	"go.uber.org/zap"
 )
 
-type createUserUseCase struct {
+type create struct {
 	UserRepository repository.UserRepository
 }
 
-type CreateUserUseCase interface {
+type Create interface {
 	Execute(ctx context.Context, userEntity userdomain.User) (userdomain.User, *http.RestErr)
 }
 
 func NewCreateUserUseCase(
 	userRepository repository.UserRepository,
-) CreateUserUseCase {
-	return &createUserUseCase{
+) Create {
+	return &create{
 		UserRepository: userRepository,
 	}
 }
 
-func (us *createUserUseCase) Execute(
+func (us *create) Execute(
 	ctx context.Context,
 	userEntity userdomain.User,
 ) (userdomain.User, *http.RestErr) {

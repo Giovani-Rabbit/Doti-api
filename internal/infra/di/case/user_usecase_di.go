@@ -7,7 +7,7 @@ import (
 )
 
 type UserUseCases struct {
-	Create usercase.CreateUserUseCase
+	Create usercase.Create
 	SignIn authcase.SignIn
 }
 

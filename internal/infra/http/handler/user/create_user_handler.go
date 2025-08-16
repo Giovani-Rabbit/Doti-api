@@ -10,7 +10,7 @@ import (
 )
 
 type create struct {
-	createCase usercase.CreateUserUseCase
+	createUser usercase.Create
 }
 
 type Create interface {
@@ -18,10 +18,10 @@ type Create interface {
 }
 
 func NewCreateHandler(
-	createUseCase usercase.CreateUserUseCase,
+	createUserUseCase usercase.Create,
 ) *create {
 	return &create{
-		createCase: createUseCase,
+		createUser: createUserUseCase,
 	}
 }
 
@@ -39,7 +39,7 @@ func (cu *create) Execute(w http.ResponseWriter, r *http.Request) {
 		userDto.Password,
 	)
 
-	user, err := cu.createCase.Execute(r.Context(), userDomain)
+	user, err := cu.createUser.Execute(r.Context(), userDomain)
 
 	if err != nil {
 		res.Error(err, 400)
