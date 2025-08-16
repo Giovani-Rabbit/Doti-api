@@ -10,7 +10,7 @@ import (
 )
 
 type delete struct {
-	deleteCase modulecase.DeleteModuleUseCase
+	deleteCase modulecase.Delete
 }
 
 type Delete interface {
@@ -18,7 +18,7 @@ type Delete interface {
 }
 
 func NewDeleteHandler(
-	deleteUseCase modulecase.DeleteModuleUseCase,
+	deleteUseCase modulecase.Delete,
 ) Delete {
 	return &delete{
 		deleteCase: deleteUseCase,

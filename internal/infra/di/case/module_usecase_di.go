@@ -9,7 +9,7 @@ type ModuleUseCases struct {
 	Create modulecase.Create
 	Get    modulecase.GetModulesUseCase
 	Rename modulecase.RenameModuleUseCase
-	Delete modulecase.DeleteModuleUseCase
+	Delete modulecase.Delete
 }
 
 func NewModuleCases(moduleRepo repository.ModuleRepository) *ModuleUseCases {

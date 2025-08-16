@@ -10,23 +10,23 @@ import (
 	"go.uber.org/zap"
 )
 
-type DeleteModuleUseCase interface {
+type Delete interface {
 	Execute(ctx context.Context, id string) error
 }
 
-type deleteModuleUseCase struct {
+type delete struct {
 	moduleRepository repository.ModuleRepository
 }
 
 func NewDeleteModuleUseCase(
 	moduleRepo repository.ModuleRepository,
-) DeleteModuleUseCase {
-	return &deleteModuleUseCase{
+) Delete {
+	return &delete{
 		moduleRepository: moduleRepo,
 	}
 }
 
-func (dm *deleteModuleUseCase) Execute(ctx context.Context, id string) error {
+func (dm *delete) Execute(ctx context.Context, id string) error {
 	logger.Info("Init delete module usecase",
 		zap.String("journey", "deleteModule"),
 	)
