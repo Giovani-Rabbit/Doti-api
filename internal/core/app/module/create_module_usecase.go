@@ -10,23 +10,23 @@ import (
 	"go.uber.org/zap"
 )
 
-type createModuleUseCase struct {
+type create struct {
 	ModuleRepository repository.ModuleRepository
 }
 
-type CreateModuleUseCase interface {
+type Create interface {
 	Execute(ctx context.Context, moduleEntity moduledomain.Module) (moduledomain.Module, error)
 }
 
 func NewCreateModuleUseCase(
 	moduleRepo repository.ModuleRepository,
-) CreateModuleUseCase {
-	return &createModuleUseCase{
+) Create {
+	return &create{
 		ModuleRepository: moduleRepo,
 	}
 }
 
-func (mu *createModuleUseCase) Execute(
+func (mu *create) Execute(
 	ctx context.Context,
 	moduleEntity moduledomain.Module,
 ) (moduledomain.Module, error) {

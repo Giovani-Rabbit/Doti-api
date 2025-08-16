@@ -15,11 +15,11 @@ type Create interface {
 }
 
 type create struct {
-	createModuleUseCase modulecase.CreateModuleUseCase
+	createModuleUseCase modulecase.Create
 }
 
 func NewCreateModuleHandler(
-	createModulecase modulecase.CreateModuleUseCase,
+	createModulecase modulecase.Create,
 ) Create {
 	return &create{
 		createModuleUseCase: createModulecase,
