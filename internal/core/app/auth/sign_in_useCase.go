@@ -11,11 +11,11 @@ import (
 	"go.uber.org/zap"
 )
 
-type signInUseCase struct {
-	UserRepository repository.UserRepository
+type signIn struct {
+	userRepository repository.UserRepository
 }
 
-type SignInUseCase interface {
+type SignIn interface {
 	Execute(
 		ctx context.Context, userEntity userdomain.User,
 	) (userdomain.User, string, *http.RestErr)
@@ -23,13 +23,13 @@ type SignInUseCase interface {
 
 func NewLoginUseCase(
 	userRepository repository.UserRepository,
-) SignInUseCase {
-	return &signInUseCase{
-		UserRepository: userRepository,
+) SignIn {
+	return &signIn{
+		userRepository: userRepository,
 	}
 }
 
-func (su *signInUseCase) Execute(
+func (su *signIn) Execute(
 	ctx context.Context,
 	userEntity userdomain.User,
 ) (userdomain.User, string, *http.RestErr) {
@@ -56,7 +56,7 @@ func (su *signInUseCase) Execute(
 	}
 
 	userEntity.EncryptPassword()
-	user, err := su.UserRepository.FindUserByEmailAndPassword(ctx, userEntity)
+	user, err := su.userRepository.FindUserByEmailAndPassword(ctx, userEntity)
 
 	if err != nil {
 		logger.Error(

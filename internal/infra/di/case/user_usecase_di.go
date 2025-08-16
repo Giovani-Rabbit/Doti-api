@@ -8,7 +8,7 @@ import (
 
 type UserUseCases struct {
 	Create usercase.CreateUserUseCase
-	SignIn authcase.SignInUseCase
+	SignIn authcase.SignIn
 }
 
 func NewUserCases(userRepo repository.UserRepository) *UserUseCases {

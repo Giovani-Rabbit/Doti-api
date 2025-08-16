@@ -10,7 +10,7 @@ import (
 )
 
 type signIn struct {
-	signInCase authcase.SignInUseCase
+	signIn authcase.SignIn
 }
 
 type SignIn interface {
@@ -18,10 +18,10 @@ type SignIn interface {
 }
 
 func NewSignInHandler(
-	signInUseCase authcase.SignInUseCase,
+	signInUseCase authcase.SignIn,
 ) SignIn {
 	return &signIn{
-		signInCase: signInUseCase,
+		signIn: signInUseCase,
 	}
 }
 
@@ -38,7 +38,7 @@ func (sh *signIn) Execute(w http.ResponseWriter, r *http.Request) {
 		userCredentials.Password,
 	)
 
-	userAuth, token, err := sh.signInCase.Execute(r.Context(), userModel)
+	userAuth, token, err := sh.signIn.Execute(r.Context(), userModel)
 
 	if err != nil {
 		res.Error(err, 400)
