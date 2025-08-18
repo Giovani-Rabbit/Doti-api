@@ -16,7 +16,7 @@ func NewModuleHandlers(modulecase *dicase.ModuleUseCases) *ModuleHandlers {
 	return &ModuleHandlers{
 		Create: modulehandler.NewCreateModuleHandler(modulecase.Create),
 		Delete: modulehandler.NewDeleteHandler(modulecase.Delete),
-		Get:    modulehandler.NewGetHandler(modulecase.Get),
+		Get:    modulehandler.NewGetHandler(modulecase.GetByUser),
 		Rename: modulehandler.NewRenameHandler(modulecase.Rename),
 	}
 }

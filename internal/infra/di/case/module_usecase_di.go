@@ -6,17 +6,17 @@ import (
 )
 
 type ModuleUseCases struct {
-	Create modulecase.Create
-	Get    modulecase.GetByUser
-	Rename modulecase.Rename
-	Delete modulecase.Delete
+	Create    modulecase.Create
+	GetByUser modulecase.GetByUser
+	Rename    modulecase.Rename
+	Delete    modulecase.Delete
 }
 
 func NewModuleCases(moduleRepo repository.ModuleRepository) *ModuleUseCases {
 	return &ModuleUseCases{
-		Create: modulecase.NewCreateModuleUseCase(moduleRepo),
-		Get:    modulecase.NewGetModulesUseCase(moduleRepo),
-		Rename: modulecase.NewRenameModuleUseCase(moduleRepo),
-		Delete: modulecase.NewDeleteModuleUseCase(moduleRepo),
+		Create:    modulecase.NewCreateModuleUseCase(moduleRepo),
+		GetByUser: modulecase.NewGetModulesUseCase(moduleRepo),
+		Rename:    modulecase.NewRenameModuleUseCase(moduleRepo),
+		Delete:    modulecase.NewDeleteModuleUseCase(moduleRepo),
 	}
 }
