@@ -9,25 +9,25 @@ import (
 
 func ModuleRoutes(mux *http.ServeMux, module *dihdl.ModuleHandlers) (m *http.ServeMux) {
 
-	mux.Handle("POST /module",
+	mux.Handle("POST /modules",
 		middleware.EnsureAuth(http.HandlerFunc(
 			module.Create.Execute,
 		)),
 	)
 
-	mux.Handle("GET /module",
+	mux.Handle("GET /modules",
 		middleware.EnsureAuth(http.HandlerFunc(
 			module.Get.Execute,
 		)),
 	)
 
-	mux.Handle("PATCH /module/{id}",
+	mux.Handle("PATCH /modules/{id}",
 		middleware.EnsureAuth(http.HandlerFunc(
 			module.Rename.Execute,
 		)),
 	)
 
-	mux.Handle("DELETE /module/{id}",
+	mux.Handle("DELETE /modules/{id}",
 		middleware.EnsureAuth(http.HandlerFunc(
 			module.Delete.Execute,
 		)),
