@@ -43,5 +43,5 @@ func (rm *rename) Execute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res.Write(200)
+	res.Write(204)
 }
