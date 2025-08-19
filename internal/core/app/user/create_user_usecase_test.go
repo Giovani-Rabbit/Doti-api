@@ -6,6 +6,7 @@ import (
 
 	usercase "github.com/Giovani-Coelho/Doti-API/internal/core/app/user"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
 )
@@ -62,8 +63,10 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("An Error was expected. But we got nil")
 		}
 
-		if err.Status != userdomain.SttUserValuesMissing {
-			t.Fatalf("Expected values missing error, got %s:", err.Status)
+		sttErr := err.(*resp.RestErr).Status
+
+		if sttErr != userdomain.SttUserValuesMissing {
+			t.Fatalf("Expected values missing error, got %s:", sttErr)
 		}
 	})
 
@@ -82,7 +85,9 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("An Error was expected. But we got nil")
 		}
 
-		if err.Status != userdomain.SttInvalidPassword {
+		sttErr := err.(*resp.RestErr).Status
+
+		if sttErr != userdomain.SttInvalidPassword {
 			t.Fatalf("Expected invalid password error")
 		}
 	})
@@ -100,8 +105,10 @@ func TestCreateUserUseCase(t *testing.T) {
 			t.Fatalf("An Error was expected. But we got nil")
 		}
 
-		if err.Status != userdomain.SttInvalidUserEmailFormat {
-			t.Fatalf("Expected invalid email format error, gor: %s", err)
+		sttErr := err.(*resp.RestErr).Status
+
+		if sttErr != userdomain.SttInvalidUserEmailFormat {
+			t.Fatalf("Expected invalid email format error, gor: %s", sttErr)
 		}
 	})
 }

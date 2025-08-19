@@ -5,6 +5,7 @@ import (
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	val "github.com/Giovani-Coelho/Doti-API/internal/pkg/validator"
 	"go.uber.org/zap"
@@ -34,7 +35,7 @@ func (gm *getByUser) Execute(
 	)
 
 	if !val.IsValidUUID(userId) {
-		return nil, val.ErrInvalidUUID()
+		return nil, resp.NewInvalidUUID()
 	}
 
 	modules, err := gm.moduleRepo.ListModulesByUserID(ctx, userId)

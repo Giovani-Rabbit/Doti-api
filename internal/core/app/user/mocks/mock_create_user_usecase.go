@@ -9,7 +9,6 @@ import (
 	reflect "reflect"
 
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
-	http "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -37,11 +36,11 @@ func (m *MockCreate) EXPECT() *MockCreateMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockCreate) Execute(ctx context.Context, userEntity userdomain.User) (userdomain.User, *http.RestErr) {
+func (m *MockCreate) Execute(ctx context.Context, userEntity userdomain.User) (userdomain.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Execute", ctx, userEntity)
 	ret0, _ := ret[0].(userdomain.User)
-	ret1, _ := ret[1].(*http.RestErr)
+	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 

@@ -6,8 +6,8 @@ import (
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
-	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
@@ -54,7 +54,7 @@ func TestCreateModuleUseCase(t *testing.T) {
 			t.Fatalf("expected error, but we got: %v", err)
 		}
 
-		sttErr := err.(*http.RestErr).Status
+		sttErr := err.(*resp.RestErr).Status
 
 		if sttErr != moduledomain.SttInvalidUserID {
 			t.Fatalf("an error of the type INVALID_USER_ID was expected, but we got: %v", sttErr)
@@ -70,7 +70,7 @@ func TestCreateModuleUseCase(t *testing.T) {
 			t.Fatalf("an error was expected, but we got: %v", err)
 		}
 
-		sttErr := err.(*http.RestErr).Status
+		sttErr := err.(*resp.RestErr).Status
 
 		if sttErr != moduledomain.SttInvalidModuleFields {
 			t.Fatalf("an error of the type INVALID_MODULE_FIELDS was expected, but we got: %v", sttErr)

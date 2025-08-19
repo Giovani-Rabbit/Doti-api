@@ -7,7 +7,6 @@ import (
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
 	authpkg "github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
-	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"go.uber.org/zap"
 )
 
@@ -18,7 +17,7 @@ type signIn struct {
 type SignIn interface {
 	Execute(
 		ctx context.Context, userEntity userdomain.User,
-	) (userdomain.User, string, *http.RestErr)
+	) (userdomain.User, string, error)
 }
 
 func NewLoginUseCase(
@@ -32,7 +31,7 @@ func NewLoginUseCase(
 func (su *signIn) Execute(
 	ctx context.Context,
 	userEntity userdomain.User,
-) (userdomain.User, string, *http.RestErr) {
+) (userdomain.User, string, error) {
 	logger.Info("Init Sign-In UseCase",
 		zap.String("journey", "sign-in"),
 	)

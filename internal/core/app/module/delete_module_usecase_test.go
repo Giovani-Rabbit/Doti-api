@@ -7,8 +7,8 @@ import (
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
-	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
@@ -42,7 +42,7 @@ func TestDeleteModuleUseCase(t *testing.T) {
 			t.Fatal("Expected an error for invalid module id, but got nil")
 		}
 
-		restErr, ok := err.(*http.RestErr)
+		restErr, ok := err.(*resp.RestErr)
 		if !ok {
 			t.Fatalf("Expected error of type RestErr, but got: %T", err)
 		}
@@ -68,7 +68,7 @@ func TestDeleteModuleUseCase(t *testing.T) {
 			t.Fatal("Expected a module not found error, but got nil")
 		}
 
-		restErr, ok := err.(*http.RestErr)
+		restErr, ok := err.(*resp.RestErr)
 		if !ok {
 			t.Fatalf("Expected error of type RestErr, but got: %T", err)
 		}
@@ -98,7 +98,7 @@ func TestDeleteModuleUseCase(t *testing.T) {
 			t.Fatal("Expected error from repository, got nil")
 		}
 
-		restErr, ok := err.(*http.RestErr)
+		restErr, ok := err.(*resp.RestErr)
 		if !ok {
 			t.Fatalf("Expected *http.RestErr, got %T", err)
 		}

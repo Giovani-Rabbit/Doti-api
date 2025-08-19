@@ -1,6 +1,6 @@
 package moduledomain
 
-import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+import resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 
 const (
 	SttCouldNotFindModuleByID = "COULD_NOT_FIND_MODULE_BY_ID"
@@ -14,44 +14,44 @@ const (
 	SttNewModuleNameIsEmpty   = "NEW_MODULE_NAME_IS_EMPTY"
 )
 
-func ErrInvalidModuleFields() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrInvalidModuleFields() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttInvalidModuleFields,
 		"Missing required fields",
 	)
 }
 
-func ErrInvalidUserId() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrInvalidUserId() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttInvalidUserID,
 		"The user id is invalid",
 	)
 }
 
-func ErrInvalidModuleID() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrInvalidModuleID() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttInvalidModuleID,
 		"The module id is not a uuid",
 	)
 }
 
-func ErrNewModuleNameIsEmpty() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrNewModuleNameIsEmpty() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttNewModuleNameIsEmpty,
 		"The new module name is empty",
 	)
 }
 
-func ErrCouldNotPersistModule(err error) *http.RestErr {
-	return http.ErrInternal(
+func ErrCouldNotPersistModule(err error) *resp.RestErr {
+	return resp.NewErrInternal(
 		"Error saving module",
 		SttCouldNotPersistModule,
 		err,
 	)
 }
 
-func ErrCouldNotFindModuleByID() *http.RestErr {
-	return http.NewCouldNotFind(
+func ErrCouldNotFindModuleByID() *resp.RestErr {
+	return resp.NewCouldNotFind(
 		"The module was not found",
 		SttCouldNotFindModuleByID,
 	)

@@ -8,7 +8,7 @@ import (
 
 	authdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/auth"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
-	httperr "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -30,7 +30,7 @@ func GenerateToken(user userdomain.User) (string, error) {
 	return token.SignedString([]byte(secretKey))
 }
 
-func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *httperr.RestErr) {
+func VerifyToken(tokenValue string) (*authdomain.AuthClaims, error) {
 	claims := &authdomain.AuthClaims{}
 
 	token, err := jwt.ParseWithClaims(tokenValue, claims,
@@ -41,10 +41,10 @@ func VerifyToken(tokenValue string) (*authdomain.AuthClaims, *httperr.RestErr) {
 
 	if err != nil || !token.Valid {
 		if errors.Is(err, jwt.ErrTokenExpired) {
-			return nil, httperr.NewUnauthorizedRequestError("Expired Token")
+			return nil, resp.NewUnauthorizedRequestError("Expired Token")
 		}
 
-		return nil, httperr.NewUnauthorizedRequestError("Unauthorized")
+		return nil, resp.NewUnauthorizedRequestError("Unauthorized")
 	}
 
 	return claims, nil

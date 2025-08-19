@@ -1,6 +1,6 @@
 package userdomain
 
-import "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
+import resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 
 const (
 	SttCouldNotFindUser       = "COULD_NOT_FIND_USER"
@@ -12,64 +12,64 @@ const (
 	SttUserAlreadyExists      = "USER_ALREADY_EXISTS"
 )
 
-func ErrGeneratingToken() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrGeneratingToken() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttErrorGeneratingToken,
 		"error generating token",
 	)
 }
 
-func ErrGetUserFromContext() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrGetUserFromContext() *resp.RestErr {
+	return resp.NewBadRequestError(
 		"INTERNAL_ERROR",
 		"Error retrieving user data via token",
 	)
 }
 
-func ErrUserAlreadyExists() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrUserAlreadyExists() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttUserAlreadyExists,
 		"A user with this email already exists.",
 	)
 }
 
-func ErrCouldNotFindUser() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrCouldNotFindUser() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttCouldNotFindUser,
 		"Could not find user with those credentials",
 	)
 }
 
-func ErrUserValuesMissing() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrUserValuesMissing() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttUserValuesMissing,
 		"Missing required fields. Please check that all required fields are provided.",
 	)
 }
 
-func ErrSignInValuesMissing() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrSignInValuesMissing() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttUserValuesMissing,
 		"Email or Password is missing",
 	)
 }
 
-func ErrInvalidUserEmailFormat() *http.RestErr {
-	return http.NewBadRequestError(
+func ErrInvalidUserEmailFormat() *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttInvalidUserEmailFormat,
 		"Invalid user email format",
 	)
 }
 
-func ErrInvalidPassword(message error) *http.RestErr {
-	return http.NewBadRequestError(
+func ErrInvalidPassword(message error) *resp.RestErr {
+	return resp.NewBadRequestError(
 		SttInvalidPassword,
 		message.Error(),
 	)
 }
 
-func ErrCouldNotPersistUser(err error) *http.RestErr {
-	return http.ErrInternal(
+func ErrCouldNotPersistUser(err error) *resp.RestErr {
+	return resp.NewErrInternal(
 		"Error saving user",
 		SttCouldNotPersistUser,
 		err,

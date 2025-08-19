@@ -45,7 +45,7 @@ func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
 
 	if err := decoder.Decode(schema); err != nil {
 		logger.Error("Invalid request body.", nil)
-		hs.Error(InvalidBodyRequest(err), 400)
+		hs.Error(NewInvalidBodyRequest(err), 400)
 		return false
 	}
 

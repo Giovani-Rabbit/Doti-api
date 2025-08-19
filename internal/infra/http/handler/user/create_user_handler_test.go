@@ -16,7 +16,6 @@ import (
 	userdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/user/dtos"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
-	httpresp "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
@@ -102,7 +101,7 @@ func TestCreateUserHandler(t *testing.T) {
 			)
 		}
 
-		var res httpresp.RestErr
+		var res resp.RestErr
 		err = json.Unmarshal(body, &res)
 		if err != nil {
 			t.Fatalf("failed to unmarshal body: %v", err)

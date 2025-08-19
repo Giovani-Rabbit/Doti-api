@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
-	httperr "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 )
@@ -32,7 +31,7 @@ func (dm *delete) Execute(w http.ResponseWriter, r *http.Request) {
 	err := dm.deleteModule.Execute(r.Context(), id)
 
 	if err != nil {
-		resterr, ok := err.(*httperr.RestErr)
+		resterr, ok := err.(*resp.RestErr)
 
 		if !ok {
 			res.Error(err, 500)

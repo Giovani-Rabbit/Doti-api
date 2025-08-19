@@ -6,7 +6,6 @@ import (
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository"
-	"github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"go.uber.org/zap"
 )
 
@@ -15,7 +14,7 @@ type create struct {
 }
 
 type Create interface {
-	Execute(ctx context.Context, userEntity userdomain.User) (userdomain.User, *http.RestErr)
+	Execute(ctx context.Context, userEntity userdomain.User) (userdomain.User, error)
 }
 
 func NewCreateUserUseCase(
@@ -29,7 +28,7 @@ func NewCreateUserUseCase(
 func (us *create) Execute(
 	ctx context.Context,
 	userEntity userdomain.User,
-) (userdomain.User, *http.RestErr) {
+) (userdomain.User, error) {
 	logger.Info("Init CreateUser UseCase",
 		zap.String("journey", "createUser"),
 	)
