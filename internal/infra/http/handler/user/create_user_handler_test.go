@@ -14,7 +14,9 @@ import (
 	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	userhandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/user"
 	userdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/user/dtos"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
+	httpresp "github.com/Giovani-Coelho/Doti-API/internal/pkg/handlers/http"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 )
@@ -77,6 +79,39 @@ func TestCreateUserHandler(t *testing.T) {
 		err = json.Unmarshal(body, &res)
 		if err != nil {
 			t.Fatalf("failed to unmarshal body: %v", err)
+		}
+	})
+
+	t.Run("Should fail if the body is invalid", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/users", nil)
+
+		ctx := context.WithValue(req.Context(), auth.AuthenticatedUserKey, authUser)
+		req = req.WithContext(ctx)
+
+		rr := httptest.NewRecorder()
+		createUserHandler.Execute(rr, req)
+
+		body, err := io.ReadAll(rr.Body)
+		if err != nil {
+			t.Fatalf("failed to get response body: %v", err)
+		}
+
+		if rr.Code != http.StatusBadRequest {
+			t.Errorf("expected code %d, got %d body: %s",
+				http.StatusCreated, rr.Code, body,
+			)
+		}
+
+		var res httpresp.RestErr
+		err = json.Unmarshal(body, &res)
+		if err != nil {
+			t.Fatalf("failed to unmarshal body: %v", err)
+		}
+
+		if res.Status != resp.SttInvalidRequestBody {
+			t.Errorf("expected status %s, got %s",
+				resp.SttInvalidRequestBody, res.Status,
+			)
 		}
 	})
 }

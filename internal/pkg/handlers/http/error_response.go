@@ -39,15 +39,6 @@ func NewUnauthorizedRequestError(message string) *RestErr {
 	}
 }
 
-func NewBadRequestValidationError(message string) *RestErr {
-	return &RestErr{
-		Message: message,
-		Err:     "bad_request",
-		Status:  "INVALID_REQUEST",
-		Code:    http.StatusBadRequest,
-	}
-}
-
 func NewCouldNotFind(message string, status string) *RestErr {
 	return &RestErr{
 		Message: message,
