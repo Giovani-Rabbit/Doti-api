@@ -31,7 +31,7 @@ func (rm *rename) Execute(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	res := resp.NewHttpJSONResponse(w)
 
-	var moduleName NewModuleNameDTO
+	var moduleName *NewModuleNameDTO
 	if !res.DecodeJSONBody(r, &moduleName) {
 		return
 	}
