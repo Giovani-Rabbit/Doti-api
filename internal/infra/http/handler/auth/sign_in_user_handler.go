@@ -41,7 +41,7 @@ func (sh *signIn) Execute(w http.ResponseWriter, r *http.Request) {
 	userAuth, token, err := sh.signIn.Execute(r.Context(), userModel)
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 		return
 	}
 

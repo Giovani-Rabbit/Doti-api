@@ -10,6 +10,7 @@ const (
 	SttErrorGeneratingToken   = "ERROR_GENERATIONG_TOKEN"
 	SttUserValuesMissing      = "USER_VALUES_MISSING"
 	SttUserAlreadyExists      = "USER_ALREADY_EXISTS"
+	SttUserUnauthorized       = "USER_UNAUTHORIZED"
 )
 
 func ErrGeneratingToken() *resp.RestErr {
@@ -20,8 +21,8 @@ func ErrGeneratingToken() *resp.RestErr {
 }
 
 func ErrGetUserFromContext() *resp.RestErr {
-	return resp.NewBadRequestError(
-		"INTERNAL_ERROR",
+	return resp.NewUnauthorizedRequestError(
+		SttUserUnauthorized,
 		"Error retrieving user data via token",
 	)
 }

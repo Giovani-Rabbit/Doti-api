@@ -17,7 +17,7 @@ type IHttpResponse interface {
 	AddHeader(key string, value string)
 	AddBody(data any)
 	DecodeJSONBody(r *http.Request, schema any) bool
-	Error(err error, statusCode int)
+	Error(err error)
 	Write(statusCode int)
 }
 
@@ -45,16 +45,17 @@ func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
 
 	if err := decoder.Decode(schema); err != nil {
 		logger.Error("Invalid request body.", nil)
-		hs.Error(NewInvalidBodyRequest(err), 400)
+		hs.Error(NewInvalidBodyRequest(err))
 		return false
 	}
 
 	return true
 }
 
-func (hr *HttpResponse) Error(err error, statusCode int) {
-	hr.AddBody(err)
-	hr.Write(statusCode)
+func (hr *HttpResponse) Error(err error) {
+	var resterr = AsRestErr(err)
+	hr.AddBody(resterr)
+	hr.Write(resterr.Code)
 }
 
 func (hr *HttpResponse) Write(statusCode int) {

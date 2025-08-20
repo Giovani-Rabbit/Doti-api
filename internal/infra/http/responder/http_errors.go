@@ -1,9 +1,14 @@
 package resp
 
-import "net/http"
+import (
+	"errors"
+	"net/http"
+)
 
 const (
-	SttInvalidRequestBody = "INVALID_REQUEST_BODY"
+	SttInvalidRequestBody  = "INVALID_REQUEST_BODY"
+	SttInvalidErrorType    = "INVALID_ERROR_TYPE"
+	SttInternalServerError = "INTERNAL_SERVER_ERROR"
 )
 
 type RestErr struct {
@@ -15,6 +20,29 @@ type RestErr struct {
 
 func (r *RestErr) Error() string {
 	return r.Message
+}
+
+func AsRestErr(e error) *RestErr {
+	if e == nil {
+		return &RestErr{
+			Message: "AsRestErr called with nil error",
+			Status:  SttInternalServerError,
+			Err:     "invalid error type",
+			Code:    http.StatusInternalServerError,
+		}
+	}
+
+	var restErr *RestErr
+	if errors.As(e, &restErr) {
+		return restErr
+	}
+
+	return &RestErr{
+		Message: "unexpected error occurred",
+		Status:  SttInternalServerError,
+		Err:     "error of type RestErr expected",
+		Code:    http.StatusInternalServerError,
+	}
 }
 
 func NewBadRequestError(status string, message string) *RestErr {
@@ -35,9 +63,10 @@ func NewErrInternal(msg string, stt string, err error) *RestErr {
 	}
 }
 
-func NewUnauthorizedRequestError(message string) *RestErr {
+func NewUnauthorizedRequestError(status string, message string) *RestErr {
 	return &RestErr{
 		Message: message,
+		Status:  status,
 		Err:     "unauthorized",
 		Code:    http.StatusUnauthorized,
 	}

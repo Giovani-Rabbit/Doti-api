@@ -31,14 +31,14 @@ func (gh *get) Execute(w http.ResponseWriter, r *http.Request) {
 	userAuth, err := auth.GetAuthenticatedUserFromContext(r.Context())
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 		return
 	}
 
 	modules, err := gh.getModulesByUser.Execute(r.Context(), userAuth.ID)
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 	}
 
 	modulesListResponse := moduledto.NewModuleListDTO(modules)

@@ -39,7 +39,7 @@ func (rm *rename) Execute(w http.ResponseWriter, r *http.Request) {
 	err := rm.renameModule.Execute(r.Context(), id, moduleName.Name)
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 		return
 	}
 

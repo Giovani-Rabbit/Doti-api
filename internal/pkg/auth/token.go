@@ -41,10 +41,16 @@ func VerifyToken(tokenValue string) (*authdomain.AuthClaims, error) {
 
 	if err != nil || !token.Valid {
 		if errors.Is(err, jwt.ErrTokenExpired) {
-			return nil, resp.NewUnauthorizedRequestError("Expired Token")
+			return nil, resp.NewUnauthorizedRequestError(
+				userdomain.SttUserUnauthorized,
+				"Expired Token",
+			)
 		}
 
-		return nil, resp.NewUnauthorizedRequestError("Unauthorized")
+		return nil, resp.NewUnauthorizedRequestError(
+			userdomain.SttUserUnauthorized,
+			"Unauthorized",
+		)
 	}
 
 	return claims, nil

@@ -42,7 +42,7 @@ func (cu *create) Execute(w http.ResponseWriter, r *http.Request) {
 	user, err := cu.createUser.Execute(r.Context(), userDomain)
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 		return
 	}
 

@@ -14,6 +14,7 @@ import (
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	modulehandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module"
 	moduledto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module/dtos"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
@@ -46,7 +47,9 @@ func TestCreateModuleHandler(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/modules", bytes.NewReader(jsonBody))
 
 		ctx := context.WithValue(req.Context(), auth.AuthenticatedUserKey, authUser)
+
 		req = req.WithContext(ctx)
+		rr := httptest.NewRecorder()
 
 		createdModule := moduledomain.NewCreateModule(
 			uuid.NewString(), createModule.Name, createModule.Icon,
@@ -56,7 +59,6 @@ func TestCreateModuleHandler(t *testing.T) {
 			Execute(gomock.Any(), gomock.Any()).
 			Return(createdModule, nil)
 
-		rr := httptest.NewRecorder()
 		createModuleHandler.Execute(rr, req)
 
 		body, err := io.ReadAll(rr.Body)
@@ -71,6 +73,40 @@ func TestCreateModuleHandler(t *testing.T) {
 		}
 
 		var res moduledto.CreateModuleResponse
+		err = json.Unmarshal(body, &res)
+		if err != nil {
+			t.Fatalf("invalid return. Failed to unmarshal body: %v", err)
+		}
+	})
+
+	t.Run("Should fail if not logged in", func(t *testing.T) {
+		createModule := moduledto.CreateModuleDTO{
+			Name: "new Module",
+			Icon: "Icon",
+		}
+
+		jsonBody, err := json.Marshal(createModule)
+		if err != nil {
+			t.Fatalf("failed to marshal body: %v", err)
+		}
+
+		req := httptest.NewRequest(http.MethodPost, "/modules", bytes.NewReader(jsonBody))
+		rr := httptest.NewRecorder()
+
+		createModuleHandler.Execute(rr, req)
+
+		body, err := io.ReadAll(rr.Body)
+		if err != nil {
+			t.Fatalf("failed to get body: %v", err)
+		}
+
+		if rr.Code != http.StatusUnauthorized {
+			t.Errorf("expected status %d, got %d body: %s",
+				http.StatusUnauthorized, rr.Code, body,
+			)
+		}
+
+		var res *resp.RestErr
 		err = json.Unmarshal(body, &res)
 		if err != nil {
 			t.Fatalf("invalid return. Failed to unmarshal body: %v", err)

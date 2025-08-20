@@ -31,14 +31,7 @@ func (dm *delete) Execute(w http.ResponseWriter, r *http.Request) {
 	err := dm.deleteModule.Execute(r.Context(), id)
 
 	if err != nil {
-		resterr, ok := err.(*resp.RestErr)
-
-		if !ok {
-			res.Error(err, 500)
-			return
-		}
-
-		res.Error(resterr, resterr.Code)
+		res.Error(err)
 		return
 	}
 

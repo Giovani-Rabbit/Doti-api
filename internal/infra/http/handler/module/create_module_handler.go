@@ -37,7 +37,7 @@ func (mh *create) Execute(w http.ResponseWriter, r *http.Request) {
 	userAuth, err := auth.GetAuthenticatedUserFromContext(r.Context())
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 		return
 	}
 
@@ -50,7 +50,7 @@ func (mh *create) Execute(w http.ResponseWriter, r *http.Request) {
 	module, err := mh.createModule.Execute(r.Context(), moduleEntity)
 
 	if err != nil {
-		res.Error(err, 400)
+		res.Error(err)
 		return
 	}
 
