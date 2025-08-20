@@ -12,6 +12,7 @@ import (
 	mock_modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module/mocks"
 	authdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/auth"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
+	userdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/user"
 	modulehandler "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module"
 	moduledto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module/dtos"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
@@ -110,6 +111,10 @@ func TestCreateModuleHandler(t *testing.T) {
 		err = json.Unmarshal(body, &res)
 		if err != nil {
 			t.Fatalf("invalid return. Failed to unmarshal body: %v", err)
+		}
+
+		if res.Status != userdomain.SttUserUnauthorized {
+			t.Fatalf("expected status %s, got: %v", userdomain.SttCouldNotFindUser, res.Status)
 		}
 	})
 }
