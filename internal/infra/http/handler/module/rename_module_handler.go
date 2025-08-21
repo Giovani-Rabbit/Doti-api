@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
+	moduledto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module/dtos"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 )
 
@@ -23,15 +24,11 @@ func NewRenameHandler(
 	}
 }
 
-type NewModuleNameDTO struct {
-	Name string `json:"name"`
-}
-
 func (rm *rename) Execute(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	res := resp.NewHttpJSONResponse(w)
 
-	var moduleName *NewModuleNameDTO
+	var moduleName *moduledto.NewModuleNameDTO
 	if !res.DecodeJSONBody(r, &moduleName) {
 		return
 	}
