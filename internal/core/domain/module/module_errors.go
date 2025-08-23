@@ -12,6 +12,7 @@ const (
 	SttInvalidModuleID        = "INVALID_MODULE_ID"
 	SttInvalidUserID          = "INVALID_USER_ID"
 	SttNewModuleNameIsEmpty   = "NEW_MODULE_NAME_IS_EMPTY"
+	SttNewIconNameIsEmpty     = "NEW_ICON_NAME_IS_EMPTY"
 )
 
 func ErrInvalidModuleFields() *resp.RestErr {
@@ -39,6 +40,13 @@ func ErrNewModuleNameIsEmpty() *resp.RestErr {
 	return resp.NewBadRequestError(
 		SttNewModuleNameIsEmpty,
 		"The new module name is empty",
+	)
+}
+
+func ErrNewModuleIconIsEmpty() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttNewIconNameIsEmpty,
+		"The new module icon is empty",
 	)
 }
 
