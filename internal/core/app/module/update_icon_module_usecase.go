@@ -11,23 +11,23 @@ import (
 	"go.uber.org/zap"
 )
 
-type changeIcon struct {
+type updateIcon struct {
 	moduleRepository repository.ModuleRepository
 }
 
-type ChangeIcon interface {
+type UpdateIcon interface {
 	Execute(ctx context.Context, moduleId string, icon string) error
 }
 
-func NewChangeModuleIconUseCase(
+func NewUpdateModuleIconUseCase(
 	moduleRepo repository.ModuleRepository,
-) ChangeIcon {
-	return &changeIcon{
+) UpdateIcon {
+	return &updateIcon{
 		moduleRepository: moduleRepo,
 	}
 }
 
-func (ci *changeIcon) Execute(
+func (ui *updateIcon) Execute(
 	ctx context.Context, moduleId string, icon string,
 ) error {
 	logger.Info("Init change module icon",
@@ -51,7 +51,7 @@ func (ci *changeIcon) Execute(
 
 	icon = strings.TrimSpace(icon)
 
-	err := ci.moduleRepository.UpdateIcon(ctx, moduleId, icon)
+	err := ui.moduleRepository.UpdateIcon(ctx, moduleId, icon)
 
 	if err != nil {
 		logger.Error("Error on update module icon", err,

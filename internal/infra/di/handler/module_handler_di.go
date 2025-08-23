@@ -6,17 +6,19 @@ import (
 )
 
 type ModuleHandlers struct {
-	Create modulehandler.Create
-	Delete modulehandler.Delete
-	Get    modulehandler.Get
-	Rename modulehandler.Rename
+	Create     modulehandler.Create
+	Delete     modulehandler.Delete
+	Get        modulehandler.Get
+	Rename     modulehandler.Rename
+	UpdateIcon modulehandler.UpdateIcon
 }
 
 func NewModuleHandlers(modulecase *dicase.ModuleUseCases) *ModuleHandlers {
 	return &ModuleHandlers{
-		Create: modulehandler.NewCreateModuleHandler(modulecase.Create),
-		Delete: modulehandler.NewDeleteHandler(modulecase.Delete),
-		Get:    modulehandler.NewGetHandler(modulecase.GetByUser),
-		Rename: modulehandler.NewRenameHandler(modulecase.Rename),
+		Create:     modulehandler.NewCreateModuleHandler(modulecase.Create),
+		Delete:     modulehandler.NewDeleteHandler(modulecase.Delete),
+		Get:        modulehandler.NewGetHandler(modulecase.GetByUser),
+		Rename:     modulehandler.NewRenameHandler(modulecase.Rename),
+		UpdateIcon: modulehandler.NewUpdateIconHandler(modulecase.UpdateIcon),
 	}
 }

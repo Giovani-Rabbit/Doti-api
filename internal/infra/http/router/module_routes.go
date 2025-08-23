@@ -21,9 +21,15 @@ func ModuleRoutes(mux *http.ServeMux, module *dihdl.ModuleHandlers) (m *http.Ser
 		)),
 	)
 
-	mux.Handle("PATCH /modules/{id}",
+	mux.Handle("PATCH /modules/{id}/rename",
 		middleware.EnsureAuth(http.HandlerFunc(
 			module.Rename.Execute,
+		)),
+	)
+
+	mux.Handle("PATCH /modules/{id}/icon",
+		middleware.EnsureAuth(http.HandlerFunc(
+			module.UpdateIcon.Execute,
 		)),
 	)
 

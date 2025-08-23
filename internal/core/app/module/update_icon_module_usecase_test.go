@@ -18,7 +18,7 @@ func TestChangeIconModule(t *testing.T) {
 	defer ctrl.Finish()
 
 	moduleRepository := mock_repository.NewMockModuleRepository(ctrl)
-	ChangeIconUseCase := modulecase.NewChangeModuleIconUseCase(moduleRepository)
+	updateIconUseCase := modulecase.NewUpdateModuleIconUseCase(moduleRepository)
 
 	ctx := context.Background()
 	moduleId := uuid.NewString()
@@ -29,7 +29,7 @@ func TestChangeIconModule(t *testing.T) {
 		).Return(nil)
 
 		icon := "code"
-		err := ChangeIconUseCase.Execute(ctx, moduleId, icon)
+		err := updateIconUseCase.Execute(ctx, moduleId, icon)
 
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
@@ -40,7 +40,7 @@ func TestChangeIconModule(t *testing.T) {
 		invalidId := "123"
 		icon := "code"
 
-		err := ChangeIconUseCase.Execute(ctx, invalidId, icon)
+		err := updateIconUseCase.Execute(ctx, invalidId, icon)
 
 		if err == nil {
 			t.Fatalf("expected invalid uuid error, got %v", err)
@@ -57,7 +57,7 @@ func TestChangeIconModule(t *testing.T) {
 
 	t.Run("Should fail if the icon is empty", func(t *testing.T) {
 		icon := "  "
-		err := ChangeIconUseCase.Execute(ctx, moduleId, icon)
+		err := updateIconUseCase.Execute(ctx, moduleId, icon)
 
 		if err == nil {
 			t.Fatalf("expected icon is empty error, got %v", err)
@@ -78,7 +78,7 @@ func TestChangeIconModule(t *testing.T) {
 		).Return(errors.New("update error"))
 
 		icon := "coder"
-		err := ChangeIconUseCase.Execute(ctx, moduleId, icon)
+		err := updateIconUseCase.Execute(ctx, moduleId, icon)
 
 		if err == nil {
 			t.Fatalf("expected icon is empty error, got %v", err)
