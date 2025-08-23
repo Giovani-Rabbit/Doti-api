@@ -22,6 +22,7 @@ type ModuleRepository interface {
 	DeleteModule(ctx context.Context, id string) error
 	ListModulesByUserID(ctx context.Context, userId string) ([]moduledomain.Module, error)
 	UpdateModuleName(ctx context.Context, id string, name string) error
+	UpdateIcon(ctx context.Context, id string, icon string) error
 }
 
 func NewModuleRepository(dtb *sql.DB) ModuleRepository {
@@ -129,6 +130,27 @@ func (mr *moduleRepository) UpdateModuleName(
 	err = mr.Queries.UpdateModuleName(ctx, sqlc.UpdateModuleNameParams{
 		ID:   moduleId,
 		Name: name,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (mr *moduleRepository) UpdateIcon(
+	ctx context.Context, id string, icon string,
+) error {
+	moduleId, err := uuid.Parse(id)
+
+	if err != nil {
+		return err
+	}
+
+	err = mr.Queries.UpdateIcon(ctx, sqlc.UpdateIconParams{
+		ID:   moduleId,
+		Icon: icon,
 	})
 
 	if err != nil {

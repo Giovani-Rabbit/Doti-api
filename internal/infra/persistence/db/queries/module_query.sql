@@ -22,3 +22,8 @@ SELECT EXISTS (
     FROM modules 
     WHERE id = $1
 ) AS EXISTS;
+
+-- name: UpdateIcon :exec
+UPDATE modules 
+SET icon = $1
+WHERE id = $2;

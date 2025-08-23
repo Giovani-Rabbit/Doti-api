@@ -112,6 +112,22 @@ func (q *Queries) ListModuleByUserID(ctx context.Context, userID uuid.UUID) ([]M
 	return items, nil
 }
 
+const updateIcon = `-- name: UpdateIcon :exec
+UPDATE modules 
+SET icon = $1
+WHERE id = $2
+`
+
+type UpdateIconParams struct {
+	Icon string    `json:"icon"`
+	ID   uuid.UUID `json:"id"`
+}
+
+func (q *Queries) UpdateIcon(ctx context.Context, arg UpdateIconParams) error {
+	_, err := q.db.ExecContext(ctx, updateIcon, arg.Icon, arg.ID)
+	return err
+}
+
 const updateModuleName = `-- name: UpdateModuleName :exec
 UPDATE modules 
 SET name = $2
