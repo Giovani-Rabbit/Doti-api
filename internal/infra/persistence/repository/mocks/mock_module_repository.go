@@ -94,6 +94,20 @@ func (mr *MockModuleRepositoryMockRecorder) ListModulesByUserID(ctx, userId inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListModulesByUserID", reflect.TypeOf((*MockModuleRepository)(nil).ListModulesByUserID), ctx, userId)
 }
 
+// UpdateIcon mocks base method.
+func (m *MockModuleRepository) UpdateIcon(ctx context.Context, id, icon string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateIcon", ctx, id, icon)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateIcon indicates an expected call of UpdateIcon.
+func (mr *MockModuleRepositoryMockRecorder) UpdateIcon(ctx, id, icon interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateIcon", reflect.TypeOf((*MockModuleRepository)(nil).UpdateIcon), ctx, id, icon)
+}
+
 // UpdateModuleName mocks base method.
 func (m *MockModuleRepository) UpdateModuleName(ctx context.Context, id, name string) error {
 	m.ctrl.T.Helper()
