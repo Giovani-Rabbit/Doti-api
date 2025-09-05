@@ -40,6 +40,8 @@ func (hr *HttpResponse) AddBody(data any) {
 }
 
 func (hs *HttpResponse) DecodeJSONBody(r *http.Request, schema any) bool {
+	defer r.Body.Close()
+
 	decoder := json.NewDecoder(r.Body)
 	decoder.DisallowUnknownFields()
 
