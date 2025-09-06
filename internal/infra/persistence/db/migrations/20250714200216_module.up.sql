@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS modules (
-    id         UUID                     NOT NULL    PRIMARY KEY,
+    id         SERIAL                   NOT NULL    PRIMARY KEY,
     user_id    UUID                     NOT NULL,
     name       VARCHAR(255)             NOT NULL,
     is_open    BOOLEAN                  NOT NULL    DEFAULT false,

@@ -32,7 +32,7 @@ func ErrInvalidUserId() *resp.RestErr {
 func ErrInvalidModuleID() *resp.RestErr {
 	return resp.NewBadRequestError(
 		SttInvalidModuleID,
-		"The module id is not a uuid",
+		"The module id is not a integer",
 	)
 }
 

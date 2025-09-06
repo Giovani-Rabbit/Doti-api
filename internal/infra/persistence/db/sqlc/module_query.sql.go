@@ -20,7 +20,7 @@ SELECT EXISTS (
 ) AS EXISTS
 `
 
-func (q *Queries) CheckModuleExists(ctx context.Context, id uuid.UUID) (bool, error) {
+func (q *Queries) CheckModuleExists(ctx context.Context, id int32) (bool, error) {
 	row := q.db.QueryRowContext(ctx, checkModuleExists, id)
 	var exists bool
 	err := row.Scan(&exists)
@@ -28,13 +28,12 @@ func (q *Queries) CheckModuleExists(ctx context.Context, id uuid.UUID) (bool, er
 }
 
 const createModule = `-- name: CreateModule :one
-INSERT INTO modules (id, user_id, Name, is_open, icon, created_at, updated_at)
-VALUES ($1, $2, $3, $4, $5, $6, $7)
+INSERT INTO modules (user_id, Name, is_open, icon, created_at, updated_at)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING id, user_id, name, is_open, icon, created_at, updated_at
 `
 
 type CreateModuleParams struct {
-	ID        uuid.UUID `json:"id"`
 	UserID    uuid.UUID `json:"user_id"`
 	Name      string    `json:"name"`
 	IsOpen    bool      `json:"is_open"`
@@ -45,7 +44,6 @@ type CreateModuleParams struct {
 
 func (q *Queries) CreateModule(ctx context.Context, arg CreateModuleParams) (Module, error) {
 	row := q.db.QueryRowContext(ctx, createModule,
-		arg.ID,
 		arg.UserID,
 		arg.Name,
 		arg.IsOpen,
@@ -70,7 +68,7 @@ const deleteModule = `-- name: DeleteModule :exec
 DELETE FROM modules WHERE id = $1
 `
 
-func (q *Queries) DeleteModule(ctx context.Context, id uuid.UUID) error {
+func (q *Queries) DeleteModule(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteModule, id)
 	return err
 }
@@ -119,8 +117,8 @@ WHERE id = $2
 `
 
 type UpdateIconParams struct {
-	Icon string    `json:"icon"`
-	ID   uuid.UUID `json:"id"`
+	Icon string `json:"icon"`
+	ID   int32  `json:"id"`
 }
 
 func (q *Queries) UpdateIcon(ctx context.Context, arg UpdateIconParams) error {
@@ -135,8 +133,8 @@ WHERE id = $1
 `
 
 type UpdateModuleNameParams struct {
-	ID   uuid.UUID `json:"id"`
-	Name string    `json:"name"`
+	ID   int32  `json:"id"`
+	Name string `json:"name"`
 }
 
 func (q *Queries) UpdateModuleName(ctx context.Context, arg UpdateModuleNameParams) error {

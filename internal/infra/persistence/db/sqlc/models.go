@@ -12,7 +12,7 @@ import (
 )
 
 type Module struct {
-	ID        uuid.UUID `json:"id"`
+	ID        int32     `json:"id"`
 	UserID    uuid.UUID `json:"user_id"`
 	Name      string    `json:"name"`
 	IsOpen    bool      `json:"is_open"`

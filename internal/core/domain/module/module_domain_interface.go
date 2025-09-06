@@ -3,7 +3,7 @@ package moduledomain
 import "time"
 
 type Module interface {
-	GetID() string
+	GetID() int32
 	GetUserId() string
 	GetName() string
 	GetIsOpen() bool
@@ -15,7 +15,7 @@ type Module interface {
 }
 
 func New(
-	id string,
+	id int32,
 	user_id string,
 	name string,
 	isOpen bool,

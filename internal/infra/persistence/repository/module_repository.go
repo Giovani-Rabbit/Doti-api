@@ -17,12 +17,12 @@ type moduleRepository struct {
 }
 
 type ModuleRepository interface {
-	CheckExistsById(ctx context.Context, id string) (bool, error)
+	CheckExistsById(ctx context.Context, id int32) (bool, error)
 	Create(ctx context.Context, module moduledomain.Module) (moduledomain.Module, error)
-	DeleteModule(ctx context.Context, id string) error
+	DeleteModule(ctx context.Context, id int32) error
 	ListModulesByUserID(ctx context.Context, userId string) ([]moduledomain.Module, error)
-	UpdateModuleName(ctx context.Context, id string, name string) error
-	UpdateIcon(ctx context.Context, id string, icon string) error
+	UpdateModuleName(ctx context.Context, id int32, name string) error
+	UpdateIcon(ctx context.Context, id int32, icon string) error
 }
 
 func NewModuleRepository(dtb *sql.DB) ModuleRepository {
@@ -33,15 +33,9 @@ func NewModuleRepository(dtb *sql.DB) ModuleRepository {
 }
 
 func (mr *moduleRepository) CheckExistsById(
-	ctx context.Context, id string,
+	ctx context.Context, id int32,
 ) (bool, error) {
-	moduleID, err := uuid.Parse(id)
-
-	if err != nil {
-		return false, err
-	}
-
-	exists, err := mr.Queries.CheckModuleExists(ctx, moduleID)
+	exists, err := mr.Queries.CheckModuleExists(ctx, id)
 
 	if err != nil {
 		return false, err
@@ -62,7 +56,6 @@ func (mr *moduleRepository) Create(
 
 	moduleEntity, err := mr.Queries.CreateModule(ctx,
 		sqlc.CreateModuleParams{
-			ID:        uuid.New(),
 			UserID:    userID,
 			Name:      module.GetName(),
 			IsOpen:    false,
@@ -80,15 +73,9 @@ func (mr *moduleRepository) Create(
 }
 
 func (mr *moduleRepository) DeleteModule(
-	ctx context.Context, id string,
+	ctx context.Context, id int32,
 ) error {
-	moduleId, err := uuid.Parse(id)
-
-	if err != nil {
-		return err
-	}
-
-	err = mr.Queries.DeleteModule(ctx, moduleId)
+	err := mr.Queries.DeleteModule(ctx, id)
 
 	if err != nil {
 		return err
@@ -118,17 +105,11 @@ func (mr *moduleRepository) ListModulesByUserID(
 
 func (mr *moduleRepository) UpdateModuleName(
 	ctx context.Context,
-	id string,
+	id int32,
 	name string,
 ) error {
-	moduleId, err := uuid.Parse(id)
-
-	if err != nil {
-		return err
-	}
-
-	err = mr.Queries.UpdateModuleName(ctx, sqlc.UpdateModuleNameParams{
-		ID:   moduleId,
+	err := mr.Queries.UpdateModuleName(ctx, sqlc.UpdateModuleNameParams{
+		ID:   id,
 		Name: name,
 	})
 
@@ -140,16 +121,10 @@ func (mr *moduleRepository) UpdateModuleName(
 }
 
 func (mr *moduleRepository) UpdateIcon(
-	ctx context.Context, id string, icon string,
+	ctx context.Context, id int32, icon string,
 ) error {
-	moduleId, err := uuid.Parse(id)
-
-	if err != nil {
-		return err
-	}
-
-	err = mr.Queries.UpdateIcon(ctx, sqlc.UpdateIconParams{
-		ID:   moduleId,
+	err := mr.Queries.UpdateIcon(ctx, sqlc.UpdateIconParams{
+		ID:   id,
 		Icon: icon,
 	})
 

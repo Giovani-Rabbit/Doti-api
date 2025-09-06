@@ -36,7 +36,7 @@ func (m *MockModuleRepository) EXPECT() *MockModuleRepositoryMockRecorder {
 }
 
 // CheckExistsById mocks base method.
-func (m *MockModuleRepository) CheckExistsById(ctx context.Context, id string) (bool, error) {
+func (m *MockModuleRepository) CheckExistsById(ctx context.Context, id int32) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CheckExistsById", ctx, id)
 	ret0, _ := ret[0].(bool)
@@ -66,7 +66,7 @@ func (mr *MockModuleRepositoryMockRecorder) Create(ctx, module interface{}) *gom
 }
 
 // DeleteModule mocks base method.
-func (m *MockModuleRepository) DeleteModule(ctx context.Context, id string) error {
+func (m *MockModuleRepository) DeleteModule(ctx context.Context, id int32) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteModule", ctx, id)
 	ret0, _ := ret[0].(error)
@@ -95,7 +95,7 @@ func (mr *MockModuleRepositoryMockRecorder) ListModulesByUserID(ctx, userId inte
 }
 
 // UpdateIcon mocks base method.
-func (m *MockModuleRepository) UpdateIcon(ctx context.Context, id, icon string) error {
+func (m *MockModuleRepository) UpdateIcon(ctx context.Context, id int32, icon string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateIcon", ctx, id, icon)
 	ret0, _ := ret[0].(error)
@@ -109,7 +109,7 @@ func (mr *MockModuleRepositoryMockRecorder) UpdateIcon(ctx, id, icon interface{}
 }
 
 // UpdateModuleName mocks base method.
-func (m *MockModuleRepository) UpdateModuleName(ctx context.Context, id, name string) error {
+func (m *MockModuleRepository) UpdateModuleName(ctx context.Context, id int32, name string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateModuleName", ctx, id, name)
 	ret0, _ := ret[0].(error)

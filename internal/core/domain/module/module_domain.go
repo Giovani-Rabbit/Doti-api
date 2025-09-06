@@ -6,7 +6,7 @@ import (
 )
 
 type moduleDomain struct {
-	id        string
+	id        int32
 	userId    string
 	name      string
 	isOpen    bool
@@ -15,7 +15,7 @@ type moduleDomain struct {
 	updatedAt time.Time
 }
 
-func (md *moduleDomain) GetID() string {
+func (md *moduleDomain) GetID() int32 {
 	return md.id
 
 }

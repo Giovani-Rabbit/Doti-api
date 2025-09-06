@@ -30,29 +30,30 @@ func NewGetModulesUseCase(
 func (gm *getByUser) Execute(
 	ctx context.Context, userId string,
 ) ([]moduledomain.Module, error) {
-	logger.Info("Init get module",
+	logger.Info("Init get modules",
 		zap.String("journey", "getModule"),
-	)
+		zap.String("userId", userId))
 
 	if !val.IsValidUUID(userId) {
+		logger.Error("User id is not a uuid", nil,
+			zap.String("userId", userId))
+
 		return nil, resp.NewInvalidUUID()
 	}
 
 	modules, err := gm.moduleRepo.ListModulesByUserID(ctx, userId)
-
 	if err != nil {
-		logger.Error(
-			"Error in repository", err,
+		logger.Error("Error in repository", err,
 			zap.String("journey", "getModule"),
-		)
+			zap.String("userId", userId))
 
 		return nil, moduledomain.ErrCouldNotPersistModule(err)
 	}
 
-	logger.Info("getModule executed successfully",
-		zap.Int("ModulesLength", len(modules)),
+	logger.Info("List of modules obtained",
 		zap.String("journey", "getModule"),
-	)
+		zap.Int("ModulesLength", len(modules)),
+		zap.String("userId", userId))
 
 	return modules, nil
 }

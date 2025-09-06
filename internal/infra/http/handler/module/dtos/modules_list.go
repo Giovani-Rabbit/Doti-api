@@ -11,7 +11,7 @@ type ModulesResponse struct {
 }
 
 type ModuleListResponse struct {
-	Id        string    `json:"id"`
+	Id        int32     `json:"id"`
 	Name      string    `json:"name"`
 	IsOpen    bool      `json:"is_open"`
 	Icon      string    `json:"icon"`

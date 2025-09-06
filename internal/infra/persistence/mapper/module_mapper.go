@@ -9,7 +9,7 @@ func ConvertCreateModuleRowToModule(
 	module *sqlc.Module,
 ) (domain moduledomain.Module) {
 	return moduledomain.New(
-		module.ID.String(),
+		module.ID,
 		module.UserID.String(),
 		module.Name,
 		module.IsOpen,
@@ -26,7 +26,7 @@ func ConvertListModuleByUserIdRowToModules(
 
 	for _, m := range *modules {
 		moduleList = append(moduleList, moduledomain.New(
-			m.ID.String(),
+			m.ID,
 			m.UserID.String(),
 			m.Name,
 			m.IsOpen,

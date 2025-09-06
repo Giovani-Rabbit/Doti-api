@@ -12,7 +12,7 @@ type CreateModuleDTO struct {
 }
 
 type CreateModuleResponse struct {
-	ID        string    `json:"id"`
+	ID        int32     `json:"id"`
 	Name      string    `json:"name"`
 	IsOpen    bool      `json:"is_open"`
 	Icon      string    `json:"icon"`
