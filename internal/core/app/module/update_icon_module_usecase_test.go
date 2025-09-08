@@ -10,7 +10,6 @@ import (
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 )
 
 func TestChangeIconModule(t *testing.T) {
@@ -21,7 +20,7 @@ func TestChangeIconModule(t *testing.T) {
 	updateIconUseCase := modulecase.NewUpdateModuleIconUseCase(moduleRepository)
 
 	ctx := context.Background()
-	moduleId := uuid.NewString()
+	moduleId := "12345"
 
 	t.Run("Should be able to change the module icon", func(t *testing.T) {
 		moduleRepository.EXPECT().UpdateIcon(
@@ -37,7 +36,7 @@ func TestChangeIconModule(t *testing.T) {
 	})
 
 	t.Run("Should fail if the uuid is invalid", func(t *testing.T) {
-		invalidId := "123"
+		invalidId := "abc123"
 		icon := "code"
 
 		err := updateIconUseCase.Execute(ctx, invalidId, icon)

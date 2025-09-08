@@ -9,7 +9,6 @@ import (
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 )
 
 func TestRenameModuleUseCase(t *testing.T) {
@@ -22,11 +21,11 @@ func TestRenameModuleUseCase(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Should be able to rename a module", func(t *testing.T) {
-		moduleId := uuid.New().String()
+		moduleId := "1234"
 		newName := "new Name"
 
 		moduleRepo.EXPECT().
-			UpdateModuleName(ctx, moduleId, newName)
+			UpdateModuleName(ctx, gomock.Any(), gomock.Any()).Return(nil)
 
 		err := renameCase.Execute(ctx, moduleId, newName)
 
@@ -38,7 +37,7 @@ func TestRenameModuleUseCase(t *testing.T) {
 	t.Run("Should not be able to rename if the module ID is invalid", func(t *testing.T) {
 		newName := "new Name"
 
-		err := renameCase.Execute(ctx, "1234", newName)
+		err := renameCase.Execute(ctx, "abc123", newName)
 
 		if err == nil {
 			t.Fatalf("an error was expected, but we got: %v", err)
@@ -47,12 +46,15 @@ func TestRenameModuleUseCase(t *testing.T) {
 		sttErr := err.(*resp.RestErr).Status
 
 		if sttErr != moduledomain.SttInvalidModuleID {
-			t.Fatalf("an error of the type INVALID_MODULE_ID was expected, but we got: %v", err)
+			t.Fatalf(
+				"an error of the type INVALID_MODULE_ID was expected, but we got: %v",
+				err,
+			)
 		}
 	})
 
 	t.Run("Should not be able to rename if the new name is invalid", func(t *testing.T) {
-		err := renameCase.Execute(ctx, uuid.New().String(), "  ")
+		err := renameCase.Execute(ctx, "1234", "  ")
 
 		if err == nil {
 			t.Fatalf("an error was expected, but we got: %v", err)
@@ -61,7 +63,10 @@ func TestRenameModuleUseCase(t *testing.T) {
 		sttErr := err.(*resp.RestErr).Status
 
 		if sttErr != moduledomain.SttNewModuleNameIsEmpty {
-			t.Fatalf("an error of the type NEW_MODULE_NAME_IS_EMPTY was expected, but we got: %v", err)
+			t.Fatalf(
+				"an error of the type %v was expected, but we got: %v",
+				moduledomain.SttNewModuleNameIsEmpty, sttErr,
+			)
 		}
 	})
 }

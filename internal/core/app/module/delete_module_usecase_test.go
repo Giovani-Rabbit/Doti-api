@@ -10,7 +10,6 @@ import (
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
-	"github.com/google/uuid"
 )
 
 func TestDeleteModuleUseCase(t *testing.T) {
@@ -23,10 +22,15 @@ func TestDeleteModuleUseCase(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Should delete module successfully", func(t *testing.T) {
-		moduleID := uuid.New().String()
+		moduleID := "12345"
 
-		moduleRepo.EXPECT().CheckExistsById(gomock.Any(), moduleID).Return(true, nil)
-		moduleRepo.EXPECT().DeleteModule(gomock.Any(), moduleID).Return(nil)
+		moduleRepo.EXPECT().
+			CheckExistsById(gomock.Any(), gomock.Any()).
+			Return(true, nil)
+
+		moduleRepo.EXPECT().
+			DeleteModule(gomock.Any(), gomock.Any()).
+			Return(nil)
 
 		err := deleteModuleCase.Execute(ctx, moduleID)
 		if err != nil {
@@ -35,7 +39,7 @@ func TestDeleteModuleUseCase(t *testing.T) {
 	})
 
 	t.Run("Should return error if id is invalid", func(t *testing.T) {
-		moduleID := "12345"
+		moduleID := "abc-123"
 
 		err := deleteModuleCase.Execute(ctx, moduleID)
 		if err == nil {
@@ -56,10 +60,10 @@ func TestDeleteModuleUseCase(t *testing.T) {
 	})
 
 	t.Run("Should return error if module does not exist", func(t *testing.T) {
-		moduleID := uuid.New().String()
+		moduleID := "12345"
 
 		moduleRepo.EXPECT().
-			CheckExistsById(gomock.Any(), moduleID).
+			CheckExistsById(gomock.Any(), gomock.Any()).
 			Return(false, nil)
 
 		err := deleteModuleCase.Execute(ctx, moduleID)
@@ -82,14 +86,14 @@ func TestDeleteModuleUseCase(t *testing.T) {
 	})
 
 	t.Run("Should return error if repository fails", func(t *testing.T) {
-		moduleID := uuid.New().String()
+		moduleID := "12345"
 
 		moduleRepo.EXPECT().
-			CheckExistsById(gomock.Any(), moduleID).
+			CheckExistsById(gomock.Any(), gomock.Any()).
 			Return(true, nil)
 
 		moduleRepo.EXPECT().
-			DeleteModule(gomock.Any(), moduleID).
+			DeleteModule(gomock.Any(), gomock.Any()).
 			Return(errors.New("db error"))
 
 		err := deleteModuleCase.Execute(ctx, moduleID)
