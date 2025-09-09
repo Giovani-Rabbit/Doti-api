@@ -10,7 +10,6 @@ import (
 func TestUUidValidator(t *testing.T) {
 	t.Run("The uuid must be valid", func(t *testing.T) {
 		isValid := val.IsValidUUID(uuid.New().String())
-
 		if !isValid {
 			t.Fatal("uuid validation should return true")
 		}
