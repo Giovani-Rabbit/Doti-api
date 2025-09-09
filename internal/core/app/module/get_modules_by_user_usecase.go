@@ -12,7 +12,8 @@ import (
 )
 
 type GetByUser interface {
-	Execute(ctx context.Context, userId string) ([]moduledomain.Module, error)
+	Execute(ctx context.Context, userId string) (
+		[]moduledomain.Module, error)
 }
 
 type getByUser struct {
