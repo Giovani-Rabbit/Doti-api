@@ -6,13 +6,33 @@ type Task interface {
 	ID() int32
 	ModuleID() int32
 	Name() string
-	IsComplete() bool
-	Position() int
+	IsCompleted() bool
+	Position() int32
 	CreatedAt() time.Time
 	UpdatedAt() time.Time
 }
 
-func NewTask(
+func NewFromDB(
+	id int32,
+	moduleID int32,
+	name string,
+	isCompleted bool,
+	position int32,
+	createdAt time.Time,
+	updatedAt time.Time,
+) Task {
+	return &taskDomain{
+		id:          id,
+		moduleID:    moduleID,
+		name:        name,
+		isCompleted: isCompleted,
+		position:    position,
+		createdAt:   createdAt,
+		updatedAt:   createdAt,
+	}
+}
+
+func New(
 	id, moduleID int32,
 	name string,
 	position int,
@@ -31,12 +51,12 @@ func NewTask(
 
 	now := time.Now()
 	return &taskDomain{
-		id:         id,
-		moduleID:   moduleID,
-		name:       name,
-		isComplete: false,
-		position:   position,
-		createdAt:  now,
-		updatedAt:  now,
+		id:          id,
+		moduleID:    moduleID,
+		name:        name,
+		isCompleted: false,
+		position:    int32(position),
+		createdAt:   now,
+		updatedAt:   now,
 	}
 }
