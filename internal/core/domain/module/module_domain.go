@@ -44,5 +44,7 @@ func (md *moduleDomain) GetUpdatedAt() time.Time {
 }
 
 func (md *moduleDomain) IsValid() bool {
-	return strings.TrimSpace(md.icon) != "" && strings.TrimSpace(md.name) != ""
+	return strings.TrimSpace(md.icon) != "" &&
+		strings.TrimSpace(md.name) != "" &&
+		strings.TrimSpace(md.userId) != ""
 }

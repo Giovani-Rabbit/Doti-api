@@ -21,6 +21,16 @@ type Module struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type Task struct {
+	ID          int32     `json:"id"`
+	ModuleID    int32     `json:"module_id"`
+	Name        string    `json:"name"`
+	IsCompleted bool      `json:"is_completed"`
+	Position    int32     `json:"position"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
 type User struct {
 	ID        uuid.UUID      `json:"id"`
 	Email     string         `json:"email"`
