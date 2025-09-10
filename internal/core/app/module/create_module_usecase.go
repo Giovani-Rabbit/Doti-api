@@ -32,13 +32,13 @@ func (mu *create) Execute(
 ) (moduledomain.Module, error) {
 	logger.Info("Init create module",
 		zap.String("journey", "createModule"),
-		zap.String("userId", moduleEntity.GetUserId()),
-		zap.String("moduleName", moduleEntity.GetName()))
+		zap.String("userId", moduleEntity.UserId()),
+		zap.String("moduleName", moduleEntity.Name()))
 
-	if !val.IsValidUUID(moduleEntity.GetUserId()) {
+	if !val.IsValidUUID(moduleEntity.UserId()) {
 		logger.Error("User id validation error", nil,
 			zap.String("journey", "createModule"),
-			zap.String("userId", moduleEntity.GetUserId()))
+			zap.String("userId", moduleEntity.UserId()))
 
 		return nil, moduledomain.ErrInvalidUserId()
 	}
@@ -46,8 +46,8 @@ func (mu *create) Execute(
 	if !moduleEntity.IsValid() {
 		logger.Error("Module validation error", nil,
 			zap.String("journey", "createModule"),
-			zap.String("moduleName", moduleEntity.GetName()),
-			zap.String("Icon", moduleEntity.GetIcon()))
+			zap.String("moduleName", moduleEntity.Name()),
+			zap.String("Icon", moduleEntity.Icon()))
 
 		return nil, moduledomain.ErrInvalidModuleFields()
 	}
@@ -56,15 +56,15 @@ func (mu *create) Execute(
 	if err != nil {
 		logger.Error("Error in repository", err,
 			zap.String("journey", "createModule"),
-			zap.String("userId", moduleEntity.GetUserId()),
-			zap.String("moduleName", moduleEntity.GetName()),
-			zap.String("Icon", moduleEntity.GetIcon()))
+			zap.String("userId", moduleEntity.UserId()),
+			zap.String("moduleName", moduleEntity.Name()),
+			zap.String("Icon", moduleEntity.Icon()))
 
 		return nil, moduledomain.ErrCouldNotPersistModule(err)
 	}
 
 	logger.Info("CreateModule executed successfully",
-		zap.Int32("moduleID", moduleCreated.GetID()),
+		zap.Int32("moduleID", moduleCreated.ID()),
 		zap.String("journey", "createModule"))
 
 	return moduleCreated, nil

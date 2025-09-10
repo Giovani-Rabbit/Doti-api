@@ -22,11 +22,11 @@ type CreateModuleResponse struct {
 
 func NewModuleCreatedResponse(module moduledomain.Module) CreateModuleResponse {
 	return CreateModuleResponse{
-		ID:        module.GetID(),
-		Name:      module.GetName(),
-		IsOpen:    module.GetIsOpen(),
-		Icon:      module.GetIcon(),
-		CreatedAt: module.GetCreateAt(),
-		UpdatedAt: module.GetUpdatedAt(),
+		ID:        module.ID(),
+		Name:      module.Name(),
+		IsOpen:    module.IsOpen(),
+		Icon:      module.Icon(),
+		CreatedAt: module.CreateAt(),
+		UpdatedAt: module.UpdatedAt(),
 	}
 }

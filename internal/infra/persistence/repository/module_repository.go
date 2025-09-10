@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"time"
 
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db/sqlc"
@@ -48,7 +47,7 @@ func (mr *moduleRepository) Create(
 	ctx context.Context,
 	module moduledomain.Module,
 ) (moduledomain.Module, error) {
-	userID, err := uuid.Parse(module.GetUserId())
+	userID, err := uuid.Parse(module.UserId())
 
 	if err != nil {
 		return nil, err
@@ -57,11 +56,11 @@ func (mr *moduleRepository) Create(
 	moduleEntity, err := mr.queries.CreateModule(ctx,
 		sqlc.CreateModuleParams{
 			UserID:    userID,
-			Name:      module.GetName(),
-			IsOpen:    false,
-			Icon:      module.GetIcon(),
-			CreatedAt: time.Now(),
-			UpdatedAt: time.Now(),
+			Name:      module.Name(),
+			IsOpen:    module.IsOpen(),
+			Icon:      module.Icon(),
+			CreatedAt: module.CreateAt(),
+			UpdatedAt: module.UpdatedAt(),
 		},
 	)
 

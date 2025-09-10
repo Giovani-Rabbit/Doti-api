@@ -15,33 +15,13 @@ type moduleDomain struct {
 	updatedAt time.Time
 }
 
-func (md *moduleDomain) GetID() int32 {
-	return md.id
-
-}
-func (md *moduleDomain) GetUserId() string {
-	return md.userId
-}
-
-func (md *moduleDomain) GetName() string {
-	return md.name
-}
-
-func (md *moduleDomain) GetIsOpen() bool {
-	return md.isOpen
-}
-
-func (md *moduleDomain) GetIcon() string {
-	return md.icon
-}
-
-func (md *moduleDomain) GetCreateAt() time.Time {
-	return md.createdAt
-}
-
-func (md *moduleDomain) GetUpdatedAt() time.Time {
-	return md.updatedAt
-}
+func (md *moduleDomain) ID() int32            { return md.id }
+func (md *moduleDomain) UserId() string       { return md.userId }
+func (md *moduleDomain) Name() string         { return md.name }
+func (md *moduleDomain) IsOpen() bool         { return md.isOpen }
+func (md *moduleDomain) Icon() string         { return md.icon }
+func (md *moduleDomain) CreateAt() time.Time  { return md.createdAt }
+func (md *moduleDomain) UpdatedAt() time.Time { return md.updatedAt }
 
 func (md *moduleDomain) IsValid() bool {
 	return strings.TrimSpace(md.icon) != "" &&

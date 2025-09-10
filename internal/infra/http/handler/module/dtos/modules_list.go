@@ -28,12 +28,12 @@ func NewModuleListDTO(
 		moduleList = append(
 			moduleList,
 			ModuleListResponse{
-				Id:        m.GetID(),
-				Name:      m.GetName(),
-				IsOpen:    m.GetIsOpen(),
-				Icon:      m.GetIcon(),
-				UpdatedAt: m.GetCreateAt(),
-				CreatedAt: m.GetUpdatedAt(),
+				Id:        m.ID(),
+				Name:      m.Name(),
+				IsOpen:    m.IsOpen(),
+				Icon:      m.Icon(),
+				UpdatedAt: m.CreateAt(),
+				CreatedAt: m.UpdatedAt(),
 			},
 		)
 	}

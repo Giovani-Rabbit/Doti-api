@@ -3,20 +3,20 @@ package moduledomain
 import "time"
 
 type Module interface {
-	GetID() int32
-	GetUserId() string
-	GetName() string
-	GetIsOpen() bool
-	GetIcon() string
-	GetCreateAt() time.Time
-	GetUpdatedAt() time.Time
+	ID() int32
+	UserId() string
+	Name() string
+	IsOpen() bool
+	Icon() string
+	CreateAt() time.Time
+	UpdatedAt() time.Time
 
 	IsValid() bool
 }
 
 func New(
 	id int32,
-	user_id string,
+	userId string,
 	name string,
 	isOpen bool,
 	icon string,
@@ -25,7 +25,7 @@ func New(
 ) Module {
 	return &moduleDomain{
 		id:        id,
-		userId:    user_id,
+		userId:    userId,
 		name:      name,
 		isOpen:    isOpen,
 		icon:      icon,
@@ -39,9 +39,13 @@ func NewCreateModule(
 	name string,
 	icon string,
 ) Module {
+	now := time.Now()
 	return &moduleDomain{
-		userId: userId,
-		name:   name,
-		icon:   icon,
+		userId:    userId,
+		name:      name,
+		icon:      icon,
+		isOpen:    false,
+		createdAt: now,
+		updatedAt: now,
 	}
 }

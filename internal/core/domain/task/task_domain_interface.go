@@ -2,7 +2,7 @@ package taskdomain
 
 import "time"
 
-type TaskDomain interface {
+type Task interface {
 	ID() int32
 	ModuleID() int32
 	Name() string
@@ -12,7 +12,11 @@ type TaskDomain interface {
 	UpdatedAt() time.Time
 }
 
-func NewTask(id, moduleID int32, name string, position int) TaskDomain {
+func NewTask(
+	id, moduleID int32,
+	name string,
+	position int,
+) Task {
 	if id <= 0 {
 		return nil
 	}
