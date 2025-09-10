@@ -12,8 +12,8 @@ import (
 )
 
 type userRepository struct {
-	DB      *sql.DB
-	Queries *sqlc.Queries
+	db      *sql.DB
+	queries *sqlc.Queries
 }
 
 type UserRepository interface {
@@ -23,10 +23,10 @@ type UserRepository interface {
 	FindUserByEmailAndPassword(ctx context.Context, args userDomain.User) (userDomain.User, error)
 }
 
-func NewUserRepository(dtb *sql.DB) UserRepository {
+func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepository{
-		DB:      dtb,
-		Queries: sqlc.New(dtb),
+		db:      db,
+		queries: sqlc.New(db),
 	}
 }
 
@@ -34,7 +34,7 @@ func (ur *userRepository) Create(
 	ctx context.Context,
 	domainUser userDomain.User,
 ) (userDomain.User, error) {
-	userEntity, err := ur.Queries.CreateUser(ctx,
+	userEntity, err := ur.queries.CreateUser(ctx,
 		sqlc.CreateUserParams{
 			ID:        uuid.New(),
 			Name:      domainUser.GetName(),
@@ -57,7 +57,7 @@ func (ur *userRepository) CheckUserExists(
 	ctx context.Context,
 	email string,
 ) (bool, error) {
-	exists, err := ur.Queries.CheckUserExists(ctx, email)
+	exists, err := ur.queries.CheckUserExists(ctx, email)
 
 	if err != nil {
 		return false, err
@@ -70,7 +70,7 @@ func (ur *userRepository) FindUserByEmail(
 	ctx context.Context,
 	email string,
 ) (userDomain.User, error) {
-	user, err := ur.Queries.FindUserByEmail(ctx, email)
+	user, err := ur.queries.FindUserByEmail(ctx, email)
 
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (ur *userRepository) FindUserByEmailAndPassword(
 	ctx context.Context,
 	args userDomain.User,
 ) (userDomain.User, error) {
-	user, err := ur.Queries.FindUserByEmailAndPassword(ctx,
+	user, err := ur.queries.FindUserByEmailAndPassword(ctx,
 		sqlc.FindUserByEmailAndPasswordParams{
 			Email:    args.GetEmail(),
 			Password: args.GetPassword(),

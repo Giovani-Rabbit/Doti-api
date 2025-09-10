@@ -25,10 +25,10 @@ type ModuleRepository interface {
 	UpdateIcon(ctx context.Context, id int32, icon string) error
 }
 
-func NewModuleRepository(dtb *sql.DB) ModuleRepository {
+func NewModuleRepository(db *sql.DB) ModuleRepository {
 	return &moduleRepository{
-		db:      dtb,
-		queries: sqlc.New(dtb),
+		db:      db,
+		queries: sqlc.New(db),
 	}
 }
 
