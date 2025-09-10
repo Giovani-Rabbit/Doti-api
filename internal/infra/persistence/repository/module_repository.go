@@ -12,8 +12,8 @@ import (
 )
 
 type moduleRepository struct {
-	DB      *sql.DB
-	Queries *sqlc.Queries
+	db      *sql.DB
+	queries *sqlc.Queries
 }
 
 type ModuleRepository interface {
@@ -27,15 +27,15 @@ type ModuleRepository interface {
 
 func NewModuleRepository(dtb *sql.DB) ModuleRepository {
 	return &moduleRepository{
-		DB:      dtb,
-		Queries: sqlc.New(dtb),
+		db:      dtb,
+		queries: sqlc.New(dtb),
 	}
 }
 
 func (mr *moduleRepository) CheckExistsById(
 	ctx context.Context, id int32,
 ) (bool, error) {
-	exists, err := mr.Queries.CheckModuleExists(ctx, id)
+	exists, err := mr.queries.CheckModuleExists(ctx, id)
 
 	if err != nil {
 		return false, err
@@ -54,7 +54,7 @@ func (mr *moduleRepository) Create(
 		return nil, err
 	}
 
-	moduleEntity, err := mr.Queries.CreateModule(ctx,
+	moduleEntity, err := mr.queries.CreateModule(ctx,
 		sqlc.CreateModuleParams{
 			UserID:    userID,
 			Name:      module.GetName(),
@@ -75,7 +75,7 @@ func (mr *moduleRepository) Create(
 func (mr *moduleRepository) DeleteModule(
 	ctx context.Context, id int32,
 ) error {
-	err := mr.Queries.DeleteModule(ctx, id)
+	err := mr.queries.DeleteModule(ctx, id)
 
 	if err != nil {
 		return err
@@ -94,7 +94,7 @@ func (mr *moduleRepository) ListModulesByUserID(
 		return nil, err
 	}
 
-	moduleEntities, err := mr.Queries.ListModuleByUserID(ctx, uuidUserId)
+	moduleEntities, err := mr.queries.ListModuleByUserID(ctx, uuidUserId)
 
 	if err != nil {
 		return nil, err
@@ -108,7 +108,7 @@ func (mr *moduleRepository) UpdateModuleName(
 	id int32,
 	name string,
 ) error {
-	err := mr.Queries.UpdateModuleName(ctx, sqlc.UpdateModuleNameParams{
+	err := mr.queries.UpdateModuleName(ctx, sqlc.UpdateModuleNameParams{
 		ID:   id,
 		Name: name,
 	})
@@ -123,7 +123,7 @@ func (mr *moduleRepository) UpdateModuleName(
 func (mr *moduleRepository) UpdateIcon(
 	ctx context.Context, id int32, icon string,
 ) error {
-	err := mr.Queries.UpdateIcon(ctx, sqlc.UpdateIconParams{
+	err := mr.queries.UpdateIcon(ctx, sqlc.UpdateIconParams{
 		ID:   id,
 		Icon: icon,
 	})
