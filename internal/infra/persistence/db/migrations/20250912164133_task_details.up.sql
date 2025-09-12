@@ -5,5 +5,7 @@ CREATE TABLE IF NOT EXISTS task_details (
     pomodoro_target INTEGER                                             DEFAULT 0,
     pomodoro_spent  INTEGER                                             DEFAULT 0,
     actual_time     INTEGER                                             DEFAULT 0,
-    updated_at      TIMESTAMP WITH TIME ZONE                NOT NULL    DEFAULT now()
+    updated_at      TIMESTAMP WITH TIME ZONE                NOT NULL    DEFAULT now(),
+
+    CONSTRAINT fk_task FOREIGN KEY (task_id) REFERENCES tasks(id)
 )
