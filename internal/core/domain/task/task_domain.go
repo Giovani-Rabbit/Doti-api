@@ -24,7 +24,7 @@ func (t *taskDomain) CreatedAt() time.Time { return t.createdAt }
 func (t *taskDomain) UpdatedAt() time.Time { return t.updatedAt }
 
 func (t *taskDomain) IsValidToCreate() bool {
-	return t.moduleId >= 0 &&
+	return t.moduleId > 0 &&
 		strings.TrimSpace(t.name) != "" &&
 		t.position >= 0
 }

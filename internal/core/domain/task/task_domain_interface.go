@@ -35,21 +35,13 @@ func NewFromDB(
 }
 
 func New(
-	moduleId int32,
+	moduleId int,
 	name string,
 	position int,
 ) Task {
-	if moduleId <= 0 {
-		return nil
-	}
-
-	if name == "" {
-		return nil
-	}
-
 	now := time.Now()
 	return &taskDomain{
-		moduleId:    moduleId,
+		moduleId:    int32(moduleId),
 		name:        name,
 		isCompleted: false,
 		position:    int32(position),
