@@ -4,17 +4,19 @@ import "time"
 
 type Task interface {
 	ID() int32
-	ModuleID() int32
+	ModuleId() int32
 	Name() string
 	IsCompleted() bool
 	Position() int32
 	CreatedAt() time.Time
 	UpdatedAt() time.Time
+
+	IsValidToCreate() bool
 }
 
 func NewFromDB(
 	id int32,
-	moduleID int32,
+	ModuleId int32,
 	name string,
 	isCompleted bool,
 	position int32,
@@ -23,7 +25,7 @@ func NewFromDB(
 ) Task {
 	return &taskDomain{
 		id:          id,
-		moduleID:    moduleID,
+		moduleId:    ModuleId,
 		name:        name,
 		isCompleted: isCompleted,
 		position:    position,
@@ -33,15 +35,11 @@ func NewFromDB(
 }
 
 func New(
-	id, moduleID int32,
+	moduleId int32,
 	name string,
 	position int,
 ) Task {
-	if id <= 0 {
-		return nil
-	}
-
-	if moduleID <= 0 {
+	if moduleId <= 0 {
 		return nil
 	}
 
@@ -51,8 +49,7 @@ func New(
 
 	now := time.Now()
 	return &taskDomain{
-		id:          id,
-		moduleID:    moduleID,
+		moduleId:    moduleId,
 		name:        name,
 		isCompleted: false,
 		position:    int32(position),

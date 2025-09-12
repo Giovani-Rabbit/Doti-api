@@ -3,17 +3,25 @@ package moduledomain
 import resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 
 const (
-	SttCouldNotFindModuleByID = "COULD_NOT_FIND_MODULE_BY_ID"
-	SttCouldNotGetModules     = "COULD_NOT_GET_MODULES"
-	SttCouldNotPersistModule  = "COULD_NOT_PERSIST_MODULE"
-	SttCouldNotRenameModule   = "COULD_NOT_RENAME_MODULE"
-	SttDeletingModule         = "COULD_NOT_DELETE_MODULE"
-	SttInvalidModuleFields    = "INVALID_MODULE_FIELDS"
-	SttInvalidModuleID        = "INVALID_MODULE_ID"
-	SttInvalidUserID          = "INVALID_USER_ID"
-	SttNewModuleNameIsEmpty   = "NEW_MODULE_NAME_IS_EMPTY"
-	SttNewIconNameIsEmpty     = "NEW_ICON_NAME_IS_EMPTY"
+	SttCouldNotFindModuleByID       = "COULD_NOT_FIND_MODULE_BY_ID"
+	SttCouldNotGetModules           = "COULD_NOT_GET_MODULES"
+	SttCouldNotPersistModule        = "COULD_NOT_PERSIST_MODULE"
+	SttCouldNotRenameModule         = "COULD_NOT_RENAME_MODULE"
+	SttCouldNotVerifyIfModuleExists = "COULD_NOT_VERIFY_IF_MODULE_EXISTS"
+	SttDeletingModule               = "COULD_NOT_DELETE_MODULE"
+	SttInvalidModuleFields          = "INVALID_MODULE_FIELDS"
+	SttInvalidModuleID              = "INVALID_MODULE_ID"
+	SttInvalidUserID                = "INVALID_USER_ID"
+	SttNewModuleNameIsEmpty         = "NEW_MODULE_NAME_IS_EMPTY"
+	SttNewIconNameIsEmpty           = "NEW_ICON_NAME_IS_EMPTY"
 )
+
+func ErrCheckingIfModuleExists() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttCouldNotVerifyIfModuleExists,
+		"Could not verify if the module exists",
+	)
+}
 
 func ErrInvalidModuleFields() *resp.RestErr {
 	return resp.NewBadRequestError(

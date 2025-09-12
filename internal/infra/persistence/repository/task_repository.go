@@ -44,7 +44,7 @@ func (tr *taskRepository) Create(
 	}()
 
 	t, err := q.CreateTask(ctx, sqlc.CreateTaskParams{
-		ModuleID:    task.ModuleID(),
+		ModuleID:    task.ModuleId(),
 		Name:        task.Name(),
 		IsCompleted: task.IsCompleted(),
 		Position:    task.Position(),
