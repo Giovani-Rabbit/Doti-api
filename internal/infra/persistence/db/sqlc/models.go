@@ -31,6 +31,16 @@ type Task struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 }
 
+type TaskDetail struct {
+	ID             int32          `json:"id"`
+	TaskID         int32          `json:"task_id"`
+	Description    sql.NullString `json:"description"`
+	PomodoroTarget sql.NullInt32  `json:"pomodoro_target"`
+	PomodoroSpent  sql.NullInt32  `json:"pomodoro_spent"`
+	ActualTime     sql.NullInt32  `json:"actual_time"`
+	UpdatedAt      time.Time      `json:"updated_at"`
+}
+
 type User struct {
 	ID        uuid.UUID      `json:"id"`
 	Email     string         `json:"email"`
