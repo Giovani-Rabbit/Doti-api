@@ -29,7 +29,21 @@ func (tr *taskRepository) Create(
 	ctx context.Context,
 	task taskdomain.Task,
 ) (taskdomain.Task, error) {
-	createdTask, err := tr.queries.CreateTask(ctx, sqlc.CreateTaskParams{
+	tx, err := tr.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	var committed bool
+	q := tr.queries.WithTx(tx)
+
+	defer func() {
+		if !committed {
+			tx.Rollback()
+		}
+	}()
+
+	t, err := q.CreateTask(ctx, sqlc.CreateTaskParams{
 		ModuleID:    task.ModuleID(),
 		Name:        task.Name(),
 		IsCompleted: task.IsCompleted(),
@@ -41,5 +55,22 @@ func (tr *taskRepository) Create(
 		return nil, err
 	}
 
-	return mapper.SqlcTaskToDomain(createdTask), nil
+	err = q.CreateTaskDetails(ctx, sqlc.CreateTaskDetailsParams{
+		TaskID: t.ID,
+		Description: sql.NullString{
+			String: "",
+			Valid:  false,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	committed = true
+
+	return mapper.SqlcTaskToDomain(t), nil
 }
