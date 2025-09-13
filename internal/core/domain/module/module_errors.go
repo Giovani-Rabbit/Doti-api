@@ -17,7 +17,7 @@ const (
 )
 
 func ErrCheckingIfModuleExists() *resp.RestErr {
-	return resp.NewBadRequestError(
+	return resp.NewCouldNotFind(
 		SttCouldNotVerifyIfModuleExists,
 		"Could not verify if the module exists",
 	)
