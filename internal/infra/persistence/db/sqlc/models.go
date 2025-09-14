@@ -37,7 +37,7 @@ type TaskDetail struct {
 	Description    sql.NullString `json:"description"`
 	PomodoroTarget sql.NullInt32  `json:"pomodoro_target"`
 	PomodoroSpent  sql.NullInt32  `json:"pomodoro_spent"`
-	ActualTime     sql.NullInt32  `json:"actual_time"`
+	TotalTime      sql.NullInt32  `json:"total_time"`
 	UpdatedAt      time.Time      `json:"updated_at"`
 }
 
