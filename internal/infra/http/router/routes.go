@@ -12,8 +12,9 @@ func Routes(DB *sql.DB) (mux *http.ServeMux) {
 
 	handlers := di.New(DB)
 
-	UserRoutes(mux, handlers.User)
 	ModuleRoutes(mux, handlers.Module)
+	TaskRoutes(mux, handlers.Task)
+	UserRoutes(mux, handlers.User)
 
 	return
 }

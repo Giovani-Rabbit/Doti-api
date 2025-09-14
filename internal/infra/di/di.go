@@ -9,6 +9,7 @@ import (
 
 type DI struct {
 	Module *dihdl.ModuleHandlers
+	Task   *dihdl.TaskHandlers
 	User   *dihdl.UserHandlers
 }
 
@@ -16,10 +17,12 @@ func New(db *sql.DB) *DI {
 	repo := newRepositoryContainer(db)
 
 	moduleCases := dicase.NewModuleCases(repo.module)
+	taskCases := dicase.NewTaskUseCase(repo.task, repo.module)
 	userCases := dicase.NewUserCases(repo.user)
 
 	return &DI{
 		Module: dihdl.NewModuleHandlers(moduleCases),
+		Task:   dihdl.NewTaskHandler(taskCases),
 		User:   dihdl.NewUserHandlers(userCases),
 	}
 }
