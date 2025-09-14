@@ -49,3 +49,18 @@ func (mr *MockTaskRepositoryMockRecorder) Create(ctx, task interface{}) *gomock.
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTaskRepository)(nil).Create), ctx, task)
 }
+
+// ListByModuleId mocks base method.
+func (m *MockTaskRepository) ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListByModuleId", ctx, moduleId)
+	ret0, _ := ret[0].([]taskdomain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListByModuleId indicates an expected call of ListByModuleId.
+func (mr *MockTaskRepositoryMockRecorder) ListByModuleId(ctx, moduleId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListByModuleId", reflect.TypeOf((*MockTaskRepository)(nil).ListByModuleId), ctx, moduleId)
+}

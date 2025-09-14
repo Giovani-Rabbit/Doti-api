@@ -11,6 +11,7 @@ import (
 
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
+	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
 }
 
 type taskRepository struct {
@@ -73,4 +74,15 @@ func (tr *taskRepository) Create(
 	committed = true
 
 	return mapper.SqlcTaskToDomain(t), nil
+}
+
+func (tr *taskRepository) ListByModuleId(
+	ctx context.Context, moduleId int32,
+) ([]taskdomain.Task, error) {
+	tasks, err := tr.queries.ListTasksByModuleId(ctx, moduleId)
+	if err != nil {
+		return nil, err
+	}
+
+	return mapper.SqlcTaskListToDomain(&tasks), nil
 }

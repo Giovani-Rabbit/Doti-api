@@ -46,3 +46,40 @@ func (q *Queries) CreateTask(ctx context.Context, arg CreateTaskParams) (Task, e
 	)
 	return i, err
 }
+
+const listTasksByModuleId = `-- name: ListTasksByModuleId :many
+SELECT id, module_id, name, is_completed, position, created_at, updated_at
+FROM tasks WHERE module_id = $1
+ORDER BY position ASC
+`
+
+func (q *Queries) ListTasksByModuleId(ctx context.Context, moduleID int32) ([]Task, error) {
+	rows, err := q.db.QueryContext(ctx, listTasksByModuleId, moduleID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Task
+	for rows.Next() {
+		var i Task
+		if err := rows.Scan(
+			&i.ID,
+			&i.ModuleID,
+			&i.Name,
+			&i.IsCompleted,
+			&i.Position,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
