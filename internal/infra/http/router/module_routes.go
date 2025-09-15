@@ -21,6 +21,12 @@ func ModuleRoutes(mux *http.ServeMux, module *dihdl.ModuleHandlers) (m *http.Ser
 		)),
 	)
 
+	mux.Handle("GET /modules/{id}/tasks",
+		middleware.EnsureAuth(http.HandlerFunc(
+			module.GetTasks.Execute,
+		)),
+	)
+
 	mux.Handle("PATCH /modules/{id}/rename",
 		middleware.EnsureAuth(http.HandlerFunc(
 			module.Rename.Execute,

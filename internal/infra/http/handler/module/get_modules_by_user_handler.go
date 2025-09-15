@@ -39,6 +39,7 @@ func (gh *get) Execute(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		res.Error(err)
+		return
 	}
 
 	modulesListResponse := moduledto.NewModuleListDTO(modules)

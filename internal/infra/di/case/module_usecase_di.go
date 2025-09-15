@@ -8,17 +8,22 @@ import (
 type ModuleUseCases struct {
 	Create     modulecase.Create
 	GetByUser  modulecase.GetByUser
+	GetTasks   modulecase.GetTasks
 	Rename     modulecase.Rename
 	Delete     modulecase.Delete
 	UpdateIcon modulecase.UpdateIcon
 }
 
-func NewModuleCases(moduleRepo repository.ModuleRepository) *ModuleUseCases {
+func NewModuleCases(
+	mr repository.ModuleRepository,
+	tr repository.TaskRepository,
+) *ModuleUseCases {
 	return &ModuleUseCases{
-		Create:     modulecase.NewCreateModuleUseCase(moduleRepo),
-		GetByUser:  modulecase.NewGetModulesUseCase(moduleRepo),
-		Rename:     modulecase.NewRenameModuleUseCase(moduleRepo),
-		Delete:     modulecase.NewDeleteModuleUseCase(moduleRepo),
-		UpdateIcon: modulecase.NewUpdateModuleIconUseCase(moduleRepo),
+		Create:     modulecase.NewCreateModuleUseCase(mr),
+		GetByUser:  modulecase.NewGetModulesUseCase(mr),
+		GetTasks:   modulecase.NewGetTasksByModuleId(tr, mr),
+		Rename:     modulecase.NewRenameModuleUseCase(mr),
+		Delete:     modulecase.NewDeleteModuleUseCase(mr),
+		UpdateIcon: modulecase.NewUpdateModuleIconUseCase(mr),
 	}
 }

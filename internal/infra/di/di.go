@@ -16,7 +16,7 @@ type DI struct {
 func New(db *sql.DB) *DI {
 	repo := newRepositoryContainer(db)
 
-	moduleCases := dicase.NewModuleCases(repo.module)
+	moduleCases := dicase.NewModuleCases(repo.module, repo.task)
 	taskCases := dicase.NewTaskUseCase(repo.task, repo.module)
 	userCases := dicase.NewUserCases(repo.user)
 

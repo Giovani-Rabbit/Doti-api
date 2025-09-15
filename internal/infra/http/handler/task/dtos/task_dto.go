@@ -25,3 +25,13 @@ func NewTaskDTOFromDomain(domain taskdomain.Task) *TaskDTO {
 		UpdatedAt: domain.UpdatedAt(),
 	}
 }
+
+func NewTaskListDTOFromDomain(domains []taskdomain.Task) (taskList []TaskDTO) {
+	taskList = make([]TaskDTO, len(domains))
+
+	for i, t := range domains {
+		taskList[i] = *NewTaskDTOFromDomain(t)
+	}
+
+	return
+}

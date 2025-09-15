@@ -1,11 +1,11 @@
-package taskcase_test
+package modulecase_test
 
 import (
 	"context"
 	"errors"
 	"testing"
 
-	taskcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task"
+	modulecase "github.com/Giovani-Coelho/Doti-API/internal/core/app/module"
 	moduledomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/module"
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
@@ -19,7 +19,7 @@ func TestGetTasksByModuleId(t *testing.T) {
 
 	taskRepository := mock_repository.NewMockTaskRepository(ctrl)
 	moduleRepository := mock_repository.NewMockModuleRepository(ctrl)
-	getTaskList := taskcase.NewGetTasksByModuleId(taskRepository, moduleRepository)
+	getTaskList := modulecase.NewGetTasksByModuleId(taskRepository, moduleRepository)
 
 	ctx := context.Background()
 
@@ -31,14 +31,14 @@ func TestGetTasksByModuleId(t *testing.T) {
 	}
 
 	t.Run("Should be able to get tasks", func(t *testing.T) {
-		moduleId := int32(321)
+		moduleId := "321"
 
 		moduleRepository.EXPECT().
-			CheckExistsById(gomock.Any(), moduleId).
+			CheckExistsById(gomock.Any(), gomock.Any()).
 			Return(true, nil)
 
 		taskRepository.EXPECT().
-			ListByModuleId(gomock.Any(), moduleId).
+			ListByModuleId(gomock.Any(), gomock.Any()).
 			Return(tasks, nil)
 
 		taskList, err := getTaskList.Execute(ctx, moduleId)
@@ -54,10 +54,10 @@ func TestGetTasksByModuleId(t *testing.T) {
 	})
 
 	t.Run("Should fail if the module does not exists", func(t *testing.T) {
-		moduleId := int32(321)
+		moduleId := "321"
 
 		moduleRepository.EXPECT().
-			CheckExistsById(gomock.Any(), moduleId).
+			CheckExistsById(gomock.Any(), gomock.Any()).
 			Return(false, nil)
 
 		taskList, err := getTaskList.Execute(ctx, moduleId)
@@ -79,10 +79,10 @@ func TestGetTasksByModuleId(t *testing.T) {
 	})
 
 	t.Run("Should fail to check if module exists", func(t *testing.T) {
-		moduleId := int32(321)
+		moduleId := "321"
 
 		moduleRepository.EXPECT().
-			CheckExistsById(gomock.Any(), moduleId).
+			CheckExistsById(gomock.Any(), gomock.Any()).
 			Return(false, errors.New("repository error"))
 
 		taskList, err := getTaskList.Execute(ctx, moduleId)
@@ -104,14 +104,14 @@ func TestGetTasksByModuleId(t *testing.T) {
 	})
 
 	t.Run("Should fail to get the task list", func(t *testing.T) {
-		moduleId := int32(321)
+		moduleId := "321"
 
 		moduleRepository.EXPECT().
-			CheckExistsById(gomock.Any(), moduleId).
+			CheckExistsById(gomock.Any(), gomock.Any()).
 			Return(true, nil)
 
 		taskRepository.EXPECT().
-			ListByModuleId(gomock.Any(), moduleId).
+			ListByModuleId(gomock.Any(), gomock.Any()).
 			Return(nil, errors.New("repository error"))
 
 		taskList, err := getTaskList.Execute(ctx, moduleId)
