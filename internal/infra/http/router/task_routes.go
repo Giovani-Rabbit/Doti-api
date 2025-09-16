@@ -9,7 +9,7 @@ import (
 
 func TaskRoutes(mux *http.ServeMux, task *dihdl.TaskHandlers) (m *http.ServeMux) {
 
-	mux.Handle("POST /task",
+	mux.Handle("POST /tasks",
 		middleware.EnsureAuth(http.HandlerFunc(
 			task.Create.Execute,
 		)),
