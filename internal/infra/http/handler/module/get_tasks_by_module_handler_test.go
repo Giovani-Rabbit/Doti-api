@@ -50,14 +50,14 @@ func TestGetTasksByModuleHandler(t *testing.T) {
 			)
 		}
 
-		var res []taskdto.TaskDTO
+		var res taskdto.TasksResponse
 		err = json.Unmarshal(body, &res)
 		if err != nil {
 			t.Fatalf("invalid return. Failed to unmarshal body: %v", err)
 		}
 
-		if len(res) != taskQuantity {
-			t.Fatalf("expected 10 tasks, got %d", len(res))
+		if len(res.Tasks) != taskQuantity {
+			t.Fatalf("expected 10 tasks, got %d", len(res.Tasks))
 		}
 	})
 }
