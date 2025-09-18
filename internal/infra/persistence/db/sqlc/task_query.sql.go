@@ -47,6 +47,51 @@ func (q *Queries) CreateTask(ctx context.Context, arg CreateTaskParams) (Task, e
 	return i, err
 }
 
+const getTaskByPosition = `-- name: GetTaskByPosition :one
+SELECT id, module_id, name, is_completed, position, created_at, updated_at
+FROM tasks WHERE module_id = $1 AND position = $2
+`
+
+type GetTaskByPositionParams struct {
+	ModuleID int32 `json:"module_id"`
+	Position int32 `json:"position"`
+}
+
+func (q *Queries) GetTaskByPosition(ctx context.Context, arg GetTaskByPositionParams) (Task, error) {
+	row := q.db.QueryRowContext(ctx, getTaskByPosition, arg.ModuleID, arg.Position)
+	var i Task
+	err := row.Scan(
+		&i.ID,
+		&i.ModuleID,
+		&i.Name,
+		&i.IsCompleted,
+		&i.Position,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getTaskbyId = `-- name: GetTaskbyId :one
+SELECT id, module_id, name, is_completed, position, created_at, updated_at
+FROM tasks WHERE id = $1
+`
+
+func (q *Queries) GetTaskbyId(ctx context.Context, id int32) (Task, error) {
+	row := q.db.QueryRowContext(ctx, getTaskbyId, id)
+	var i Task
+	err := row.Scan(
+		&i.ID,
+		&i.ModuleID,
+		&i.Name,
+		&i.IsCompleted,
+		&i.Position,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const listTasksByModuleId = `-- name: ListTasksByModuleId :many
 SELECT id, module_id, name, is_completed, position, created_at, updated_at
 FROM tasks WHERE module_id = $1

@@ -12,6 +12,8 @@ import (
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
+	GetTaskByID(ctx context.Context, taskId int32) (taskdomain.Task, error)
+	GetTaskByPosition(ctx context.Context, moduleId, position int32) (taskdomain.Task, error)
 }
 
 type taskRepository struct {
@@ -85,4 +87,35 @@ func (tr *taskRepository) ListByModuleId(
 	}
 
 	return mapper.SqlcTaskListToDomain(&tasks), nil
+}
+
+func (tr *taskRepository) GetTaskByID(
+	ctx context.Context,
+	taskId int32,
+) (taskdomain.Task, error) {
+	task, err := tr.queries.GetTaskbyId(ctx, taskId)
+	if err != nil {
+		return nil, err
+	}
+
+	taskEntity := mapper.SqlcTaskToDomain(task)
+
+	return taskEntity, nil
+}
+
+func (tr *taskRepository) GetTaskByPosition(
+	ctx context.Context,
+	moduleId, position int32,
+) (taskdomain.Task, error) {
+	task, err := tr.queries.GetTaskByPosition(ctx, sqlc.GetTaskByPositionParams{
+		ModuleID: moduleId,
+		Position: position,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	taskEntity := mapper.SqlcTaskToDomain(task)
+
+	return taskEntity, nil
 }

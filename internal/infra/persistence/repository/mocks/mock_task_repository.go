@@ -50,6 +50,36 @@ func (mr *MockTaskRepositoryMockRecorder) Create(ctx, task interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTaskRepository)(nil).Create), ctx, task)
 }
 
+// GetTaskByID mocks base method.
+func (m *MockTaskRepository) GetTaskByID(ctx context.Context, taskId int32) (taskdomain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTaskByID", ctx, taskId)
+	ret0, _ := ret[0].(taskdomain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTaskByID indicates an expected call of GetTaskByID.
+func (mr *MockTaskRepositoryMockRecorder) GetTaskByID(ctx, taskId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTaskByID", reflect.TypeOf((*MockTaskRepository)(nil).GetTaskByID), ctx, taskId)
+}
+
+// GetTaskByPosition mocks base method.
+func (m *MockTaskRepository) GetTaskByPosition(ctx context.Context, moduleId, position int32) (taskdomain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTaskByPosition", ctx, moduleId, position)
+	ret0, _ := ret[0].(taskdomain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTaskByPosition indicates an expected call of GetTaskByPosition.
+func (mr *MockTaskRepositoryMockRecorder) GetTaskByPosition(ctx, moduleId, position interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTaskByPosition", reflect.TypeOf((*MockTaskRepository)(nil).GetTaskByPosition), ctx, moduleId, position)
+}
+
 // ListByModuleId mocks base method.
 func (m *MockTaskRepository) ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error) {
 	m.ctrl.T.Helper()
