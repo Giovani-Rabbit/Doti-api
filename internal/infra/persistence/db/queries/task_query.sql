@@ -18,4 +18,4 @@ FROM tasks WHERE module_id = $1 AND position = $2;
 
 -- name: UpdateTaskPosition :exec
 UPDATE tasks SET position = $2
-WHERE module_id = $1;
+WHERE id = $1;
