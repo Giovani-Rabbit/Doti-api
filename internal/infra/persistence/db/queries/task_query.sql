@@ -15,3 +15,7 @@ FROM tasks WHERE id = $1;
 -- name: GetTaskByPosition :one
 SELECT id, module_id, name, is_completed, position, created_at, updated_at
 FROM tasks WHERE module_id = $1 AND position = $2;
+
+-- name: UpdateTaskPosition :exec
+UPDATE tasks SET position = $2
+WHERE module_id = $1;
