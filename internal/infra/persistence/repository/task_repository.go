@@ -12,6 +12,7 @@ import (
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
+	UpdatePosition(ctx context.Context, taskId, position int32) error
 }
 
 type taskRepository struct {
@@ -85,4 +86,19 @@ func (tr *taskRepository) ListByModuleId(
 	}
 
 	return mapper.SqlcTaskListToDomain(&tasks), nil
+}
+
+func (tr *taskRepository) UpdatePosition(
+	ctx context.Context, taskId, position int32,
+) error {
+	err := tr.queries.UpdateTaskPosition(ctx, sqlc.UpdateTaskPositionParams{
+		ID:       taskId,
+		Position: position,
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -10,4 +10,4 @@ ORDER BY position ASC;
 
 -- name: UpdateTaskPosition :exec
 UPDATE tasks SET position = $2
-WHERE module_id = $1;
+WHERE id = $1;
