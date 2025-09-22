@@ -94,17 +94,3 @@ func (mr *MockTaskRepositoryMockRecorder) ListByModuleId(ctx, moduleId interface
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListByModuleId", reflect.TypeOf((*MockTaskRepository)(nil).ListByModuleId), ctx, moduleId)
 }
-
-// UpdateTaskPosition mocks base method.
-func (m *MockTaskRepository) UpdateTaskPosition(ctx context.Context, taskId, position int32) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateTaskPosition", ctx, taskId, position)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// UpdateTaskPosition indicates an expected call of UpdateTaskPosition.
-func (mr *MockTaskRepositoryMockRecorder) UpdateTaskPosition(ctx, taskId, position interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTaskPosition", reflect.TypeOf((*MockTaskRepository)(nil).UpdateTaskPosition), ctx, taskId, position)
-}

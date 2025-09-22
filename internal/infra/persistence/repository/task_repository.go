@@ -14,7 +14,6 @@ type TaskRepository interface {
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
 	GetTaskByID(ctx context.Context, taskId int32) (taskdomain.Task, error)
 	GetTaskByPosition(ctx context.Context, moduleId, position int32) (taskdomain.Task, error)
-	UpdateTaskPosition(ctx context.Context, taskId, position int32) error
 }
 
 type taskRepository struct {
@@ -119,18 +118,4 @@ func (tr *taskRepository) GetTaskByPosition(
 	taskEntity := mapper.SqlcTaskToDomain(task)
 
 	return taskEntity, nil
-}
-
-func (tr *taskRepository) UpdateTaskPosition(
-	ctx context.Context, taskId, position int32,
-) error {
-	err := tr.queries.UpdateTaskPosition(ctx, sqlc.UpdateTaskPositionParams{
-		ID:       taskId,
-		Position: position,
-	})
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
