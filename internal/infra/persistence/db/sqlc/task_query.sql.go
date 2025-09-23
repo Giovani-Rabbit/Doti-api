@@ -109,3 +109,23 @@ func (q *Queries) SwapTaskPosition(ctx context.Context, arg SwapTaskPositionPara
 	)
 	return err
 }
+
+const taskPositionExists = `-- name: TaskPositionExists :one
+SELECT EXISTS (
+    SELECT 1 FROM tasks
+    WHERE module_id = $1 
+    AND position = $2 
+) AS exists
+`
+
+type TaskPositionExistsParams struct {
+	ModuleID int32 `json:"module_id"`
+	Position int32 `json:"position"`
+}
+
+func (q *Queries) TaskPositionExists(ctx context.Context, arg TaskPositionExistsParams) (bool, error) {
+	row := q.db.QueryRowContext(ctx, taskPositionExists, arg.ModuleID, arg.Position)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
