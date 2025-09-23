@@ -3,9 +3,11 @@ package taskdomain
 import resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 
 const (
-	SttInvalidFields     = "INVALID_TASK_FIELDS"
-	SttCouldNotPersist   = "COULD_NOT_PERSIST_TASK"
-	SttCouldNotListTasks = "COULD_NOT_LIST_TASKS"
+	SttInvalidFields          = "INVALID_TASK_FIELDS"
+	SttCouldNotPersist        = "COULD_NOT_PERSIST_TASK"
+	SttCouldNotListTasks      = "COULD_NOT_LIST_TASKS"
+	SttCouldNotVerifyPosition = "COULD_NOT_VERIFY_POSITION"
+	SttUnavailablePosition    = "UNAVAILABLE_POSITION"
 )
 
 func ErrInvalidFields() *resp.RestErr {
@@ -26,5 +28,19 @@ func ErrCouldNotListTasks() *resp.RestErr {
 	return resp.NewBadRequestError(
 		SttCouldNotListTasks,
 		"Failed to get task list from database",
+	)
+}
+
+func ErrCouldNotVerifyPosition() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttCouldNotVerifyPosition,
+		"Failed to check if task position is available",
+	)
+}
+
+func ErrUnavailableTaskPosition() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttUnavailablePosition,
+		"The task position is already in use",
 	)
 }

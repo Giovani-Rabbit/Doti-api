@@ -23,11 +23,18 @@ func TestCreateTaskUseCase(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Should be able to create a task", func(t *testing.T) {
-		task := taskdomain.New(1, "task", 2)
+		moduleId := 1
+		position := 2
+
+		task := taskdomain.New(moduleId, "task", position)
 
 		moduleRepository.EXPECT().
 			CheckExistsById(gomock.Any(), task.ModuleId()).
 			Return(true, nil)
+
+		taskRepository.EXPECT().
+			PositionExists(gomock.Any(), int32(moduleId), int32(position)).
+			Return(false, nil)
 
 		taskRepository.EXPECT().
 			Create(gomock.Any(), task).
@@ -75,6 +82,35 @@ func TestCreateTaskUseCase(t *testing.T) {
 			t.Errorf("Expected status %v, got: %v",
 				moduledomain.SttCouldNotFindModuleByID,
 				respErr.Status,
+			)
+		}
+	})
+
+	t.Run("Should fail if the task position is in use", func(t *testing.T) {
+		moduleId := 1
+		position := 2
+
+		task := taskdomain.New(moduleId, "task", position)
+
+		moduleRepository.EXPECT().
+			CheckExistsById(gomock.Any(), task.ModuleId()).
+			Return(true, nil)
+
+		taskRepository.EXPECT().
+			PositionExists(gomock.Any(), int32(moduleId), int32(position)).
+			Return(true, nil)
+
+		_, err := createTask.Execute(ctx, task)
+		if err == nil {
+			t.Fatalf("expected error, got: %v", err)
+		}
+
+		res := resp.AsRestErr(err)
+
+		if res.Status != taskdomain.SttUnavailablePosition {
+			t.Fatalf("expected status %v, got: %v",
+				taskdomain.SttUnavailablePosition,
+				res.Status,
 			)
 		}
 	})

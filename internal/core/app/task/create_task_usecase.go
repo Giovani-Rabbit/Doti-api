@@ -65,6 +65,25 @@ func (ct *create) Execute(
 		return nil, moduledomain.ErrCouldNotFindModuleByID()
 	}
 
+	positionInUse, err := ct.taskRepo.PositionExists(
+		ctx, task.ModuleId(), task.Position(),
+	)
+	if err != nil {
+		logger.Error("Failed to check task position", err,
+			zap.String("journey", "createTask"),
+			zap.Int32("position", task.Position()))
+
+		return nil, taskdomain.ErrCouldNotVerifyPosition()
+	}
+
+	if positionInUse {
+		logger.Error("Task position is already in use", nil,
+			zap.String("journey", "createTask"),
+			zap.Int32("position", task.Position()))
+
+		return nil, taskdomain.ErrUnavailableTaskPosition()
+	}
+
 	createdTask, err := ct.taskRepo.Create(ctx, task)
 	if err != nil {
 		logger.Error("Failed to persist task", err,

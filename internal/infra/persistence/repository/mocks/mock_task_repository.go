@@ -66,6 +66,21 @@ func (mr *MockTaskRepositoryMockRecorder) ListByModuleId(ctx, moduleId interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListByModuleId", reflect.TypeOf((*MockTaskRepository)(nil).ListByModuleId), ctx, moduleId)
 }
 
+// PositionExists mocks base method.
+func (m *MockTaskRepository) PositionExists(ctx context.Context, moduleId, position int32) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "PositionExists", ctx, moduleId, position)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// PositionExists indicates an expected call of PositionExists.
+func (mr *MockTaskRepositoryMockRecorder) PositionExists(ctx, moduleId, position interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PositionExists", reflect.TypeOf((*MockTaskRepository)(nil).PositionExists), ctx, moduleId, position)
+}
+
 // UpdatePosition mocks base method.
 func (m *MockTaskRepository) UpdatePosition(ctx context.Context, tasks []taskdto.TaskPositionParams) error {
 	m.ctrl.T.Helper()
