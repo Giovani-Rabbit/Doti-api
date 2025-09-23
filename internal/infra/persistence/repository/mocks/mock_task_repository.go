@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
+	taskdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task/dtos"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -66,15 +67,15 @@ func (mr *MockTaskRepositoryMockRecorder) ListByModuleId(ctx, moduleId interface
 }
 
 // UpdatePosition mocks base method.
-func (m *MockTaskRepository) UpdatePosition(ctx context.Context, taskId, position int32) error {
+func (m *MockTaskRepository) UpdatePosition(ctx context.Context, tasks []taskdto.TaskPositionParams) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdatePosition", ctx, taskId, position)
+	ret := m.ctrl.Call(m, "UpdatePosition", ctx, tasks)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdatePosition indicates an expected call of UpdatePosition.
-func (mr *MockTaskRepositoryMockRecorder) UpdatePosition(ctx, taskId, position interface{}) *gomock.Call {
+func (mr *MockTaskRepositoryMockRecorder) UpdatePosition(ctx, tasks interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePosition", reflect.TypeOf((*MockTaskRepository)(nil).UpdatePosition), ctx, taskId, position)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePosition", reflect.TypeOf((*MockTaskRepository)(nil).UpdatePosition), ctx, tasks)
 }

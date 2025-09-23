@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
+	taskdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task/dtos"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/mapper"
 )
@@ -12,7 +13,7 @@ import (
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
-	UpdatePosition(ctx context.Context, taskId, position int32) error
+	UpdatePosition(ctx context.Context, tasks []taskdto.TaskPositionParams) error
 }
 
 type taskRepository struct {
@@ -89,11 +90,11 @@ func (tr *taskRepository) ListByModuleId(
 }
 
 func (tr *taskRepository) UpdatePosition(
-	ctx context.Context, taskId, position int32,
+	ctx context.Context, tasks []taskdto.TaskPositionParams,
 ) error {
-	err := tr.queries.UpdateTaskPosition(ctx, sqlc.UpdateTaskPositionParams{
-		ID:       taskId,
-		Position: position,
+	err := tr.queries.SwapTaskPosition(ctx, sqlc.SwapTaskPositionParams{
+		Position: tasks[0].TaskId, Position_2: tasks[0].Position, // taskId, position
+		Position_3: tasks[1].TaskId, Position_4: tasks[1].Position, // taskId, position
 	})
 
 	if err != nil {
