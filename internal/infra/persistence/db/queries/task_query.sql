@@ -18,7 +18,7 @@ SELECT EXISTS (
 -- name: SwapTaskPosition :exec
 UPDATE tasks 
 SET position = CASE id
-    WHEN $1 THEN $2
-    WHEN $3 THEN $4
+    WHEN @task_id_1 THEN @position_1::int
+    WHEN @task_id_2 THEN @position_2::int
 END
-WHERE id IN ($1, $3);
+WHERE id IN (@task_id_1, @task_id_2);

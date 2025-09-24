@@ -108,8 +108,10 @@ func (tr *taskRepository) UpdatePosition(
 	ctx context.Context, tasks []taskdto.TaskPositionParams,
 ) error {
 	err := tr.queries.SwapTaskPosition(ctx, sqlc.SwapTaskPositionParams{
-		Position: tasks[0].TaskId, Position_2: tasks[0].Position, // taskId, position
-		Position_3: tasks[1].TaskId, Position_4: tasks[1].Position, // taskId, position
+		TaskID1:   int32(tasks[0].TaskId),
+		Position1: int32(tasks[0].Position),
+		TaskID2:   int32(tasks[1].TaskId),
+		Position2: int32(tasks[1].Position),
 	})
 
 	if err != nil {

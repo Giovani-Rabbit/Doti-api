@@ -6,11 +6,13 @@ import (
 )
 
 type TaskHandlers struct {
-	Create taskhdl.Create
+	Create         taskhdl.Create
+	UpdatePosition taskhdl.UpdatePosition
 }
 
 func NewTaskHandler(taskCases *dicase.TaskUseCase) *TaskHandlers {
 	return &TaskHandlers{
-		Create: taskhdl.NewCreateTaskHandler(taskCases.Create),
+		Create:         taskhdl.NewCreateTaskHandler(taskCases.Create),
+		UpdatePosition: taskhdl.NewUpdatePositionHandler(taskCases.UpdatePosition),
 	}
 }
