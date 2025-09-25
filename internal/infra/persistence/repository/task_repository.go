@@ -3,9 +3,10 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"strings"
 
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
-	taskdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task/dtos"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/mapper"
 )
@@ -14,7 +15,7 @@ type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
 	PositionExists(ctx context.Context, moduleId, position int32) (bool, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
-	UpdatePosition(ctx context.Context, tasks []taskdto.TaskPositionParams) error
+	UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error
 }
 
 type taskRepository struct {
@@ -105,15 +106,25 @@ func (tr *taskRepository) ListByModuleId(
 }
 
 func (tr *taskRepository) UpdatePosition(
-	ctx context.Context, tasks []taskdto.TaskPositionParams,
+	ctx context.Context, movedTasks []taskdomain.TaskPositionParams,
 ) error {
-	err := tr.queries.SwapTaskPosition(ctx, sqlc.SwapTaskPositionParams{
-		TaskID1:   int32(tasks[0].TaskId),
-		Position1: int32(tasks[0].Position),
-		TaskID2:   int32(tasks[1].TaskId),
-		Position2: int32(tasks[1].Position),
-	})
+	params := []any{}
+	values := []string{}
 
+	for i, task := range movedTasks {
+		idx := i*2 + 1
+		values = append(values, fmt.Sprintf("($%d::int, $%d::int)", idx, idx+1))
+		params = append(params, task.Id, task.Position)
+	}
+
+	query := fmt.Sprintf(`
+		UPDATE tasks t
+		SET position = v.position
+		FROM (VALUES %s) AS v(id, position)
+		WHERE t.id = v.id
+	`, strings.Join(values, ","))
+
+	_, err := tr.db.ExecContext(ctx, query, params...)
 	if err != nil {
 		return err
 	}

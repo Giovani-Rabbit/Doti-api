@@ -84,32 +84,6 @@ func (q *Queries) ListTasksByModuleId(ctx context.Context, moduleID int32) ([]Ta
 	return items, nil
 }
 
-const swapTaskPosition = `-- name: SwapTaskPosition :exec
-UPDATE tasks 
-SET position = CASE id
-    WHEN $1 THEN $2::int
-    WHEN $3 THEN $4::int
-END
-WHERE id IN ($1, $3)
-`
-
-type SwapTaskPositionParams struct {
-	TaskID1   int32 `json:"task_id_1"`
-	Position1 int32 `json:"position_1"`
-	TaskID2   int32 `json:"task_id_2"`
-	Position2 int32 `json:"position_2"`
-}
-
-func (q *Queries) SwapTaskPosition(ctx context.Context, arg SwapTaskPositionParams) error {
-	_, err := q.db.ExecContext(ctx, swapTaskPosition,
-		arg.TaskID1,
-		arg.Position1,
-		arg.TaskID2,
-		arg.Position2,
-	)
-	return err
-}
-
 const taskPositionExists = `-- name: TaskPositionExists :one
 SELECT EXISTS (
     SELECT 1 FROM tasks

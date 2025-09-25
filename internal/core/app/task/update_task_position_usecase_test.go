@@ -5,7 +5,9 @@ import (
 	"testing"
 
 	taskcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task"
+	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
 	taskdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task/dtos"
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
 )
@@ -20,12 +22,12 @@ func TestChangeTaskPosition(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("Should be able to change the task position", func(t *testing.T) {
-		tasks := []taskdto.TaskPositionParams{
-			{TaskId: 1, Position: 2},
-			{TaskId: 2, Position: 4},
+		tasks := []taskdomain.TaskPositionParams{
+			{Id: 1, Position: 2},
+			{Id: 2, Position: 4},
 		}
 
-		updatatePosition := taskdto.UpdatePositionDTO{Tasks: tasks}
+		updatatePosition := taskdto.UpdatePositionDTO{MovedTasks: tasks}
 
 		tr.EXPECT().
 			UpdatePosition(ctx, gomock.Any()).
@@ -37,30 +39,26 @@ func TestChangeTaskPosition(t *testing.T) {
 		}
 	})
 
-	t.Run("Should fail if the number of tasks is different than 2", func(t *testing.T) {
-		tasks := []taskdto.TaskPositionParams{
-			{TaskId: 1, Position: 2},
-		}
-
-		updatatePosition := taskdto.UpdatePositionDTO{Tasks: tasks}
-
-		err := changeTaskPosition.Execute(ctx, &updatatePosition)
-		if err == nil {
-			t.Errorf("Error was expected, got: %v", err)
-		}
-	})
-
 	t.Run("Should fail if position of the tasks are equals", func(t *testing.T) {
-		tasks := []taskdto.TaskPositionParams{
-			{TaskId: 1, Position: 2},
-			{TaskId: 2, Position: 2},
+		tasks := []taskdomain.TaskPositionParams{
+			{Id: 1, Position: 2},
+			{Id: 2, Position: 2},
 		}
 
-		updatatePosition := taskdto.UpdatePositionDTO{Tasks: tasks}
+		updatatePosition := taskdto.UpdatePositionDTO{MovedTasks: tasks}
 
 		err := changeTaskPosition.Execute(ctx, &updatatePosition)
 		if err == nil {
 			t.Errorf("Error was expected, got: %v", err)
+		}
+
+		res := resp.AsRestErr(err)
+
+		if res.Status != taskdomain.SttRepeatedPosition {
+			t.Errorf("expected status %v, got: %v",
+				taskdomain.SttRepeatedPosition,
+				res.Status,
+			)
 		}
 	})
 }

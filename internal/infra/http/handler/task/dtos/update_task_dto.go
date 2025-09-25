@@ -1,10 +1,7 @@
 package taskdto
 
-type TaskPositionParams struct {
-	TaskId   int32 `json:"task_id"`
-	Position int32 `json:"position"`
-}
+import taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
 
 type UpdatePositionDTO struct {
-	Tasks []TaskPositionParams
+	MovedTasks []taskdomain.TaskPositionParams `json:"movedTasks"`
 }

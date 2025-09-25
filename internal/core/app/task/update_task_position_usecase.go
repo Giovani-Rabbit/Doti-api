@@ -32,23 +32,14 @@ func (tp *updatePosition) Execute(
 	logger.Info("Update task position",
 		zap.String("journey", "updateTaskPosition"))
 
-	if len(params.Tasks) != 2 {
-		logger.Error("The tasks number must be equal to 2", nil,
-			zap.Int("tasks_quantity", len(params.Tasks)),
+	if taskdomain.HasRepeatedPositions(params.MovedTasks) {
+		logger.Error("has repeated position", nil,
 			zap.String("journey", "updateTaskPosition"))
 
-		return taskdomain.ErrInvalidTaskQuantity()
+		return taskdomain.ErrRepeatedPosition()
 	}
 
-	if params.Tasks[0].Position == params.Tasks[1].Position {
-		logger.Error("The task position cannot be equal", nil,
-			zap.Int32("position_0", params.Tasks[0].Position),
-			zap.Int32("position_1", params.Tasks[1].Position))
-
-		return taskdomain.ErrInvalidPosition()
-	}
-
-	err := tp.taskRepository.UpdatePosition(ctx, params.Tasks)
+	err := tp.taskRepository.UpdatePosition(ctx, params.MovedTasks)
 	if err != nil {
 		logger.Error("error on update task position", err,
 			zap.String("journey", "updateTaskPosition"))

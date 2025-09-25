@@ -8,8 +8,7 @@ const (
 	SttCouldNotListTasks      = "COULD_NOT_LIST_TASKS"
 	SttCouldNotVerifyPosition = "COULD_NOT_VERIFY_POSITION"
 	SttCouldNotUpdateTask     = "COULD_NOT_UPDATE_TASK"
-	SttInvalidTaskQuantity    = "INVALID_TASK_QUANTITY"
-	SttInvalidPosition        = "INVALID_POSITION"
+	SttRepeatedPosition       = "REPEATED_TASK_POSITION"
 	SttUnavailablePosition    = "UNAVAILABLE_POSITION"
 )
 
@@ -49,17 +48,10 @@ func ErrCouldNotUpdateTask(err error) *resp.RestErr {
 	)
 }
 
-func ErrInvalidPosition() *resp.RestErr {
+func ErrRepeatedPosition() *resp.RestErr {
 	return resp.NewBadRequestError(
-		SttInvalidPosition,
-		"Task positions should be different",
-	)
-}
-
-func ErrInvalidTaskQuantity() *resp.RestErr {
-	return resp.NewBadRequestError(
-		SttInvalidTaskQuantity,
-		"The number of tasks should be 2",
+		SttRepeatedPosition,
+		"The task position is repeated, make sure that all positions are different",
 	)
 }
 
