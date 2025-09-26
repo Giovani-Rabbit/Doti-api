@@ -38,5 +38,5 @@ func (up *updatePosition) Execute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res.Write(http.StatusAccepted)
+	res.Write(http.StatusNoContent)
 }

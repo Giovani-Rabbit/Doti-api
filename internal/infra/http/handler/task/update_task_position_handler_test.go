@@ -10,26 +10,25 @@ import (
 
 	mock_taskcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task/mocks"
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
-	moduledto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/module/dtos"
 	taskhdl "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task"
 	taskdto "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task/dtos"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	"github.com/golang/mock/gomock"
 )
 
-func TestCreateTaskHandler(t *testing.T) {
+func TestUpdateTaskPosition(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	createTaskCase := mock_taskcase.NewMockCreate(ctrl)
-	createTaskHandler := taskhdl.NewCreateTaskHandler(createTaskCase)
+	usecase := mock_taskcase.NewMockUpdatePosition(ctrl)
+	handler := taskhdl.NewUpdatePositionHandler(usecase)
 
-	t.Run("Should be able to create task", func(t *testing.T) {
-		requestBody := taskdto.CreateTaskDTO{
-			ModuleId: 1,
-			TaskName: "New Task",
-			Position: 0,
+	t.Run("Should be able to move the task position", func(t *testing.T) {
+		movedTasks := []taskdomain.TaskPositionParams{
+			{Id: 1, Position: 4},
+			{Id: 2, Position: 6},
 		}
+		requestBody := taskdto.UpdatePositionDTO{MovedTasks: movedTasks}
 
 		jsonBody, err := json.Marshal(requestBody)
 		if err != nil {
@@ -38,25 +37,19 @@ func TestCreateTaskHandler(t *testing.T) {
 
 		rr := httptest.NewRecorder()
 		req := httptest.NewRequest(
-			http.MethodPost, "/tasks", bytes.NewReader(jsonBody),
+			http.MethodPatch, "/tasks", bytes.NewReader(jsonBody),
 		)
 
-		taskEntity := taskdomain.New(
-			requestBody.ModuleId,
-			requestBody.TaskName,
-			requestBody.Position,
-		)
-
-		createTaskCase.EXPECT().
+		usecase.EXPECT().
 			Execute(gomock.Any(), gomock.Any()).
-			Return(taskEntity, nil)
+			Return(nil)
 
-		createTaskHandler.Execute(rr, req)
+		handler.Execute(rr, req)
 
-		if rr.Code != http.StatusCreated {
+		if rr.Code != http.StatusNoContent {
 			t.Fatalf(
 				"expected code %d, got %d",
-				http.StatusCreated, rr.Code,
+				http.StatusNoContent, rr.Code,
 			)
 		}
 
@@ -65,18 +58,13 @@ func TestCreateTaskHandler(t *testing.T) {
 			t.Fatalf("failed to get body: %v", err)
 		}
 
-		var response taskdto.TaskDTO
-		if err := json.Unmarshal(body, &response); err != nil {
-			t.Fatalf("failed to unmarshal body: %v", err)
-		}
-
-		if response.ModuleId != int32(requestBody.ModuleId) {
-			t.Fatalf("The moduleId is different")
+		if len(body) != 0 {
+			t.Fatalf("expected a empty body, got: %v", body)
 		}
 	})
 
-	t.Run("Should fail with a invalid body", func(t *testing.T) {
-		requestBody := moduledto.UpdateIconDTO{Icon: "123"}
+	t.Run("Should fail if the body is invalid", func(t *testing.T) {
+		requestBody := taskdto.CreateTaskDTO{}
 
 		jsonBody, err := json.Marshal(requestBody)
 		if err != nil {
@@ -85,15 +73,15 @@ func TestCreateTaskHandler(t *testing.T) {
 
 		rr := httptest.NewRecorder()
 		req := httptest.NewRequest(
-			http.MethodPost, "/task", bytes.NewReader(jsonBody),
+			http.MethodPatch, "/tasks", bytes.NewReader(jsonBody),
 		)
 
-		createTaskHandler.Execute(rr, req)
+		handler.Execute(rr, req)
 
 		if rr.Code != http.StatusBadRequest {
 			t.Fatalf(
 				"expected code %d, got %d",
-				http.StatusNoContent, rr.Code,
+				http.StatusBadRequest, rr.Code,
 			)
 		}
 
