@@ -50,6 +50,21 @@ func (mr *MockTaskRepositoryMockRecorder) Create(ctx, task interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTaskRepository)(nil).Create), ctx, task)
 }
 
+// FindById mocks base method.
+func (m *MockTaskRepository) FindById(ctx context.Context, taskid int32) (taskdomain.Task, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindById", ctx, taskid)
+	ret0, _ := ret[0].(taskdomain.Task)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindById indicates an expected call of FindById.
+func (mr *MockTaskRepositoryMockRecorder) FindById(ctx, taskid interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindById", reflect.TypeOf((*MockTaskRepository)(nil).FindById), ctx, taskid)
+}
+
 // ListByModuleId mocks base method.
 func (m *MockTaskRepository) ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error) {
 	m.ctrl.T.Helper()

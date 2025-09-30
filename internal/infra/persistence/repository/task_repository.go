@@ -13,6 +13,7 @@ import (
 
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
+	FindById(ctx context.Context, taskid int32) (taskdomain.Task, error)
 	PositionExists(ctx context.Context, moduleId, position int32) (bool, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
 	UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error
@@ -79,6 +80,17 @@ func (tr *taskRepository) Create(
 	committed = true
 
 	return mapper.SqlcTaskToDomain(t), nil
+}
+
+func (tr *taskRepository) FindById(
+	ctx context.Context, taskId int32,
+) (taskdomain.Task, error) {
+	task, err := tr.queries.FindTaskById(ctx, taskId)
+	if err != nil {
+		return nil, err
+	}
+
+	return mapper.SqlcTaskToDomain(task), nil
 }
 
 func (tr *taskRepository) PositionExists(
