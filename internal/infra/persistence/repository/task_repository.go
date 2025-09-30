@@ -16,6 +16,7 @@ type TaskRepository interface {
 	PositionExists(ctx context.Context, moduleId, position int32) (bool, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
 	UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error
+	UpdateCompletion(ctx context.Context, taskId int32, isComplete bool) error
 }
 
 type taskRepository struct {
@@ -103,6 +104,20 @@ func (tr *taskRepository) ListByModuleId(
 	}
 
 	return mapper.SqlcTaskListToDomain(&tasks), nil
+}
+
+func (tr *taskRepository) UpdateCompletion(
+	ctx context.Context, taskId int32, isComplete bool,
+) error {
+	err := tr.queries.UpdateTaskCompletion(ctx, sqlc.UpdateTaskCompletionParams{
+		ID:          taskId,
+		IsCompleted: isComplete,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (tr *taskRepository) UpdatePosition(
