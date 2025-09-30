@@ -14,3 +14,8 @@ SELECT EXISTS (
     WHERE module_id = $1 
     AND position = $2 
 ) AS exists;
+
+-- name: UpdateTaskCompletion :exec
+UPDATE tasks
+SET is_completed = $1
+WHERE id = $2;

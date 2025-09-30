@@ -103,3 +103,19 @@ func (q *Queries) TaskPositionExists(ctx context.Context, arg TaskPositionExists
 	err := row.Scan(&exists)
 	return exists, err
 }
+
+const updateTaskCompletion = `-- name: UpdateTaskCompletion :exec
+UPDATE tasks
+SET is_completed = $1
+WHERE id = $2
+`
+
+type UpdateTaskCompletionParams struct {
+	IsCompleted bool  `json:"is_completed"`
+	ID          int32 `json:"id"`
+}
+
+func (q *Queries) UpdateTaskCompletion(ctx context.Context, arg UpdateTaskCompletionParams) error {
+	_, err := q.db.ExecContext(ctx, updateTaskCompletion, arg.IsCompleted, arg.ID)
+	return err
+}
