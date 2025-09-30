@@ -2,6 +2,7 @@ package taskcase_test
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	taskcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task"
@@ -57,6 +58,56 @@ func TestMain(t *testing.T) {
 			t.Fatalf("status expected %v, got: %v",
 				res.Status,
 				taskdomain.SttCouldNotFindTask,
+			)
+		}
+	})
+
+	t.Run("Should fail to check if the task exists", func(t *testing.T) {
+		taskId := int32(1)
+		isCompleted := false
+
+		r.EXPECT().
+			CheckExists(gomock.Any(), taskId).
+			Return(false, errors.New("internal error"))
+
+		err := updateCompletion.Execute(ctx, taskId, isCompleted)
+		if err == nil {
+			t.Fatalf("error was expected, got: %v", err)
+		}
+
+		res := resp.AsRestErr(err)
+
+		if res.Status != taskdomain.SttInternalRepositoryErr {
+			t.Fatalf("status expected %v, got: %v",
+				res.Status,
+				taskdomain.SttInternalRepositoryErr,
+			)
+		}
+	})
+
+	t.Run("Should fail to update task completion", func(t *testing.T) {
+		taskId := int32(1)
+		isCompleted := false
+
+		r.EXPECT().
+			CheckExists(gomock.Any(), taskId).
+			Return(true, nil)
+
+		r.EXPECT().
+			UpdateCompletion(gomock.Any(), taskId, isCompleted).
+			Return(errors.New("internal error"))
+
+		err := updateCompletion.Execute(ctx, taskId, isCompleted)
+		if err == nil {
+			t.Fatalf("error was expected, got: %v", err)
+		}
+
+		res := resp.AsRestErr(err)
+
+		if res.Status != taskdomain.SttCouldNotUpdateTask {
+			t.Fatalf("status expected %v, got: %v",
+				res.Status,
+				taskdomain.SttCouldNotUpdateTask,
 			)
 		}
 	})
