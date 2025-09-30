@@ -10,6 +10,21 @@ import (
 	"time"
 )
 
+const checkTaskExists = `-- name: CheckTaskExists :one
+SELECT EXISTS (
+    SELECT 1 
+    FROM tasks
+    WHERE id = $1
+) AS EXISTS
+`
+
+func (q *Queries) CheckTaskExists(ctx context.Context, id int32) (bool, error) {
+	row := q.db.QueryRowContext(ctx, checkTaskExists, id)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const createTask = `-- name: CreateTask :one
 INSERT INTO tasks (module_id, name, is_completed, position, created_at, updated_at)
 VALUES ($1, $2, $3, $4, $5, $6)

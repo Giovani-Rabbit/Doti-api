@@ -35,6 +35,21 @@ func (m *MockTaskRepository) EXPECT() *MockTaskRepositoryMockRecorder {
 	return m.recorder
 }
 
+// CheckExists mocks base method.
+func (m *MockTaskRepository) CheckExists(ctx context.Context, taskId int32) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CheckExists", ctx, taskId)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CheckExists indicates an expected call of CheckExists.
+func (mr *MockTaskRepositoryMockRecorder) CheckExists(ctx, taskId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckExists", reflect.TypeOf((*MockTaskRepository)(nil).CheckExists), ctx, taskId)
+}
+
 // Create mocks base method.
 func (m *MockTaskRepository) Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error) {
 	m.ctrl.T.Helper()
