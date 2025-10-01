@@ -21,5 +21,11 @@ func TaskRoutes(mux *http.ServeMux, task *dihdl.TaskHandlers) (m *http.ServeMux)
 		)),
 	)
 
+	mux.Handle("PATCH /tasks/{id}",
+		middleware.EnsureAuth(http.HandlerFunc(
+			task.UpdateCompletion.Execute,
+		)),
+	)
+
 	return
 }

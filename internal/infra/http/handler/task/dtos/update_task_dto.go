@@ -5,3 +5,7 @@ import taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
 type UpdatePositionDTO struct {
 	MovedTasks []taskdomain.TaskPositionParams `json:"movedTasks"`
 }
+
+type UpdateCompletionDTO struct {
+	IsComplete bool `json:"isComplete"`
+}

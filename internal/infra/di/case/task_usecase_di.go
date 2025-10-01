@@ -6,8 +6,9 @@ import (
 )
 
 type TaskUseCase struct {
-	Create         taskcase.Create
-	UpdatePosition taskcase.UpdatePosition
+	Create           taskcase.Create
+	UpdatePosition   taskcase.UpdatePosition
+	UpdateCompletion taskcase.UpdateCompletion
 }
 
 func NewTaskUseCase(
@@ -15,7 +16,8 @@ func NewTaskUseCase(
 	mr repository.ModuleRepository,
 ) *TaskUseCase {
 	return &TaskUseCase{
-		Create:         taskcase.NewCreateTaskUseCase(tr, mr),
-		UpdatePosition: taskcase.NewUpdateTaskPosition(tr),
+		Create:           taskcase.NewCreateTaskUseCase(tr, mr),
+		UpdatePosition:   taskcase.NewUpdateTaskPosition(tr),
+		UpdateCompletion: taskcase.NewUpdateCompletion(tr),
 	}
 }
