@@ -27,17 +27,16 @@ func NewUpdateCompletionHandler(
 
 func (uc *updateCompletion) Execute(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
-
 	res := resp.NewHttpJSONResponse(w)
-
-	var body taskdto.UpdateCompletionDTO
-	if !res.DecodeJSONBody(r, &body) {
-		return
-	}
 
 	taskId, err := strconv.ParseInt(idStr, 10, 32)
 	if err != nil {
-		res.Error(err)
+		res.Error(resp.NewInvalidPathValue(err))
+		return
+	}
+
+	var body taskdto.UpdateCompletionDTO
+	if !res.DecodeJSONBody(r, &body) {
 		return
 	}
 

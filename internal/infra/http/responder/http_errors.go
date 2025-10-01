@@ -8,6 +8,7 @@ import (
 const (
 	SttInvalidRequestBody  = "INVALID_REQUEST_BODY"
 	SttInvalidErrorType    = "INVALID_ERROR_TYPE"
+	SttInvalidPathValue    = "INVALID_PATH_VALUE"
 	SttInternalServerError = "INTERNAL_SERVER_ERROR"
 )
 
@@ -86,6 +87,15 @@ func NewInvalidBodyRequest(parseErr error) error {
 		Message: "Invalid request body. The submitted data does not match the expected format.",
 		Status:  SttInvalidRequestBody,
 		Err:     parseErr.Error(),
+		Code:    http.StatusBadRequest,
+	}
+}
+
+func NewInvalidPathValue(err error) error {
+	return &RestErr{
+		Message: "Invalid path value",
+		Status:  SttInvalidPathValue,
+		Err:     err.Error(),
 		Code:    http.StatusBadRequest,
 	}
 }
