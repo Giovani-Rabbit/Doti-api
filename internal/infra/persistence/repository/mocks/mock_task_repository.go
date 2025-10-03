@@ -65,6 +65,20 @@ func (mr *MockTaskRepositoryMockRecorder) Create(ctx, task interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTaskRepository)(nil).Create), ctx, task)
 }
 
+// Delete mocks base method.
+func (m *MockTaskRepository) Delete(ctx context.Context, taskId int32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", ctx, taskId)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete.
+func (mr *MockTaskRepositoryMockRecorder) Delete(ctx, taskId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockTaskRepository)(nil).Delete), ctx, taskId)
+}
+
 // FindById mocks base method.
 func (m *MockTaskRepository) FindById(ctx context.Context, taskid int32) (taskdomain.Task, error) {
 	m.ctrl.T.Helper()

@@ -14,6 +14,7 @@ import (
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
 	CheckExists(ctx context.Context, taskId int32) (bool, error)
+	Delete(ctx context.Context, taskId int32) error
 	FindById(ctx context.Context, taskid int32) (taskdomain.Task, error)
 	PositionExists(ctx context.Context, moduleId, position int32) (bool, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
@@ -92,6 +93,17 @@ func (tr *taskRepository) CheckExists(
 	}
 
 	return exists, nil
+}
+
+func (tr *taskRepository) Delete(
+	ctx context.Context, taskId int32,
+) error {
+	err := tr.queries.DeleteTask(ctx, taskId)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (tr *taskRepository) FindById(

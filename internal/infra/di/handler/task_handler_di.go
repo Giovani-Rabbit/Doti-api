@@ -7,6 +7,7 @@ import (
 
 type TaskHandlers struct {
 	Create           taskhdl.Create
+	Delete           taskhdl.Delete
 	UpdatePosition   taskhdl.UpdatePosition
 	UpdateCompletion taskhdl.UpdateCompletion
 }
@@ -14,6 +15,7 @@ type TaskHandlers struct {
 func NewTaskHandler(taskCases *dicase.TaskUseCase) *TaskHandlers {
 	return &TaskHandlers{
 		Create:           taskhdl.NewCreateTaskHandler(taskCases.Create),
+		Delete:           taskhdl.NewDeleteTaskHandler(taskCases.Delete),
 		UpdatePosition:   taskhdl.NewUpdatePositionHandler(taskCases.UpdatePosition),
 		UpdateCompletion: taskhdl.NewUpdateCompletionHandler(taskCases.UpdateCompletion),
 	}

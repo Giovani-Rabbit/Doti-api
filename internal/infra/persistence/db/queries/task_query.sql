@@ -30,3 +30,6 @@ SELECT EXISTS (
 UPDATE tasks
 SET is_completed = $1
 WHERE id = $2;
+
+-- name: DeleteTask :exec
+DELETE FROM tasks WHERE id = $1;

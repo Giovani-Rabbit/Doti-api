@@ -8,6 +8,7 @@ const (
 	SttCouldNotVerifyPosition = "COULD_NOT_VERIFY_POSITION"
 	SttCouldNotUpdateTask     = "COULD_NOT_UPDATE_TASK"
 	SttCouldNotFindTask       = "COULD_NOT_FIND_TASK"
+	SttCouldNotDeleteTask     = "COULD_NOT_DELETE_TASK"
 	SttInternalRepositoryErr  = "INTERNAL_REPOSITORY_ERROR"
 	SttInvalidFields          = "INVALID_TASK_FIELDS"
 	SttRepeatedPosition       = "REPEATED_TASK_POSITION"
@@ -39,6 +40,13 @@ func ErrCouldNotListTasks() *resp.RestErr {
 	return resp.NewBadRequestError(
 		SttCouldNotListTasks,
 		"Failed to get task list from database",
+	)
+}
+
+func ErrCouldNotDeleteTask() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttCouldNotDeleteTask,
+		"Failed to delete a task",
 	)
 }
 

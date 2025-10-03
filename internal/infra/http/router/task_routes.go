@@ -27,5 +27,11 @@ func TaskRoutes(mux *http.ServeMux, task *dihdl.TaskHandlers) (m *http.ServeMux)
 		)),
 	)
 
+	mux.Handle("DELETE /tasks/{id}",
+		middleware.EnsureAuth(http.HandlerFunc(
+			task.Delete.Execute,
+		)),
+	)
+
 	return
 }
