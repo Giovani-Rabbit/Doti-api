@@ -7,5 +7,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     created_at      TIMESTAMP WITH TIME ZONE                NOT NULL    DEFAULT now(),
     updated_at      TIMESTAMP WITH TIME ZONE                NOT NULL    DEFAULT now(),
 
-    CONSTRAINT fk_module FOREIGN KEY (module_id) REFERENCES modules(id)
+    CONSTRAINT fk_module FOREIGN KEY (module_id) 
+        REFERENCES modules(id)
+        ON DELETE CASCADE
 )
