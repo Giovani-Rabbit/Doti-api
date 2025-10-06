@@ -10,7 +10,7 @@ import (
 )
 
 type Delete interface {
-	Execute(ctx context.Context, taskId int32) error
+	Execute(ctx context.Context, userId string, taskId int32) error
 }
 
 type delete struct {
@@ -26,13 +26,30 @@ func NewDeleteTaskUseCase(
 }
 
 func (dt *delete) Execute(
-	ctx context.Context, taskId int32,
+	ctx context.Context, userId string, taskId int32,
 ) error {
 	logger.Info("Init delete task",
 		zap.Int32("taskId", taskId),
 		zap.String("journey", "deleteTask"))
 
-	err := dt.taskRepository.Delete(ctx, taskId)
+	taskOwnerId, err := dt.taskRepository.FindOwnerIdByTaskId(ctx, taskId)
+	if err != nil {
+		logger.Error("Could not to get task owner", err,
+			zap.Int32("taskId", taskId),
+			zap.String("journey", "deleteTask"))
+
+		return taskdomain.ErrCouldNotFindOwner(err)
+	}
+
+	if taskOwnerId.String() != userId {
+		logger.Error("This user does not task owner", nil,
+			zap.String("taskOwner", taskOwnerId.String()),
+			zap.String("userId", userId))
+
+		return taskdomain.ErrInvalidTaskOwner()
+	}
+
+	err = dt.taskRepository.Delete(ctx, taskId)
 	if err != nil {
 		logger.Error("Failed to delete task", err,
 			zap.String("journey", "deleteTask"))

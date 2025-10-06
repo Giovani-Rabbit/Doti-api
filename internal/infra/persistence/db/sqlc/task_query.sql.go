@@ -77,7 +77,7 @@ const findOwnerIdByTaskId = `-- name: FindOwnerIdByTaskId :one
 SELECT m.user_id
 FROM tasks t
 INNER JOIN modules m ON m.id = t.module_id
-WHERE t.id == $1
+WHERE t.id = $1
 `
 
 func (q *Queries) FindOwnerIdByTaskId(ctx context.Context, id int32) (uuid.UUID, error) {

@@ -1,6 +1,7 @@
 package taskhdl_test
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -8,9 +9,12 @@ import (
 	"testing"
 
 	mock_taskcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task/mocks"
+	authdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/auth"
 	taskhdl "github.com/Giovani-Coelho/Doti-API/internal/infra/http/handler/task"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
+	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
 	"github.com/golang/mock/gomock"
+	"github.com/google/uuid"
 )
 
 func TestDeleteTaskHandler(t *testing.T) {
@@ -20,12 +24,21 @@ func TestDeleteTaskHandler(t *testing.T) {
 	usecase := mock_taskcase.NewMockDelete(ctrl)
 	handler := taskhdl.NewDeleteTaskHandler(usecase)
 
+	authUser := &authdomain.AuthClaims{
+		ID:    uuid.NewString(),
+		Name:  "Giovani",
+		Email: "giovani@example.com",
+	}
+
 	t.Run("Should be able to delete task", func(t *testing.T) {
 		rr := httptest.NewRecorder()
 		req := httptest.NewRequest(http.MethodPatch, "/tasks/12", nil)
 
+		ctx := context.WithValue(req.Context(), auth.AuthenticatedUserKey, authUser)
+		req = req.WithContext(ctx)
+
 		usecase.EXPECT().
-			Execute(gomock.Any(), gomock.Any()).
+			Execute(gomock.Any(), gomock.Any(), gomock.Any()).
 			Return(nil)
 
 		mux := http.NewServeMux()

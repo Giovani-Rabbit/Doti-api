@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -124,6 +125,10 @@ func (tr *taskRepository) FindOwnerIdByTaskId(
 ) (uuid.UUID, error) {
 	userId, err := tr.queries.FindOwnerIdByTaskId(ctx, taskId)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return uuid.UUID{}, errors.New("task not found")
+		}
+
 		return uuid.UUID{}, err
 	}
 

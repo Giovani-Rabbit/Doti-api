@@ -1,6 +1,10 @@
 package taskdomain
 
-import resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
+import (
+	"fmt"
+
+	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
+)
 
 const (
 	SttCouldNotPersist        = "COULD_NOT_PERSIST_TASK"
@@ -8,7 +12,9 @@ const (
 	SttCouldNotVerifyPosition = "COULD_NOT_VERIFY_POSITION"
 	SttCouldNotUpdateTask     = "COULD_NOT_UPDATE_TASK"
 	SttCouldNotFindTask       = "COULD_NOT_FIND_TASK"
+	SttCouldNotFindOwner      = "COULD_NOT_FIND_OWNER"
 	SttCouldNotDeleteTask     = "COULD_NOT_DELETE_TASK"
+	SttInvalidTaskOwner       = "INVALID_TASK_OWNER"
 	SttInternalRepositoryErr  = "INTERNAL_REPOSITORY_ERROR"
 	SttInvalidFields          = "INVALID_TASK_FIELDS"
 	SttRepeatedPosition       = "REPEATED_TASK_POSITION"
@@ -22,10 +28,24 @@ func ErrInvalidFields() *resp.RestErr {
 	)
 }
 
+func ErrInvalidTaskOwner() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttInvalidTaskOwner,
+		"This task does not belong to the logged in user",
+	)
+}
+
 func ErrCouldNotFindTask() *resp.RestErr {
 	return resp.NewBadRequestError(
 		SttCouldNotFindTask,
 		"Could not find task by id",
+	)
+}
+
+func ErrCouldNotFindOwner(err error) *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttCouldNotFindOwner,
+		fmt.Sprintf("Failed to get task owner. %v", err.Error()),
 	)
 }
 

@@ -38,4 +38,4 @@ DELETE FROM tasks WHERE id = $1;
 SELECT m.user_id
 FROM tasks t
 INNER JOIN modules m ON m.id = t.module_id
-WHERE t.id == $1;
+WHERE t.id = $1;

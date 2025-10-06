@@ -35,15 +35,15 @@ func (m *MockDelete) EXPECT() *MockDeleteMockRecorder {
 }
 
 // Execute mocks base method.
-func (m *MockDelete) Execute(ctx context.Context, taskId int32) error {
+func (m *MockDelete) Execute(ctx context.Context, userId string, taskId int32) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Execute", ctx, taskId)
+	ret := m.ctrl.Call(m, "Execute", ctx, userId, taskId)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Execute indicates an expected call of Execute.
-func (mr *MockDeleteMockRecorder) Execute(ctx, taskId interface{}) *gomock.Call {
+func (mr *MockDeleteMockRecorder) Execute(ctx, userId, taskId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockDelete)(nil).Execute), ctx, taskId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Execute", reflect.TypeOf((*MockDelete)(nil).Execute), ctx, userId, taskId)
 }

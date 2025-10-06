@@ -6,6 +6,7 @@ import (
 
 	taskcase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
+	"github.com/Giovani-Coelho/Doti-API/internal/pkg/auth"
 )
 
 type Delete interface {
@@ -34,7 +35,13 @@ func (dt *delete) Execute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = dt.deletecase.Execute(r.Context(), int32(taskId))
+	user, err := auth.GetAuthenticatedUserFromContext(r.Context())
+	if err != nil {
+		res.Error(err)
+		return
+	}
+
+	err = dt.deletecase.Execute(r.Context(), user.ID, int32(taskId))
 	if err != nil {
 		res.Error(err)
 		return
