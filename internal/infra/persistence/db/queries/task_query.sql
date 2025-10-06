@@ -33,3 +33,9 @@ WHERE id = $2;
 
 -- name: DeleteTask :exec
 DELETE FROM tasks WHERE id = $1;
+
+-- name: FindOwnerIdByTaskId :one
+SELECT m.user_id
+FROM tasks t
+INNER JOIN modules m ON m.id = t.module_id
+WHERE t.id == $1;

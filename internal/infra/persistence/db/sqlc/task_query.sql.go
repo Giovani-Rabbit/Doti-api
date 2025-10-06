@@ -8,6 +8,8 @@ package sqlc
 import (
 	"context"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const checkTaskExists = `-- name: CheckTaskExists :one
@@ -69,6 +71,20 @@ DELETE FROM tasks WHERE id = $1
 func (q *Queries) DeleteTask(ctx context.Context, id int32) error {
 	_, err := q.db.ExecContext(ctx, deleteTask, id)
 	return err
+}
+
+const findOwnerIdByTaskId = `-- name: FindOwnerIdByTaskId :one
+SELECT m.user_id
+FROM tasks t
+INNER JOIN modules m ON m.id = t.module_id
+WHERE t.id == $1
+`
+
+func (q *Queries) FindOwnerIdByTaskId(ctx context.Context, id int32) (uuid.UUID, error) {
+	row := q.db.QueryRowContext(ctx, findOwnerIdByTaskId, id)
+	var user_id uuid.UUID
+	err := row.Scan(&user_id)
+	return user_id, err
 }
 
 const findTaskById = `-- name: FindTaskById :one

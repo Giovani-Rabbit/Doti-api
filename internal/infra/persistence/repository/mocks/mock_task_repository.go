@@ -10,6 +10,7 @@ import (
 
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
 	gomock "github.com/golang/mock/gomock"
+	uuid "github.com/google/uuid"
 )
 
 // MockTaskRepository is a mock of TaskRepository interface.
@@ -80,18 +81,33 @@ func (mr *MockTaskRepositoryMockRecorder) Delete(ctx, taskId interface{}) *gomoc
 }
 
 // FindById mocks base method.
-func (m *MockTaskRepository) FindById(ctx context.Context, taskid int32) (taskdomain.Task, error) {
+func (m *MockTaskRepository) FindById(ctx context.Context, taskId int32) (taskdomain.Task, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindById", ctx, taskid)
+	ret := m.ctrl.Call(m, "FindById", ctx, taskId)
 	ret0, _ := ret[0].(taskdomain.Task)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // FindById indicates an expected call of FindById.
-func (mr *MockTaskRepositoryMockRecorder) FindById(ctx, taskid interface{}) *gomock.Call {
+func (mr *MockTaskRepositoryMockRecorder) FindById(ctx, taskId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindById", reflect.TypeOf((*MockTaskRepository)(nil).FindById), ctx, taskid)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindById", reflect.TypeOf((*MockTaskRepository)(nil).FindById), ctx, taskId)
+}
+
+// FindOwnerIdByTaskId mocks base method.
+func (m *MockTaskRepository) FindOwnerIdByTaskId(ctx context.Context, taskId int32) (uuid.UUID, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindOwnerIdByTaskId", ctx, taskId)
+	ret0, _ := ret[0].(uuid.UUID)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindOwnerIdByTaskId indicates an expected call of FindOwnerIdByTaskId.
+func (mr *MockTaskRepositoryMockRecorder) FindOwnerIdByTaskId(ctx, taskId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindOwnerIdByTaskId", reflect.TypeOf((*MockTaskRepository)(nil).FindOwnerIdByTaskId), ctx, taskId)
 }
 
 // ListByModuleId mocks base method.

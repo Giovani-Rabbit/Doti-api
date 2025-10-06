@@ -9,13 +9,15 @@ import (
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/db/sqlc"
 	"github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/mapper"
+	"github.com/google/uuid"
 )
 
 type TaskRepository interface {
 	Create(ctx context.Context, task taskdomain.Task) (taskdomain.Task, error)
 	CheckExists(ctx context.Context, taskId int32) (bool, error)
 	Delete(ctx context.Context, taskId int32) error
-	FindById(ctx context.Context, taskid int32) (taskdomain.Task, error)
+	FindById(ctx context.Context, taskId int32) (taskdomain.Task, error)
+	FindOwnerIdByTaskId(ctx context.Context, taskId int32) (uuid.UUID, error)
 	PositionExists(ctx context.Context, moduleId, position int32) (bool, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
 	UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error
@@ -115,6 +117,17 @@ func (tr *taskRepository) FindById(
 	}
 
 	return mapper.SqlcTaskToDomain(task), nil
+}
+
+func (tr *taskRepository) FindOwnerIdByTaskId(
+	ctx context.Context, taskId int32,
+) (uuid.UUID, error) {
+	userId, err := tr.queries.FindOwnerIdByTaskId(ctx, taskId)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+
+	return userId, nil
 }
 
 func (tr *taskRepository) PositionExists(
