@@ -178,12 +178,16 @@ func (tr *taskRepository) UpdateCompletion(
 func (tr *taskRepository) UpdateName(
 	ctx context.Context, taskId int32, name string,
 ) error {
-	err := tr.queries.UpdateTaskName(ctx, sqlc.UpdateTaskNameParams{
+	rows, err := tr.queries.UpdateTaskName(ctx, sqlc.UpdateTaskNameParams{
 		ID:   taskId,
 		Name: name,
 	})
 	if err != nil {
 		return err
+	}
+
+	if rows == 0 {
+		return taskdomain.ErrCouldNotFindTask()
 	}
 
 	return nil

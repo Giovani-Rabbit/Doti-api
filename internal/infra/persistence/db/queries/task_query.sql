@@ -40,7 +40,7 @@ FROM tasks t
 INNER JOIN modules m ON m.id = t.module_id
 WHERE t.id = $1;
 
--- name: UpdateTaskName :exec
+-- name: UpdateTaskName :execrows
 UPDATE tasks
 SET name = $2
 WHERE id = $1;

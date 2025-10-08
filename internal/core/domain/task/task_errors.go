@@ -17,6 +17,7 @@ const (
 	SttInvalidTaskOwner       = "INVALID_TASK_OWNER"
 	SttInternalRepositoryErr  = "INTERNAL_REPOSITORY_ERROR"
 	SttInvalidFields          = "INVALID_TASK_FIELDS"
+	SttInvalidTaskName        = "INVALID_TASK_NAME"
 	SttRepeatedPosition       = "REPEATED_TASK_POSITION"
 	SttUnavailablePosition    = "UNAVAILABLE_POSITION"
 )
@@ -32,6 +33,13 @@ func ErrInvalidTaskOwner() *resp.RestErr {
 	return resp.NewBadRequestError(
 		SttInvalidTaskOwner,
 		"This task does not belong to the logged in user",
+	)
+}
+
+func ErrInvalidTaskName() *resp.RestErr {
+	return resp.NewBadRequestError(
+		SttInvalidTaskName,
+		"Invalid task name, please try again.",
 	)
 }
 
