@@ -179,3 +179,19 @@ func (q *Queries) UpdateTaskCompletion(ctx context.Context, arg UpdateTaskComple
 	_, err := q.db.ExecContext(ctx, updateTaskCompletion, arg.IsCompleted, arg.ID)
 	return err
 }
+
+const updateTaskName = `-- name: UpdateTaskName :exec
+UPDATE tasks
+SET name = $2
+WHERE id = $1
+`
+
+type UpdateTaskNameParams struct {
+	ID   int32  `json:"id"`
+	Name string `json:"name"`
+}
+
+func (q *Queries) UpdateTaskName(ctx context.Context, arg UpdateTaskNameParams) error {
+	_, err := q.db.ExecContext(ctx, updateTaskName, arg.ID, arg.Name)
+	return err
+}

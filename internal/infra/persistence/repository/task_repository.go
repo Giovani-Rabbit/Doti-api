@@ -21,8 +21,9 @@ type TaskRepository interface {
 	FindOwnerIdByTaskId(ctx context.Context, taskId int32) (uuid.UUID, error)
 	PositionExists(ctx context.Context, moduleId, position int32) (bool, error)
 	ListByModuleId(ctx context.Context, moduleId int32) ([]taskdomain.Task, error)
-	UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error
 	UpdateCompletion(ctx context.Context, taskId int32, isComplete bool) error
+	UpdateName(ctx context.Context, taskId int32, name string) error
+	UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error
 }
 
 type taskRepository struct {
@@ -166,6 +167,20 @@ func (tr *taskRepository) UpdateCompletion(
 	err := tr.queries.UpdateTaskCompletion(ctx, sqlc.UpdateTaskCompletionParams{
 		ID:          taskId,
 		IsCompleted: isComplete,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (tr *taskRepository) UpdateName(
+	ctx context.Context, taskId int32, name string,
+) error {
+	err := tr.queries.UpdateTaskName(ctx, sqlc.UpdateTaskNameParams{
+		ID:   taskId,
+		Name: name,
 	})
 	if err != nil {
 		return err

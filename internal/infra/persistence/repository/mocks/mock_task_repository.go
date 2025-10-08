@@ -154,6 +154,20 @@ func (mr *MockTaskRepositoryMockRecorder) UpdateCompletion(ctx, taskId, isComple
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCompletion", reflect.TypeOf((*MockTaskRepository)(nil).UpdateCompletion), ctx, taskId, isComplete)
 }
 
+// UpdateName mocks base method.
+func (m *MockTaskRepository) UpdateName(ctx context.Context, taskId int32, name string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateName", ctx, taskId, name)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateName indicates an expected call of UpdateName.
+func (mr *MockTaskRepositoryMockRecorder) UpdateName(ctx, taskId, name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateName", reflect.TypeOf((*MockTaskRepository)(nil).UpdateName), ctx, taskId, name)
+}
+
 // UpdatePosition mocks base method.
 func (m *MockTaskRepository) UpdatePosition(ctx context.Context, tasks []taskdomain.TaskPositionParams) error {
 	m.ctrl.T.Helper()

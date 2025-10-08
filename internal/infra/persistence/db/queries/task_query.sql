@@ -39,3 +39,8 @@ SELECT m.user_id
 FROM tasks t
 INNER JOIN modules m ON m.id = t.module_id
 WHERE t.id = $1;
+
+-- name: UpdateTaskName :exec
+UPDATE tasks
+SET name = $2
+WHERE id = $1;
