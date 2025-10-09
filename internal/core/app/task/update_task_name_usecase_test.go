@@ -34,7 +34,26 @@ func TestUpdateTaskName(t *testing.T) {
 		}
 	})
 
-	t.Run("Should fail with an invalid task id", func(t *testing.T) {
+	t.Run("Should fail with an invalid task name", func(t *testing.T) {
+		taskId := int32(123)
+		newName := "  "
+
+		err := updateTaskName.Execute(ctx, taskId, newName)
+		if err == nil {
+			t.Fatalf("expected error, got %v", err)
+		}
+
+		res := resp.AsRestErr(err)
+
+		if res.Status != taskdomain.SttInvalidTaskName {
+			t.Fatalf("expected status %v, got: %v",
+				taskdomain.SttInvalidTaskName,
+				res.Status,
+			)
+		}
+	})
+
+	t.Run("Should fail if the task is not found", func(t *testing.T) {
 		taskId := int32(123)
 		newName := "Task"
 
