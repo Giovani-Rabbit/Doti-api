@@ -9,3 +9,7 @@ type UpdatePositionDTO struct {
 type UpdateCompletionDTO struct {
 	IsComplete bool `json:"isComplete"`
 }
+
+type UpdateTaskNameHttpBody struct {
+	TaskName string `json:"taskName"`
+}

@@ -27,6 +27,12 @@ func TaskRoutes(mux *http.ServeMux, task *dihdl.TaskHandlers) (m *http.ServeMux)
 		)),
 	)
 
+	mux.Handle("PATCH /tasks/{id}/rename",
+		middleware.EnsureAuth(http.HandlerFunc(
+			task.UpdateName.Execute,
+		)),
+	)
+
 	mux.Handle("DELETE /tasks/{id}",
 		middleware.EnsureAuth(http.HandlerFunc(
 			task.Delete.Execute,
