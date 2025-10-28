@@ -8,9 +8,10 @@ import (
 )
 
 type DI struct {
-	Module *dihdl.ModuleHandlers
-	Task   *dihdl.TaskHandlers
-	User   *dihdl.UserHandlers
+	Module      *dihdl.ModuleHandlers
+	Task        *dihdl.TaskHandlers
+	TaskDetails *dihdl.TaskDetailsHandler
+	User        *dihdl.UserHandlers
 }
 
 func New(db *sql.DB) *DI {
@@ -18,11 +19,13 @@ func New(db *sql.DB) *DI {
 
 	moduleCases := dicase.NewModuleCases(repo.module, repo.task)
 	taskCases := dicase.NewTaskUseCase(repo.task, repo.module)
+	taskDetailsCases := dicase.NewTaskDetailsUseCase(repo.taskDetails)
 	userCases := dicase.NewUserCases(repo.user)
 
 	return &DI{
-		Module: dihdl.NewModuleHandlers(moduleCases),
-		Task:   dihdl.NewTaskHandler(taskCases),
-		User:   dihdl.NewUserHandlers(userCases),
+		Module:      dihdl.NewModuleHandlers(moduleCases),
+		Task:        dihdl.NewTaskHandler(taskCases),
+		TaskDetails: dihdl.NewTaskDetailsHandler(taskDetailsCases),
+		User:        dihdl.NewUserHandlers(userCases),
 	}
 }

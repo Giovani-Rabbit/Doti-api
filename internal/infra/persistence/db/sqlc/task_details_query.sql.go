@@ -24,3 +24,22 @@ func (q *Queries) CreateTaskDetails(ctx context.Context, arg CreateTaskDetailsPa
 	_, err := q.db.ExecContext(ctx, createTaskDetails, arg.TaskID, arg.Description)
 	return err
 }
+
+const updateTaskDetailsDescription = `-- name: UpdateTaskDetailsDescription :execrows
+UPDATE task_details
+SET description = $2
+WHERE task_id = $1
+`
+
+type UpdateTaskDetailsDescriptionParams struct {
+	TaskID      int32          `json:"task_id"`
+	Description sql.NullString `json:"description"`
+}
+
+func (q *Queries) UpdateTaskDetailsDescription(ctx context.Context, arg UpdateTaskDetailsDescriptionParams) (int64, error) {
+	result, err := q.db.ExecContext(ctx, updateTaskDetailsDescription, arg.TaskID, arg.Description)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
+}
