@@ -36,7 +36,7 @@ func (ud *updateDescription) Execute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var body *detailsdto.UpdateDescriptionRequest
-	if res.DecodeJSONBody(r, &body) {
+	if !res.DecodeJSONBody(r, &body) {
 		return
 	}
 

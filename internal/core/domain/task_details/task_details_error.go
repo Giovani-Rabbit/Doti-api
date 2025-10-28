@@ -3,16 +3,8 @@ package detailsdomain
 import resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 
 const (
-	SttInvalidDescription = "INVALID_DESCRIPTION_DETAILS"
-	SttCouldNotUpdateDescription
+	SttCouldNotUpdateDescription = "ERROR_UPDATING_DESCRIPTION"
 )
-
-func ErrInvalidDescription() *resp.RestErr {
-	return resp.NewBadRequestError(
-		SttInvalidDescription,
-		"Invalid description",
-	)
-}
 
 func ErrUpdatingDescription(err error) *resp.RestErr {
 	return resp.NewErrInternal(

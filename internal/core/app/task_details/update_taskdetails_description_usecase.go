@@ -3,7 +3,6 @@ package detailscase
 import (
 	"context"
 	"errors"
-	"strings"
 
 	"github.com/Giovani-Coelho/Doti-API/config/logger"
 	detailsdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task_details"
@@ -35,14 +34,6 @@ func (td *updateDescription) Execute(
 		zap.Int32("taskId", taskId),
 		zap.String("description", description),
 		zap.String("journey", "updateDescDetails"))
-
-	if strings.TrimSpace(description) == "" {
-		logger.Error("invalid description", nil,
-			zap.String("description", description),
-			zap.String("journey", "updateDescDetails"))
-
-		return detailsdomain.ErrInvalidDescription()
-	}
 
 	err := td.taskDetailsRepo.UpdateDescription(ctx, taskId, description)
 	if err != nil {

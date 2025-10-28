@@ -6,7 +6,6 @@ import (
 
 	detailscase "github.com/Giovani-Coelho/Doti-API/internal/core/app/task_details"
 	taskdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task"
-	detailsdomain "github.com/Giovani-Coelho/Doti-API/internal/core/domain/task_details"
 	resp "github.com/Giovani-Coelho/Doti-API/internal/infra/http/responder"
 	mock_repository "github.com/Giovani-Coelho/Doti-API/internal/infra/persistence/repository/mocks"
 	"github.com/golang/mock/gomock"
@@ -32,25 +31,6 @@ func TestTaskDetailsUpdateDescription(t *testing.T) {
 		err := usecase.Execute(ctx, taskId, description)
 		if err != nil {
 			t.Errorf("expected no error, got: %v", err)
-		}
-	})
-
-	t.Run("Should fail with an invalid description", func(t *testing.T) {
-		taskId := int32(12345)
-		description := "  "
-
-		err := usecase.Execute(ctx, taskId, description)
-		if err == nil {
-			t.Errorf("expected error, got: %v", err)
-		}
-
-		respErr := resp.AsRestErr(err)
-
-		if respErr.Status != detailsdomain.SttInvalidDescription {
-			t.Errorf("expected status %v, got: %v",
-				detailsdomain.SttInvalidDescription,
-				respErr.Status,
-			)
 		}
 	})
 
