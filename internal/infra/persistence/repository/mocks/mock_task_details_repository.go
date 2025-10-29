@@ -47,3 +47,17 @@ func (mr *MockTaskDetailsRepositoryMockRecorder) UpdateDescription(ctx, taskId, 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateDescription", reflect.TypeOf((*MockTaskDetailsRepository)(nil).UpdateDescription), ctx, taskId, description)
 }
+
+// UpdatePomodoroTarget mocks base method.
+func (m *MockTaskDetailsRepository) UpdatePomodoroTarget(ctx context.Context, taskId int32, target int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdatePomodoroTarget", ctx, taskId, target)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdatePomodoroTarget indicates an expected call of UpdatePomodoroTarget.
+func (mr *MockTaskDetailsRepositoryMockRecorder) UpdatePomodoroTarget(ctx, taskId, target interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdatePomodoroTarget", reflect.TypeOf((*MockTaskDetailsRepository)(nil).UpdatePomodoroTarget), ctx, taskId, target)
+}

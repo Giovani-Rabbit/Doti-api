@@ -43,3 +43,22 @@ func (q *Queries) UpdateTaskDetailsDescription(ctx context.Context, arg UpdateTa
 	}
 	return result.RowsAffected()
 }
+
+const updateTaskDetailsPomodoroTarget = `-- name: UpdateTaskDetailsPomodoroTarget :execrows
+UPDATE task_details
+SET pomodoro_target = $2
+WHERE task_id = $1
+`
+
+type UpdateTaskDetailsPomodoroTargetParams struct {
+	TaskID         int32         `json:"task_id"`
+	PomodoroTarget sql.NullInt32 `json:"pomodoro_target"`
+}
+
+func (q *Queries) UpdateTaskDetailsPomodoroTarget(ctx context.Context, arg UpdateTaskDetailsPomodoroTargetParams) (int64, error) {
+	result, err := q.db.ExecContext(ctx, updateTaskDetailsPomodoroTarget, arg.TaskID, arg.PomodoroTarget)
+	if err != nil {
+		return 0, err
+	}
+	return result.RowsAffected()
+}

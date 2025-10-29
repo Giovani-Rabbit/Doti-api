@@ -6,7 +6,8 @@ import (
 )
 
 type TaskDetailsHandler struct {
-	UpdateDescription detailshdl.UpdateDescription
+	UpdateDescription    detailshdl.UpdateDescription
+	UpdatePomodoroTarget detailshdl.UpdatePomodoroTarget
 }
 
 func NewTaskDetailsHandler(
@@ -15,6 +16,9 @@ func NewTaskDetailsHandler(
 	return &TaskDetailsHandler{
 		UpdateDescription: detailshdl.NewUpdateDescriptionHandler(
 			detailscases.UpdateDescription,
+		),
+		UpdatePomodoroTarget: detailshdl.NewUpdatePomodoroTargetHandler(
+			detailscases.UpdatePomodoroTarget,
 		),
 	}
 }

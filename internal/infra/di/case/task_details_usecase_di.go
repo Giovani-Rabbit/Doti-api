@@ -6,13 +6,15 @@ import (
 )
 
 type TaskDetailsUseCase struct {
-	UpdateDescription detailscase.UpdateDescription
+	UpdateDescription    detailscase.UpdateDescription
+	UpdatePomodoroTarget detailscase.UpdatePomodoroTarget
 }
 
 func NewTaskDetailsUseCase(
 	td repository.TaskDetailsRepository,
 ) *TaskDetailsUseCase {
 	return &TaskDetailsUseCase{
-		UpdateDescription: detailscase.NewTaskDetailsUseCase(td),
+		UpdateDescription:    detailscase.NewTaskDetailsUseCase(td),
+		UpdatePomodoroTarget: detailscase.NewTaskDetailsUpdatePomodoroTarget(td),
 	}
 }

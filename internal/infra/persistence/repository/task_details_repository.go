@@ -10,6 +10,7 @@ import (
 
 type TaskDetailsRepository interface {
 	UpdateDescription(ctx context.Context, taskId int32, description string) error
+	UpdatePomodoroTarget(ctx context.Context, taskId int32, target int) error
 }
 
 type taskDetailsRepository struct {
@@ -38,6 +39,30 @@ func (td *taskDetailsRepository) UpdateDescription(
 			},
 		},
 	)
+	if err != nil {
+		return err
+	}
+
+	if rows == 0 {
+		return taskdomain.ErrCouldNotFindTask()
+	}
+
+	return nil
+}
+
+func (td *taskDetailsRepository) UpdatePomodoroTarget(
+	ctx context.Context, taskId int32, target int,
+) error {
+	rows, err := td.queries.UpdateTaskDetailsPomodoroTarget(ctx,
+		sqlc.UpdateTaskDetailsPomodoroTargetParams{
+			TaskID: taskId,
+			PomodoroTarget: sql.NullInt32{
+				Int32: int32(target),
+				Valid: true,
+			},
+		},
+	)
+
 	if err != nil {
 		return err
 	}

@@ -6,3 +6,8 @@ VALUES ($1, $2);
 UPDATE task_details
 SET description = $2
 WHERE task_id = $1;
+
+-- name: UpdateTaskDetailsPomodoroTarget :execrows
+UPDATE task_details
+SET pomodoro_target = $2
+WHERE task_id = $1;
